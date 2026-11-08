@@ -25,10 +25,20 @@ export const projects: Project[] = [
     slug: 'skill-tree',
     title: 'Career skill tree',
     summary:
-      'A decade-plus of restaurants, a UX bootcamp, an MBA and a spin-off, drawn as an RPG skill tree. Pick a track, inspect a skill, or replay the whole career year by year.',
+      'A UX bootcamp, product management, an MBA and a spin-off, drawn as an RPG skill tree. Pick a track, inspect a skill, or replay the whole career year by year.',
     status: 'in-progress',
     accent: 'violet',
     started: 'November 2026',
     repo: 'kyle-pace/skill-tree',
+  },
+  {
+    slug: 'world-cuisine',
+    title: 'World cuisine',
+    summary:
+      'Wikipedia’s 600-plus cuisines and their dishes on one globe. Search an ingredient to see where in the world it’s cooked with, follow a dish to where it’s from, and find recipe sites and cookbooks to start cooking.',
+    status: 'in-progress',
+    accent: 'tangerine',
+    started: 'November 2026',
+    repo: 'kyle-pace/world-cuisine',
   },
 ];
