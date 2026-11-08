@@ -1,4 +1,4 @@
-import type { Status } from '../lib/status';
+import type { Status } from 'kp-design/components/StatusBadge.astro';
 
 /*
   Every experiment listed on the home page. Each one lives in its own repo and deploys

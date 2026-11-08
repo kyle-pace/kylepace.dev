@@ -87,8 +87,8 @@ kylepace.dev is the hub for Kyle's experiments: the home page that lists them, p
 
 - **Each experiment is its own repo and Cloudflare Worker**, not part of this one. It's mounted at `kylepace.dev/<slug>/` by a Worker route in its own `wrangler.jsonc`. This repo only lists it in `src/data/projects.ts`. README: "Adding a project".
 - This Worker (`kylepace-dev`) owns the domain as a Custom Domain. A route on a path wins over the Custom Domain, so adding a project never needs a change here beyond the list entry.
-- Header, footer and display settings use absolute `https://kylepace.dev/...` links, so they work when an experiment on another Worker uses them too. Keep them absolute.
-- `src/styles/tokens.css`, `global.css`, `DisplaySettings.astro` and `Footer.astro` started as copies from kylepace.net. Until they move into a shared package (`kyle-pace/kp-design`, planned), change both sites together.
+- The header, footer and display settings links passed in `Base.astro` are absolute `https://kylepace.dev/...` URLs, so they work when an experiment on another Worker uses them too. Keep them absolute.
+- Tokens, base styles, header, footer and display settings come from [kyle-pace/kp-design](https://github.com/kyle-pace/kp-design), pinned to a commit in package.json. Change them there, then update the pin here. Only the wordmark, nav and footer links are set in this repo (`src/layouts/Base.astro`).
 - Analytics goes to its own Amplitude project, kylepace.dev (902556), separate from kylepace.net's. The browser key is in `src/lib/analytics.ts` and it only runs on kylepace.dev. Experiments on kylepace.dev/<slug>/ send to the same project.
 - Every page is indexed by default. An experiment that shouldn't be sends `X-Robots-Tag: noindex` from its own repo.
 - Share cards live in `design/og-*.html` and render to `public/og-*.png` (see the share-card skill).

@@ -18,8 +18,7 @@ npm run preview   # builds, then runs it the way Cloudflare will
 | What | Where |
 | --- | --- |
 | The list of experiments | `src/data/projects.ts` |
-| Colors, type, spacing, motion | `src/styles/tokens.css` |
-| Header, footer, display settings | `src/components/` |
+| Colors, type, spacing, motion, header, footer, display settings | [kp-design](https://github.com/kyle-pace/kp-design), pinned in `package.json`; this site's links are set in `src/layouts/Base.astro` |
 | Analytics (Amplitude) | `src/lib/analytics.ts`, the only file that talks to it |
 | Share cards | `design/og-*.html`, rendered to `public/og-*.png` at 1200×630 |
 | Search and crawler rules | `public/robots.txt`, `public/_headers` |
@@ -44,7 +43,7 @@ Cloudflare runs a route before a Custom Domain on the same hostname, so an exper
      { "pattern": "kylepace.dev/<slug>/*", "zone_name": "kylepace.dev" }
    ]
    ```
-3. **Make it feel like part of the site.** Use the same header and footer (copy them from here until `kp-design` exists), and give it its own share card.
+3. **Make it feel like part of the site.** Install [kp-design](https://github.com/kyle-pace/kp-design) and use its `Header`, `Footer` and `DisplaySettings` with the same props as `src/layouts/Base.astro` here, so it shares the hub's header and footer. Give it its own share card.
 4. **List it.** Add an entry to `src/data/projects.ts` here and push.
 5. **Point to it from kylepace.net.** If it used to live at `kylepace.net/labs/<slug>/`, add a 301 there in `public/_redirects`.
 
