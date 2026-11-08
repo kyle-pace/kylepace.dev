@@ -9,10 +9,11 @@
 
 import * as amplitude from '@amplitude/analytics-browser';
 
-// The kylepace.dev project's browser API key. Browser keys are public by design
-// (every page sends it), so it can live in the code; a build variable overrides it.
-// Empty until the Amplitude project exists, which keeps analytics off.
-const API_KEY: string = import.meta.env.PUBLIC_AMPLITUDE_API_KEY || '';
+// The kylepace.dev Amplitude project's browser API key (project 902556). Browser keys
+// are public by design (every page sends it), so it can live in the code; a build
+// variable overrides it.
+const API_KEY: string =
+  import.meta.env.PUBLIC_AMPLITUDE_API_KEY || '15494c5b9d8a36939245949ac59554ee';
 
 const LIVE_HOSTS = ['kylepace.dev'];
 const REPLAY_RATE = 0.05;

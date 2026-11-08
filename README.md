@@ -52,4 +52,4 @@ An experiment that shouldn't show up in search sends `X-Robots-Tag: noindex` fro
 
 ## Deploying
 
-Cloudflare Workers Builds deploys `main` on every push (build command `npm run build`, deploy command `npx wrangler deploy`). The Worker is `kylepace-dev`, with `kylepace.dev` as its Custom Domain (set in `wrangler.jsonc`). DNS for kylepace.dev is on Cloudflare; Porkbun is the registrar.
+Cloudflare Workers Builds deploys `main` on every push (build command `npm run build`, deploy command `npx wrangler deploy`). The Worker is `kylepace-dev`, with `kylepace.dev` as its Custom Domain (set in `wrangler.jsonc`). `www.kylepace.dev` 301s to `kylepace.dev` with a Cloudflare Redirect Rule (a proxied `AAAA 100::` record makes it resolve). DNS for kylepace.dev is on Cloudflare; Porkbun is the registrar.

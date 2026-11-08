@@ -89,7 +89,7 @@ kylepace.dev is the hub for Kyle's experiments: the home page that lists them, p
 - This Worker (`kylepace-dev`) owns the domain as a Custom Domain. A route on a path wins over the Custom Domain, so adding a project never needs a change here beyond the list entry.
 - Header, footer and display settings use absolute `https://kylepace.dev/...` links, so they work when an experiment on another Worker uses them too. Keep them absolute.
 - `src/styles/tokens.css`, `global.css`, `DisplaySettings.astro` and `Footer.astro` started as copies from kylepace.net. Until they move into a shared package (`kyle-pace/kp-design`, planned), change both sites together.
-- Analytics is off until the kylepace.dev Amplitude project's browser key is set in `src/lib/analytics.ts` (or `PUBLIC_AMPLITUDE_API_KEY`). It only runs on kylepace.dev.
+- Analytics goes to its own Amplitude project, kylepace.dev (902556), separate from kylepace.net's. The browser key is in `src/lib/analytics.ts` and it only runs on kylepace.dev. Experiments on kylepace.dev/<slug>/ send to the same project.
 - Every page is indexed by default. An experiment that shouldn't be sends `X-Robots-Tag: noindex` from its own repo.
 - Share cards live in `design/og-*.html` and render to `public/og-*.png` (see the share-card skill).
 - Run `npm run build` before pushing; it must pass. Deploys run on Cloudflare Workers Builds when `main` changes.
