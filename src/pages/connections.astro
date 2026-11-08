@@ -1,0 +1,180 @@
+---
+// Every outside host Kyle's sites are allowed to talk to, read from each project's
+// .agents/allowed-hosts.txt (src/lib/connections.ts). Rendered on Cloudflare per
+// request, with the lists cached for an hour, so it never waits on a redeploy.
+import Base from '../layouts/Base.astro';
+import { getConnections } from '../lib/connections';
+import { connectionSources } from '../data/connections';
+
+export const prerender = false;
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=300');
+
+const projects = await getConnections(connectionSources);
+const total = projects.reduce((n, p) => n + (p.approvals?.length ?? 0), 0);
+const formatDate = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+const principle = 'https://kylepace.dev/how-i-build/#self-host-everything-approve-outside-hosts-one-at-a-time';
+---
+
+<Base
+  title="What these sites connect to"
+  description="Every outside service Kyle's sites and experiments load from, what each one is for, and when he approved it."
+  image="/og-connections.png"
+  imageAlt="What these sites connect to: every outside host, listed and explained."
+>
+  <article class="prose">
+    <header>
+      <p class="eyebrow">Connections</p>
+      <h1>What these sites connect to.</h1>
+      <p class="lede">
+        Most websites quietly load pieces from dozens of other companies: fonts, scripts, trackers, embeds. Mine serve
+        everything from my own domains unless I’ve approved an outside service for a specific reason, one at a time.
+        This page lists every approval.
+      </p>
+    </header>
+
+    <h2>On every site</h2>
+    <ul class="hosts">
+      <li>
+        <p class="host"><strong>Amplitude</strong> (analytics)</p>
+        <p>
+          Shows which pages and experiments people use. No IP addresses, no cookies, and nothing at all if your browser
+          sends Global Privacy Control or Do Not Track. A small share of visits are recorded with all text masked. Turn
+          it off on the privacy page for <a href="https://kylepace.dev/privacy/">kylepace.dev</a> or{' '}
+          <a href="https://kylepace.net/privacy/">kylepace.net</a>.
+        </p>
+      </li>
+      <li>
+        <p class="host"><strong>Cloudflare</strong> (hosting)</p>
+        <p>Serves the sites themselves. Every page, font and script comes from here.</p>
+      </li>
+    </ul>
+
+    <h2>Approved for each project</h2>
+    <p>
+      {total === 0 ? 'Nothing beyond the above, yet.' : `${total} approvals across ${projects.length} projects.`} Each
+      list is read from the project’s code, the same list its automated checks use, and refreshed at least every hour.
+    </p>
+
+    {
+      projects.map((p) => (
+        <section aria-labelledby={`project-${p.repo.replace(/\W+/g, '-')}`}>
+          <h3 id={`project-${p.repo.replace(/\W+/g, '-')}`}>{p.url ? <a href={p.url}>{p.name}</a> : p.name}</h3>
+          {p.approvals === null ? (
+            <p class="muted">Couldn’t read this list just now. Try again in a little while.</p>
+          ) : p.approvals.length === 0 ? (
+            <p class="muted">Nothing outside its own domain beyond the services above.</p>
+          ) : (
+            <ul class="hosts">
+              {p.approvals.map((a) => (
+                <li>
+                  <p class="host">
+                    <code>{a.host}</code>
+                    {a.provisional && <span class="tag">For now</span>}
+                  </p>
+                  <p>{a.purpose}</p>
+                  {a.approved && <p class="date">Approved {formatDate(a.approved)}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+          {p.listLink && (
+            <p class="source">
+              <a href={p.listLink}>
+                See the raw list<span class="visually-hidden"> for {p.name}</span>
+              </a>
+            </p>
+          )}
+        </section>
+      ))
+    }
+
+    <h2>How this works</h2>
+    <p>
+      Every project follows the same <a href={principle}>development principles</a>: libraries and fonts are served
+      from the project itself, and any outside service needs my approval for that one project. An automated check
+      fails the build if a page loads a script, font, style or image from a host that isn’t on its list. Services the
+      code calls while the page is running still need approval, and they’re on the list too, even though the check
+      can’t see them.
+    </p>
+    <p>
+      “For now” means I’ve approved it while I work out whether to bring it in-house.
+    </p>
+  </article>
+</Base>
+
+<style>
+  article {
+    margin-inline: auto;
+  }
+
+  .lede {
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+  }
+
+  .hosts {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .hosts li {
+    margin: 0;
+    padding: var(--space-4) var(--space-6);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .hosts p {
+    margin: 0;
+  }
+
+  .hosts p + p {
+    margin-top: var(--space-2);
+  }
+
+  .host {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    overflow-wrap: anywhere;
+  }
+
+  .tag {
+    font-size: var(--step--1);
+    padding: 0 var(--space-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+  }
+
+  .date,
+  .muted {
+    color: var(--ink-muted);
+  }
+
+  .date {
+    font-size: var(--step--1);
+  }
+
+  section {
+    margin-top: var(--space-8);
+  }
+
+  .source {
+    margin-top: var(--space-3);
+    font-size: var(--step--1);
+  }
+
+  @media (max-width: 40rem) {
+    .hosts li {
+      padding: var(--space-4);
+    }
+  }
+</style>

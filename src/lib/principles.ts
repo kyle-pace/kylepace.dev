@@ -1,6 +1,5 @@
 // The development principles, pulled from github.com/kyle-pace/principles when the
-// site builds. This is the only code that talks to GitHub, and it only runs at build
-// time, so visitors never contact GitHub.
+// site builds (through src/lib/github.ts), so visitors never contact GitHub.
 //
 // If GitHub can't be reached, it falls back to the copy synced into this repo's
 // AGENTS.md (the principles workflow keeps it current, and each sync commit triggers
@@ -8,18 +7,9 @@
 
 import { readFileSync } from 'node:fs';
 import { marked } from 'marked';
+import { readRepoFile, repoUrl } from './github';
 
-const SOURCE = 'https://raw.githubusercontent.com/kyle-pace/principles/main/principles.md';
-export const REPO_URL = 'https://github.com/kyle-pace/principles';
-
-async function fetchFromGitHub(): Promise<string | null> {
-  try {
-    const res = await fetch(SOURCE, { signal: AbortSignal.timeout(10_000) });
-    return res.ok ? await res.text() : null;
-  } catch {
-    return null;
-  }
-}
+export const REPO_URL = repoUrl('kyle-pace/principles');
 
 function readSyncedCopy(): string | null {
   try {
@@ -38,7 +28,7 @@ function readSyncedCopy(): string | null {
  * id so sections can be linked.
  */
 export async function getPrinciples(): Promise<{ html: string; fromGitHub: boolean }> {
-  const fromGitHub = await fetchFromGitHub();
+  const fromGitHub = await readRepoFile('kyle-pace/principles', 'principles.md');
   const markdown = fromGitHub ?? readSyncedCopy() ?? '';
 
   const body = markdown
