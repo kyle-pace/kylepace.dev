@@ -1,7 +1,7 @@
 ---
 // Every outside host Kyle's sites are allowed to talk to, read from each project's
 // .agents/allowed-hosts.txt (src/lib/connections.ts). Rendered on Cloudflare per
-// request, with the lists cached for an hour, so it never waits on a redeploy.
+// request, with the lists cached for 15 minutes, so it never waits on a redeploy.
 import Base from '../layouts/Base.astro';
 import { getConnections } from '../lib/connections';
 import { connectionSources } from '../data/connections';
@@ -54,7 +54,7 @@ const principle = 'https://kylepace.dev/how-i-build/#self-host-everything-approv
     <h2>Approved for each project</h2>
     <p>
       {total === 0 ? 'Nothing beyond the above, yet.' : `${total} approvals across ${projects.length} projects.`} Each
-      list is read from the project’s code, the same list its automated checks use, and refreshed at least every hour.
+      list is read from the project’s code, the same list its automated checks use, and refreshed every 15 minutes.
     </p>
 
     {
