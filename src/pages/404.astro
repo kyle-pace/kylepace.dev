@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Where most lost visitors were probably headed.
+const routes = [
+  { href: '/', label: 'All experiments' },
+  { href: 'https://kylepace.net/', label: 'kylepace.net' },
+];
+---
+
+<Base title="Not found" accent="pink">
+  <article class="lost">
+    <svg class="compass" viewBox="-60 -60 120 120" aria-hidden="true">
+      <circle class="dial" r="54" />
+      <g class="ticks">
+        {Array.from({ length: 12 }, (_, i) => <line x1="0" y1="-46" x2="0" y2={i % 3 ? -42 : -38} transform={`rotate(${i * 30})`} />)}
+      </g>
+      <g class="needle" data-needle>
+        <path class="north" d="M0 -36 L7 0 L-7 0 Z" />
+        <path class="south" d="M0 36 L7 0 L-7 0 Z" />
+      </g>
+      <circle class="pin" r="4" />
+    </svg>
+    <p class="eyebrow">404</p>
+    <h1>This page wandered off.</h1>
+    <p class="prose">Experiments come and go here. The compass is doing its best. These are safer bets:</p>
+    <ul class="routes">
+      {
+        routes.map((r) => (
+          <li>
+            <a href={r.href}>{r.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </article>
+</Base>
+
+<script>
+  // The page's one playful moment: the needle points at your pointer, like it's trying
+  // to help. Pointer devices only, and never when less motion is asked for.
+  const needle = document.querySelector<SVGGElement>('[data-needle]');
+  const compass = document.querySelector<SVGSVGElement>('.compass');
+  const allowed = window.matchMedia('(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)');
+  let frame = 0;
+  let current = 35;
+
+  window.addEventListener('pointermove', (event) => {
+    if (!needle || !compass || !allowed.matches || document.documentElement.dataset.motion === 'reduce') return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const box = compass.getBoundingClientRect();
+      const angle = Math.atan2(event.clientY - (box.top + box.height / 2), event.clientX - (box.left + box.width / 2));
+      const target = (angle * 180) / Math.PI + 90;
+      // Turn the short way round, so the needle never spins a full circle.
+      current += ((((target - current) % 360) + 540) % 360) - 180;
+      needle.style.rotate = `${current}deg`;
+    });
+  });
+</script>
+
+<style>
+  .lost {
+    max-width: var(--measure);
+    margin-inline: auto;
+    padding-block: var(--space-12);
+  }
+
+  .compass {
+    width: 7rem;
+    height: 7rem;
+    margin-bottom: var(--space-6);
+    overflow: visible;
+  }
+
+  .dial {
+    fill: var(--bg-raised);
+    stroke: var(--line);
+    stroke-width: 2;
+  }
+
+  .ticks line {
+    stroke: var(--ink-muted);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .needle {
+    rotate: 35deg;
+    transform-origin: 0 0;
+  }
+
+  .north {
+    fill: var(--accent);
+  }
+
+  .south {
+    fill: var(--ink-muted);
+  }
+
+  .pin {
+    fill: var(--ink);
+  }
+
+  .routes {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .routes a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .needle {
+      transition: rotate var(--duration) var(--ease-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .routes a {
+        transition: border-color var(--duration-fast) var(--ease-out);
+      }
+
+      .routes a:hover {
+        border-color: var(--accent);
+      }
+    }
+  }
+</style>

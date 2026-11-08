@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Accessibility" description="How kylepace.dev and its experiments are built to work for everyone.">
+  <article class="prose">
+    <h1>Accessibility</h1>
+    <p>
+      Every experiment here aims for the same standard as <a href="https://kylepace.net/accessibility/">kylepace.net</a>:
+      WCAG 2.2 AA, Atkinson Hyperlegible type, readable contrast in light and dark mode, full keyboard support, and motion
+      only when your device allows it.
+    </p>
+    <p>
+      Experiments are works in progress, so some will fall short while they’re being built. Interactive pieces like maps
+      and visualizations are the hardest to get right, and each one says in text what it shows.
+    </p>
+    <h2>Display settings</h2>
+    <p>
+      The round button in the corner of every page lets you change theme, text size, contrast, font, spacing, motion and
+      link underlines. Your choices are saved in this browser for kylepace.dev. Because it’s a separate site, settings
+      from kylepace.net don’t carry over, so you may need to set them once here too.
+    </p>
+    <h2>Tell me what’s not working</h2>
+    <p>
+      If something gets in your way,
+      <a href="mailto:mail@kylepace.net?subject=Accessibility%20on%20kylepace.dev">email me</a> with the page and what
+      happened, and I’ll aim to reply within a week.
+    </p>
+  </article>
+</Base>
+
+<style>
+  article {
+    margin-inline: auto;
+  }
+</style>

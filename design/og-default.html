@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* Site share card (public/og-default.png). Render at 1200x630 (share-card skill).
+   Colors are the dark-theme tokens from src/styles/tokens.css. */
+@font-face{font-family:A;src:url("../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2")}
+@font-face{font-family:A;font-weight:700;src:url("../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-700-normal.woff2")}
+@font-face{font-family:M;src:url("../node_modules/@fontsource/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-400-normal.woff2")}
+html,body{margin:0}
+body{width:1200px;height:630px;background:#141317;font-family:A;overflow:hidden;position:relative;color:#f3efe8}
+.glow{position:absolute;inset:-200px auto auto -200px;width:900px;height:600px;background:radial-gradient(ellipse at center,rgba(139,92,246,.28),transparent 65%)}
+.card{position:relative;box-sizing:border-box;width:1200px;height:630px;padding:80px 88px;display:flex;flex-direction:column;justify-content:space-between}
+.mark{font-family:M;font-size:44px;color:#f3efe8}.mark b{font-weight:400;color:#b9a0ff}
+h1{margin:0;font-size:96px;line-height:1.02;letter-spacing:-0.02em;font-weight:700;max-width:960px}
+.sub{margin:24px 0 0;font-size:36px;color:#aaa5b2}
+.prompt{font-family:M;font-size:34px;color:#aaa5b2}.prompt b{font-weight:400;color:#b9a0ff}
+.cursor{display:inline-block;width:20px;height:38px;margin-left:8px;vertical-align:-6px;background:#8b5cf6}
+.sw{position:absolute;right:88px;top:96px;display:flex;gap:10px}.sw span{width:44px;height:14px;border-radius:999px}
+</style></head><body>
+<div class="glow"></div>
+<div class="sw"><span style="background:#ff7a1a"></span><span style="background:#ff3e8a"></span><span style="background:#8b5cf6"></span><span style="background:#38bdf8"></span><span style="background:#a3e635"></span><span style="background:#facc15"></span></div>
+<div class="card">
+  <div class="mark">kylepace<b>.dev</b></div>
+  <div>
+    <h1>Things I’m building, in public.</h1>
+    <p class="sub">Experiments by Kyle Pace</p>
+  </div>
+  <div class="prompt"><b>$</b> ls experiments/<span class="cursor"></span></div>
+</div>
+</body></html>

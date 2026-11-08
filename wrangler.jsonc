@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers config. The Astro adapter fills in the entry point and static
+  // assets at build time; settings here are merged into that.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kylepace-dev",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true },
+  // The hub owns the whole domain as its origin. Each project's Worker claims its own
+  // path with a route (kylepace.dev/<slug>*), and routes win over a Custom Domain on
+  // the same hostname, so projects never need changes here.
+  "routes": [{ "pattern": "kylepace.dev", "custom_domain": true }]
+}

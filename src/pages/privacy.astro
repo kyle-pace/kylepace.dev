@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Privacy" description="What kylepace.dev measures, and how to turn it off.">
+  <article class="prose">
+    <h1>Privacy</h1>
+    <p>
+      kylepace.dev uses <a href="https://amplitude.com">Amplitude</a> to see which experiments people try and what they
+      click, so I can make them better. It’s set up to collect as little as possible:
+    </p>
+    <ul>
+      <li>No IP addresses and no cookies. A random ID is kept in your browser’s local storage.</li>
+      <li>
+        A small share of visits may be recorded as a session replay, with all text and form fields masked, so I can see
+        where things are confusing.
+      </li>
+      <li>Nothing is collected if your browser sends Global Privacy Control or Do Not Track, or if you turn it off below.</li>
+      <li>No ads, and nothing is sold or shared.</li>
+    </ul>
+    <p>
+      Some experiments load things from other services, like map tiles. Each one says so on its own page. This choice
+      applies to every experiment on kylepace.dev, but not to kylepace.net, which has
+      <a href="https://kylepace.net/privacy/">its own setting</a>.
+    </p>
+    <div class="optout">
+      <p id="optout-status" aria-live="polite">Checking…</p>
+      <button type="button" id="optout-toggle" hidden></button>
+    </div>
+  </article>
+</Base>
+
+<script>
+  import { isOptedOut, setOptOut } from '../lib/analytics';
+
+  const status = document.getElementById('optout-status')!;
+  const button = document.getElementById('optout-toggle') as HTMLButtonElement;
+
+  function render() {
+    const off = isOptedOut();
+    status.textContent = off ? 'Analytics is off in this browser.' : 'Analytics is on in this browser.';
+    button.textContent = off ? 'Turn analytics back on' : 'Turn off analytics';
+    button.hidden = false;
+  }
+
+  button.addEventListener('click', () => {
+    setOptOut(!isOptedOut());
+    render();
+  });
+  render();
+</script>
+
+<style>
+  article {
+    margin-inline: auto;
+  }
+
+  .optout {
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-sm);
+  }
+
+  .optout p {
+    margin: 0 0 var(--space-4);
+  }
+
+  button {
+    min-height: 2.75rem;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+</style>

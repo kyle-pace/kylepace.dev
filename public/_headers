@@ -1,0 +1,2 @@
+# Cloudflare static asset headers for the hub's own pages. Each project sets its own
+# headers in its own repo (an experiment that shouldn't be indexed sends X-Robots-Tag: noindex).

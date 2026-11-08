@@ -1,0 +1,80 @@
+---
+// Profile badges in the footer: LinkedIn, GitHub and Mastodon.
+// Logos are each brand's official files, unaltered, in src/assets/brands/ named
+// after the profile (SVG or PNG). SVGs are inlined so a one-color mark (GitHub)
+// can follow the theme; a badge only appears once its logo file is there.
+// Sources: LinkedIn In-Bug (brand.linkedin.com), GitHub mark (@primer/octicons),
+// Mastodon logo (mastodon/mastodon repo).
+const svgs = import.meta.glob<string>('../assets/brands/*.svg', { eager: true, query: '?raw', import: 'default' });
+const pngs = import.meta.glob<{ default: { src: string } }>('../assets/brands/*.png', { eager: true });
+
+const profiles = [
+  { name: 'linkedin', label: 'Kyle Pace on LinkedIn', href: 'https://www.linkedin.com/in/kylepacepm' },
+  { name: 'github', label: 'Kyle Pace on GitHub', href: 'https://github.com/kyle-pace' },
+  { name: 'mastodon', label: 'Kyle Pace on Mastodon', href: 'https://mastodon.social/@kylepace' },
+]
+  .map((p) => ({
+    ...p,
+    svg: svgs[`../assets/brands/${p.name}.svg`],
+    png: pngs[`../assets/brands/${p.name}.png`]?.default.src,
+  }))
+  .filter((p) => p.svg || p.png);
+---
+
+{
+  profiles.length > 0 && (
+    <ul class="badges" aria-label="Profiles">
+      {profiles.map((p) => (
+        <li>
+          <a class="badge" href={p.href} rel="me" aria-label={p.label}>
+            {p.svg ? <span class="logo" aria-hidden="true" set:html={p.svg} /> : <img class="logo" src={p.png} alt="" />}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .badges {
+    display: flex;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+  }
+
+  .logo,
+  .logo :global(svg) {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    object-fit: contain;
+  }
+
+  /* One-color marks (GitHub) take the text color, so they work in both themes. */
+  .logo :global(svg) {
+    fill: currentColor;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .badge {
+      transition: border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .badge:hover {
+      border-color: var(--accent);
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+/*
+  Design tokens. Placeholder values until the Figma foundations are done;
+  every component reads from these, so a rebrand only changes this file.
+
+  Each accent has a bright fill (shapes, backgrounds, cards) and a deeper
+  text-safe shade that meets WCAG AA (4.5:1) on the base background.
+*/
+:root {
+  /* Light and dark values sit side by side in light-dark(); color-scheme picks one.
+     The display settings can force light or dark (see the theme rules below). */
+  color-scheme: light dark;
+
+  /* Base */
+  --bg: light-dark(#fbf8f3, #141317);
+  --bg-raised: light-dark(#ffffff, #1e1c22);
+  --ink: light-dark(#1b1a1f, #f3efe8);
+  --ink-muted: light-dark(#5b5862, #aaa5b2);
+  --line: light-dark(#e6e0d6, #2e2b34);
+
+  /* Accents: fill / text-safe */
+  --tangerine: #ff7a1a;
+  --tangerine-ink: light-dark(#b34700, #ffa463);
+  --pink: #ff3e8a;
+  --pink-ink: light-dark(#b0175a, #ff7fb0);
+  --violet: #8b5cf6;
+  --violet-ink: light-dark(#5b2dc9, #b9a0ff);
+  --sky: #38bdf8;
+  --sky-ink: light-dark(#0369a1, #7dd3fc);
+  --lime: #a3e635;
+  --lime-ink: light-dark(#47730e, #bef264);
+  --sunshine: #facc15;
+  --sunshine-ink: light-dark(#806300, #fde047);
+  /* Henwood's green (henwood.app). */
+  --sage: #a9c98c;
+  --sage-ink: light-dark(#4a6636, #a9c98c);
+  /* Seattle Grocery Deals' evening blue (Puget evening). */
+  --evening: #345a78;
+  --evening-ink: light-dark(#24577a, #6cc4e8);
+  /* Extra accents for the skill tree's nine tracks (/labs/skill-tree/). */
+  --coral: #fb7185;
+  --coral-ink: light-dark(#be123c, #fda4af);
+  --mint: #2dd4bf;
+  --mint-ink: light-dark(#0f766e, #5eead4);
+
+  /* Progress Pride flag (Daniel Quasar), for the dots at the bottom of every page:
+     the chevron (white, pink, light blue, brown, black), then the rainbow. */
+  --pride-white: #ffffff;
+  --pride-pink: #f5a9b8;
+  --pride-light-blue: #5bcefa;
+  --pride-brown: #784f17;
+  --pride-black: #000000;
+  --pride-red: #e40303;
+  --pride-orange: #ff8c00;
+  --pride-yellow: #ffed00;
+  --pride-green: #008026;
+  --pride-blue: #004dff;
+  --pride-violet: #750787;
+
+  /* The page's current accent; case studies override it. */
+  --accent: var(--violet);
+  --accent-ink: var(--violet-ink);
+
+  /* Type: Atkinson Hyperlegible Next everywhere, as in every app Kyle builds
+     (KitchenUI, Grocery Deals). Designed by the Braille Institute for low-vision
+     readers. Display settings can switch to the device's own fonts. */
+  --font-display: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --font-text: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, Menlo, monospace;
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.56rem, 1.38rem + 0.9vw, 2rem);
+  --step-3: clamp(1.95rem, 1.6rem + 1.75vw, 3rem);
+  --step-4: clamp(2.44rem, 1.8rem + 3.2vw, 4.5rem);
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Layout */
+  --measure: 40rem;
+  --wide: 72rem;
+  --radius: 1rem;
+  --radius-sm: 0.5rem;
+
+  /* Motion (Emil Kowalski's rules: under 300 ms, custom curves, never ease-in) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration: 250ms;
+}
+
+/* Per-page accents, set with data-accent on any element. */
+[data-accent='tangerine'] { --accent: var(--tangerine); --accent-ink: var(--tangerine-ink); }
+[data-accent='pink'] { --accent: var(--pink); --accent-ink: var(--pink-ink); }
+[data-accent='violet'] { --accent: var(--violet); --accent-ink: var(--violet-ink); }
+[data-accent='sky'] { --accent: var(--sky); --accent-ink: var(--sky-ink); }
+[data-accent='lime'] { --accent: var(--lime); --accent-ink: var(--lime-ink); }
+[data-accent='sunshine'] { --accent: var(--sunshine); --accent-ink: var(--sunshine-ink); }
+[data-accent='sage'] { --accent: var(--sage); --accent-ink: var(--sage-ink); }
+[data-accent='evening'] { --accent: var(--evening); --accent-ink: var(--evening-ink); }
+[data-accent='coral'] { --accent: var(--coral); --accent-ink: var(--coral-ink); }
+[data-accent='mint'] { --accent: var(--mint); --accent-ink: var(--mint-ink); }
+
+/* Display settings (src/components/DisplaySettings.astro) set these on <html>. */
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark'] { color-scheme: dark; }
