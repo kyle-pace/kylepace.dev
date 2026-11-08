@@ -20,4 +20,15 @@ export interface Project {
   repo: string;
 }
 
-export const projects: Project[] = [];
+export const projects: Project[] = [
+  {
+    slug: 'skill-tree',
+    title: 'Career skill tree',
+    summary:
+      'A decade-plus of restaurants, a UX bootcamp, an MBA and a spin-off, drawn as an RPG skill tree. Pick a track, inspect a skill, or replay the whole career year by year.',
+    status: 'in-progress',
+    accent: 'violet',
+    started: 'November 2026',
+    repo: 'kyle-pace/skill-tree',
+  },
+];
