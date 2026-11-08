@@ -43,7 +43,7 @@ Cloudflare runs a route before a Custom Domain on the same hostname, so an exper
    ]
    ```
 3. **Make it feel like part of the site.** Install [kp-design](https://github.com/kyle-pace/kp-design) and wrap every page in its `DevLayout`, which brings the hub's header, footer, display settings and analytics. Give it its own share card.
-4. **List it.** Add an entry to `src/data/projects.ts` here and push.
+4. **List it.** Add an entry to `src/data/projects.ts` here, with an `imageAlt` describing its screenshot. Once it's live, run `CHROME=/path/to/chrome python3 scripts/screenshot-projects.py <slug>` to make the card image (`src/assets/projects/<slug>.png`). If the shot doesn't land on the interesting part, add a CSS selector for it to `SELECTORS` in that script. Then push.
 5. **Point to it from kylepace.net.** If it used to live at `kylepace.net/labs/<slug>/`, add a 301 there in `public/_redirects`.
 
 An experiment that shouldn't show up in search sends `X-Robots-Tag: noindex` from its own `public/_headers`.

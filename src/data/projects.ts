@@ -18,6 +18,11 @@ export interface Project {
   started: string;
   /** The GitHub repo, as owner/name. */
   repo: string;
+  /**
+   * Describes the card's screenshot (src/assets/projects/<slug>.png, made by
+   * scripts/screenshot-projects.py) for anyone who can't see it.
+   */
+  imageAlt?: string;
 }
 
 export const projects: Project[] = [
@@ -30,6 +35,8 @@ export const projects: Project[] = [
     accent: 'violet',
     started: 'November 2026',
     repo: 'kyle-pace/skill-tree',
+    imageAlt:
+      'A stats card for a Director of Product, a row of career tracks, and branching skill trees for Hospitality, Project to Product and Design.',
   },
   {
     slug: 'world-cuisine',
@@ -40,6 +47,7 @@ export const projects: Project[] = [
     accent: 'tangerine',
     started: 'November 2026',
     repo: 'kyle-pace/world-cuisine',
+    imageAlt: 'A globe turned to East Asia and the Pacific, beside a search box and a list of nearby cuisines.',
   },
   {
     slug: 'transit',
@@ -50,5 +58,6 @@ export const projects: Project[] = [
     accent: 'sky',
     started: 'November 2026',
     repo: 'kyle-pace/wa-transit-map',
+    imageAlt: 'A dark map of the Puget Sound region, crisscrossed by colored transit routes and vehicle dots.',
   },
 ];

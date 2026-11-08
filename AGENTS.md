@@ -107,4 +107,5 @@ kylepace.dev is the hub for Kyle's experiments: the home page that lists them, p
 - Analytics goes to its own Amplitude project, kylepace.dev (902556), separate from kylepace.net's, set in kp-design's `lib/kylepace-dev.ts`. It only runs on kylepace.dev, and the experiments send to the same project.
 - Every page is indexed by default. An experiment that shouldn't be sends `X-Robots-Tag: noindex` from its own repo.
 - Share cards live in `design/og-*.html` and render to `public/og-*.png` (see the share-card skill).
+- Each project card on the home page shows a screenshot of the experiment's main view, from `src/assets/projects/<slug>.png`. `scripts/screenshot-projects.py` takes them from the live site in dark mode; rerun it when a project is added or its look changes, and keep each project's `imageAlt` accurate.
 - Run `npm run build` before pushing; it must pass. Deploys run on Cloudflare Workers Builds when `main` changes.

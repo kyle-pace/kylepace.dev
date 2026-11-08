@@ -2,7 +2,13 @@
 // The hub: every experiment on kylepace.dev, from src/data/projects.ts.
 import DevLayout from 'kp-design/layouts/DevLayout.astro';
 import { StatusBadge } from 'kp-design';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { projects } from '../data/projects';
+
+// Card screenshots, one per project slug (scripts/screenshot-projects.py makes them).
+const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.png', { eager: true });
+const shotFor = (slug: string) => shots[`../assets/projects/${slug}.png`]?.default;
 ---
 
 <DevLayout>
@@ -24,6 +30,18 @@ import { projects } from '../data/projects';
       <ul class="projects">
         {projects.map((p) => (
           <li class="project" data-accent={p.accent}>
+            {shotFor(p.slug) && (
+              <div class="shot">
+                <Image
+                  src={shotFor(p.slug)!}
+                  alt={p.imageAlt ?? ''}
+                  widths={[400, 800, 1200]}
+                  sizes="(min-width: 60rem) 30rem, 100vw"
+                  format="webp"
+                  quality={80}
+                />
+              </div>
+            )}
             <p class="meta">
               Started {p.started} <StatusBadge status={p.status} />
             </p>
@@ -91,6 +109,35 @@ import { projects } from '../data/projects';
     pointer-events: none;
   }
 
+  /* The screenshot runs edge to edge across the top of the card. */
+  .shot {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: calc(var(--space-8) * -1) calc(var(--space-8) * -1) var(--space-6);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion='reduce']) .shot img {
+      transition: transform 200ms cubic-bezier(0.2, 0.7, 0.3, 1);
+    }
+
+    :root:not([data-motion='reduce']) .project:hover .shot img {
+      transform: scale(1.02);
+    }
+  }
+
   .meta {
     position: relative;
     margin: 0;
@@ -103,12 +150,20 @@ import { projects } from '../data/projects';
   }
 
   h2 {
-    position: relative;
     margin: var(--space-3) 0 var(--space-2);
   }
 
   h2 a {
     color: var(--ink);
+  }
+
+  /* The title link covers the whole card, so the screenshot and summary are
+     clickable too, with one link per project for keyboards and screen readers. */
+  h2 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
   }
 
   .project p {
@@ -117,6 +172,7 @@ import { projects } from '../data/projects';
 
   .source {
     position: relative;
+    z-index: 3;
     margin: var(--space-4) 0 0;
     font-size: var(--step--1);
   }
