@@ -1,0 +1,128 @@
+---
+// How Kyle builds with AI coding agents, plus the development principles every project
+// follows. The principles come from github.com/kyle-pace/principles at build time
+// (src/lib/principles.ts), so this page always matches what the agents read.
+import Base from '../layouts/Base.astro';
+import { getPrinciples, REPO_URL } from '../lib/principles';
+
+export const prerender = true;
+
+const { html: principles } = await getPrinciples();
+---
+
+<Base
+  title="How I build"
+  description="How a product manager ships apps and sites with AI coding agents, and the principles every project follows."
+  image="/og-how-i-build.png"
+  imageAlt="How I build: a product manager who ships software, with AI agents and a shared set of principles."
+>
+  <article class="prose">
+    <header>
+      <p class="eyebrow">How I build</p>
+      <h1>A product manager who ships software.</h1>
+      <p class="lede">
+        I’m Director of Product at <a href="https://www.localpublic.tv/">Local Public</a>. On nights and weekends I
+        build apps and sites with AI coding agents, including Henwood, Seattle Grocery Deals and the experiments on this
+        site. I don’t write the code by hand. This page is how I make that work, and the principles every project
+        follows.
+      </p>
+    </header>
+
+    <h2>Not quite a developer, not just a PM</h2>
+    <p>
+      I came to tech from restaurants, by way of a UX bootcamp, then project management, then product. I’m not a
+      developer by training. But I really am building apps now, and that’s an odd place to be.
+    </p>
+    <p>
+      The way I make sense of it: I run my projects the way I’d run a product team. Coding agents moved the hard part.
+      Typing code used to be the scarce skill. Now it’s deciding what to build, writing a clear brief, setting
+      constraints, judging what comes back and saying “no, not like that.” That’s work I already do every day.
+    </p>
+
+    <h2>How a project runs</h2>
+    <ol class="steps">
+      <li>
+        <strong>Decide what it’s for.</strong> Every project starts with a short brief: who it’s for, what it should do
+        and what it shouldn’t. Plans and decisions live in Confluence, so they outlast any one conversation with an agent.
+      </li>
+      <li>
+        <strong>Give it its own repo.</strong> One project, one repo, one deploy. Small pieces are easier to reason
+        about, and easier to throw away.
+      </li>
+      <li>
+        <strong>Set the rules once.</strong> The principles below live in <a href={REPO_URL}>a GitHub repo</a>{' '}
+        and sync into every project as an <code>AGENTS.md</code> file, the shared
+        format most coding agents read. Whichever agent I use, it starts from the same standards.
+      </li>
+      <li>
+        <strong>Brief outcomes, not code.</strong> I describe what I want and the constraints around it. The agent does
+        the building.
+      </li>
+      <li>
+        <strong>Review everything.</strong> AI doesn’t build a track record with me. Every session starts fresh, and it
+        sounds just as sure of itself when it’s wrong. So I don’t delegate the way I would to a teammate. I review every
+        result, ask it to explain choices I don’t follow, and try things myself before they ship. I’m less of a manager
+        and more of an editor.
+      </li>
+      <li>
+        <strong>Let checks catch what I miss.</strong> Every build has to pass. An automated check fails it if a page
+        loads anything from a server I haven’t approved, and the agents run an accessibility check on every change.
+      </li>
+      <li>
+        <strong>Ship small.</strong> Pushing to main deploys to Cloudflare. Changes go out in small pieces, so I can
+        actually check them.
+      </li>
+    </ol>
+
+    <h2>What I’m still learning</h2>
+    <p>
+      The gap isn’t syntax. It’s judging the output, because when I direct agents, I’m the only reviewer. So I keep
+      working on understanding code well enough to judge it, and on data, which matters most for my day job right now.
+    </p>
+
+    <h2 id="principles">The principles</h2>
+    <p>
+      These are written for the agents, which is why they talk about me in the third person. They’re pulled from <a href={REPO_URL}>github.com/kyle-pace/principles</a>{' '}
+      each time this site builds, so this page always matches
+      what the agents see.
+    </p>
+    <div class="principles" set:html={principles} />
+  </article>
+</Base>
+
+<style>
+  article {
+    margin-inline: auto;
+  }
+
+  .lede {
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+  }
+
+  .steps li + li {
+    margin-top: var(--space-3);
+  }
+
+  .principles {
+    margin-top: var(--space-6);
+    padding: var(--space-6) var(--space-8);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .principles :global(h3) {
+    margin-top: var(--space-8);
+  }
+
+  .principles :global(h3:first-child) {
+    margin-top: 0;
+  }
+
+  @media (max-width: 40rem) {
+    .principles {
+      padding: var(--space-4);
+    }
+  }
+</style>
