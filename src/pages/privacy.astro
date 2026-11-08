@@ -1,8 +1,8 @@
 ---
-import Base from '../layouts/Base.astro';
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
 ---
 
-<Base title="Privacy" description="What kylepace.dev measures, and how to turn it off.">
+<DevLayout title="Privacy" description="What kylepace.dev measures, and how to turn it off.">
   <article class="prose">
     <h1>Privacy</h1>
     <p>
@@ -29,10 +29,10 @@ import Base from '../layouts/Base.astro';
       <button type="button" id="optout-toggle" hidden></button>
     </div>
   </article>
-</Base>
+</DevLayout>
 
 <script>
-  import { isOptedOut, setOptOut } from '../lib/analytics';
+  import { isOptedOut, setOptOut } from 'kp-design/analytics';
 
   const status = document.getElementById('optout-status')!;
   const button = document.getElementById('optout-toggle') as HTMLButtonElement;

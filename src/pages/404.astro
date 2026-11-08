@@ -1,5 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
 
 // Where most lost visitors were probably headed.
 const routes = [
@@ -8,7 +8,7 @@ const routes = [
 ];
 ---
 
-<Base title="Not found" accent="pink">
+<DevLayout title="Not found" accent="pink">
   <article class="lost">
     <svg class="compass" viewBox="-60 -60 120 120" aria-hidden="true">
       <circle class="dial" r="54" />
@@ -34,7 +34,7 @@ const routes = [
       }
     </ul>
   </article>
-</Base>
+</DevLayout>
 
 <script>
   // The page's one playful moment: the needle points at your pointer, like it's trying

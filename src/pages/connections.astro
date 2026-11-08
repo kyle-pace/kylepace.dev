@@ -2,7 +2,7 @@
 // Every outside host Kyle's sites are allowed to talk to, read from each project's
 // .agents/allowed-hosts.txt (src/lib/connections.ts). Rendered on Cloudflare per
 // request, with the lists cached for 15 minutes, so it never waits on a redeploy.
-import Base from '../layouts/Base.astro';
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
 import { getConnections } from '../lib/connections';
 import { connectionSources } from '../data/connections';
 
@@ -17,7 +17,7 @@ const formatDate = (iso: string) =>
 const principle = 'https://kylepace.dev/how-i-build/#self-host-everything-approve-outside-hosts-one-at-a-time';
 ---
 
-<Base
+<DevLayout
   title="What these sites connect to"
   description="Every outside service Kyle's sites and experiments load from, what each one is for, and when he approved it."
   image="/og-connections.png"
@@ -102,7 +102,7 @@ const principle = 'https://kylepace.dev/how-i-build/#self-host-everything-approv
       “For now” means I’ve approved it while I work out whether to bring it in-house.
     </p>
   </article>
-</Base>
+</DevLayout>
 
 <style>
   article {

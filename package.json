@@ -12,12 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.49.2",
-    "@amplitude/plugin-session-replay-browser": "^1.36.7",
     "@astrojs/cloudflare": "^14.4.6",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.4.7",
-    "kp-design": "github:kyle-pace/kp-design#8616a4a5112d6578a8f89931980256aa1e220932",
+    "kp-design": "github:kyle-pace/kp-design#9941f78f8ccb2a1b695ea888e932afd12a353049",
     "marked": "^16.4.2"
   },
   "devDependencies": {

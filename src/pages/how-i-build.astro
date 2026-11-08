@@ -2,7 +2,7 @@
 // How Kyle builds with AI coding agents, plus the development principles every project
 // follows. The principles come from github.com/kyle-pace/principles at build time
 // (src/lib/principles.ts), so this page always matches what the agents read.
-import Base from '../layouts/Base.astro';
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
 import { getPrinciples, REPO_URL } from '../lib/principles';
 
 export const prerender = true;
@@ -10,7 +10,7 @@ export const prerender = true;
 const { html: principles } = await getPrinciples();
 ---
 
-<Base
+<DevLayout
   title="How I build"
   description="How a product manager ships apps and sites with AI coding agents, and the principles every project follows."
   image="/og-how-i-build.png"
@@ -87,7 +87,7 @@ const { html: principles } = await getPrinciples();
     </p>
     <div class="principles" set:html={principles} />
   </article>
-</Base>
+</DevLayout>
 
 <style>
   article {

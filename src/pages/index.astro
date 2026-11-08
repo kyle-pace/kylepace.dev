@@ -1,11 +1,11 @@
 ---
 // The hub: every experiment on kylepace.dev, from src/data/projects.ts.
-import Base from '../layouts/Base.astro';
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
 import { StatusBadge } from 'kp-design';
 import { projects } from '../data/projects';
 ---
 
-<Base>
+<DevLayout>
   <header class="intro">
     <p class="eyebrow">Experiments by Kyle Pace</p>
     <h1>Things I’m building, in public.</h1>
@@ -48,7 +48,7 @@ import { projects } from '../data/projects';
       </div>
     )
   }
-</Base>
+</DevLayout>
 
 <style>
   .intro {
