@@ -99,13 +99,15 @@ Kyle is a product leader building his development skills through this work. Trea
 
 ## This project
 
-kylepace.dev is the hub for Kyle's experiments: the home page that lists them, plus shared pages (privacy, accessibility, 404). It looks and feels like kylepace.net (same tokens, Atkinson type and display settings) with a few differences: a monospace `kylepace.dev` wordmark, a header that links back to kylepace.net, and no blog, notes or drafts.
+kylepace.dev is the hub for Kyle's experiments: the home page that lists them, plus shared pages (privacy, accessibility, 404). It looks and feels like kylepace.net (same tokens, Atkinson type and display settings) with a few differences: a monospace `kylepace.dev` wordmark, a `.net`/`.dev` site switch beside it (kp-design's `sitesFor`) as the way back to kylepace.net, and no blog, notes or drafts.
 
 - **Each experiment is its own repo and Cloudflare Worker**, not part of this one. It's mounted at `kylepace.dev/<slug>/` by a Worker route in its own `wrangler.jsonc`. This repo only lists it in `src/data/projects.ts`. README: "Adding a project".
 - This Worker (`kylepace-dev`) owns the domain as a Custom Domain. A route on a path wins over the Custom Domain, so adding a project never needs a change here beyond the list entry.
 - Every page uses `DevLayout` from [kyle-pace/kp-design](https://github.com/kyle-pace/kp-design), pinned to a commit in package.json: tokens, header, footer, display settings and analytics. The hub's nav and footer links and Amplitude project live in kp-design's `lib/kylepace-dev.ts`, so the experiments share them. Change them there, then update the pin in every kylepace.dev repo.
 - Analytics goes to its own Amplitude project, kylepace.dev (902556), separate from kylepace.net's, set in kp-design's `lib/kylepace-dev.ts`. It only runs on kylepace.dev, and the experiments send to the same project.
 - Every page is indexed by default. An experiment that shouldn't be sends `X-Robots-Tag: noindex` from its own repo.
+- **Apps** (`/apps/`, from `src/data/apps.ts`) moved here from kylepace.net/apps/ on November 8, 2026; the old address 301s here. Add an app's `caseStudy` link only once that case study is published on kylepace.net.
+- `/projects.json` publishes the project list (`src/pages/projects.json.ts`). kylepace.net reads it at build time for its home page's Labs section, so keep its fields stable.
 - Share cards live in `design/og-*.html` and render to `public/og-*.png` (see the share-card skill).
 - Each project card on the home page shows a screenshot of the experiment's main view, from `src/assets/projects/<slug>.png`. `scripts/screenshot-projects.py` takes them from the live site in dark mode; rerun it when a project is added or its look changes, and keep each project's `imageAlt` accurate.
 - Run `npm run build` before pushing; it must pass. Deploys run on Cloudflare Workers Builds when `main` changes.

@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* Share card for /apps/ (public/og-apps.png). Render at 1200x630 (share-card skill).
+   Colors are the dark-theme tokens from kp-design; the two app icons come from public/apps/. */
+@font-face{font-family:A;src:url("../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2")}
+@font-face{font-family:A;font-weight:700;src:url("../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-700-normal.woff2")}
+@font-face{font-family:M;src:url("../node_modules/@fontsource/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-400-normal.woff2")}
+html,body{margin:0}
+body{width:1200px;height:630px;background:#141317;font-family:A;overflow:hidden;position:relative;color:#f3efe8}
+.glow{position:absolute;inset:-200px auto auto -200px;width:900px;height:600px;background:radial-gradient(ellipse at center,rgba(169,201,140,.22),transparent 65%)}
+.card{position:relative;box-sizing:border-box;width:1200px;height:630px;padding:80px 88px;display:flex;flex-direction:column;justify-content:space-between}
+.mark{font-family:M;font-size:44px;color:#f3efe8}.mark b{font-weight:400;color:#b9a0ff}
+h1{margin:0;font-size:96px;line-height:1.02;letter-spacing:-0.02em;font-weight:700}
+.sub{margin:24px 0 0;font-size:36px;color:#aaa5b2;max-width:760px}
+.names{font-size:34px;color:#aaa5b2}.names b{color:#f3efe8;font-weight:700}
+.icons{position:absolute;right:88px;top:80px;display:flex;flex-direction:column;gap:28px}
+.icon{width:150px;height:150px;border-radius:40px;display:grid;place-items:center}
+.icon img{width:72%}
+</style></head><body>
+<div class="glow"></div>
+<div class="icons">
+  <div class="icon" style="background:#345a78"><img src="../public/apps/seattle-grocery-deals.svg" alt=""></div>
+  <div class="icon" style="background:#a9c98c"><img src="../public/apps/henwood.svg" alt=""></div>
+</div>
+<div class="card">
+  <div class="mark">kylepace<b>.dev</b></div>
+  <div>
+    <h1>Apps</h1>
+    <p class="sub">Small, free apps I design and build after hours.</p>
+  </div>
+  <div class="names"><b>Seattle Grocery Deals</b> · <b>Henwood</b></div>
+</div>
+</body></html>

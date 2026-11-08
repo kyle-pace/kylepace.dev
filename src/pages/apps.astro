@@ -1,0 +1,310 @@
+---
+// Kyle's apps, from src/data/apps.ts. Moved from kylepace.net/apps/ (which redirects here).
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
+import { apps } from '../data/apps';
+
+const statusLabel = { live: 'Live', beta: 'Beta', 'coming-soon': 'Coming soon' } as const;
+---
+
+<DevLayout
+  title="Apps"
+  description="Free apps Kyle Pace designs and builds himself, starting with Seattle Grocery Deals and Henwood."
+  image="/og-apps.png"
+  imageAlt="Apps by Kyle Pace: Seattle Grocery Deals and Henwood, small free apps about food."
+>
+  <header class="intro">
+    <p class="eyebrow">Apps</p>
+    <h1>Things I build after hours.</h1>
+    <p class="lede prose">
+      Small, free apps I design and build myself. Right now they’re all about food: finding the
+      week’s best grocery deals, and cooking with what you already have.
+    </p>
+  </header>
+
+  <ul class="apps">
+    {
+      apps.map((app) => (
+        <li class="app reveal" data-accent={app.accent} id={app.id}>
+          <div class="icon" aria-hidden="true">
+            {app.icon ? <img src={app.icon} alt="" width="96" height="96" /> : <span>{app.name[0]}</span>}
+          </div>
+          <div class="body">
+            <h2>{app.name}</h2>
+            <p class="tagline">{app.tagline}</p>
+            <p>{app.summary}</p>
+            <ul class="platforms" aria-label={`Where to get ${app.name}`}>
+              {app.platforms.map((platform) => (
+                <li class:list={['platform', platform.status, platform.store && 'store']}>
+                  {platform.store ? (
+                    platform.url && platform.status !== 'coming-soon' ? (
+                      <a class="badge" href={platform.url}>
+                        <img src="/badges/app-store.svg" alt={`Download ${app.name} on the App Store`} width="120" height="40" />
+                      </a>
+                    ) : (
+                      <div class="badge">
+                        <img src="/badges/app-store.svg" alt="App Store" width="120" height="40" />
+                        <span class="soon">{statusLabel[platform.status]}</span>
+                      </div>
+                    )
+                  ) : platform.url && platform.status !== 'coming-soon' ? (
+                    <a href={platform.url}>
+                      <span class="dot" aria-hidden="true" />
+                      {platform.name}: {platform.label ?? statusLabel[platform.status]}
+                      <span aria-hidden="true"> ↗</span>
+                    </a>
+                  ) : (
+                    <span>
+                      <span class="dot" aria-hidden="true" />
+                      {platform.name}: {statusLabel[platform.status]}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            {app.caseStudy && (
+              <a class="study" href={app.caseStudy}>
+                Read the case study on kylepace.net <span aria-hidden="true">→</span>
+              </a>
+            )}
+          </div>
+        </li>
+      ))
+    }
+    <li class="app more">
+      <div class="icon" aria-hidden="true"><span>+</span></div>
+      <div class="body">
+        <h2>More on the way</h2>
+        <p>There’s always another idea in the queue. New apps show up here first.</p>
+      </div>
+    </li>
+  </ul>
+</DevLayout>
+
+<style>
+  .intro {
+    padding-bottom: var(--space-8);
+  }
+
+  .intro h1 {
+    max-width: 16ch;
+  }
+
+  .lede {
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+  }
+
+  .apps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr));
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    align-items: start;
+    padding: var(--space-8);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* A soft wash of the app's color behind the card. */
+  .app::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 7rem;
+    background: radial-gradient(ellipse at 15% 0%, color-mix(in oklab, var(--accent), transparent 88%), transparent 70%);
+    pointer-events: none;
+  }
+
+  .icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 1.6rem;
+    background:
+      radial-gradient(circle at 30% 25%, color-mix(in oklab, var(--accent), white 40%), transparent 60%),
+      var(--accent);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.4) inset,
+      0 4px 12px rgb(0 0 0 / 0.12);
+  }
+
+  .icon img {
+    width: 72%;
+    height: auto;
+  }
+
+  .icon span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1;
+    color: color-mix(in oklab, var(--accent), black 55%);
+  }
+
+  .body {
+    position: relative;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--step-2);
+  }
+
+  .tagline {
+    margin: var(--space-1) 0 var(--space-4);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .body p {
+    margin-top: 0;
+  }
+
+  .platforms {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Apple's badge, untouched: at least 40px tall, with clear space around it, never dimmed. */
+  .platform.store {
+    flex-basis: 100%;
+    margin-block: 0.625rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .badge img {
+    display: block;
+    height: 2.5rem;
+    width: auto;
+  }
+
+  .badge .soon {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+
+  .platform:not(.store) > a,
+  .platform:not(.store) > span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    padding: 0 var(--space-4);
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .platform.live > a {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
+  .platform.live .dot {
+    background: var(--accent);
+  }
+
+  .platform.coming-soon > span {
+    color: var(--ink-muted);
+    border-style: dashed;
+  }
+
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: currentColor;
+  }
+
+  .coming-soon .dot {
+    background: transparent;
+    border: 1.5px solid currentColor;
+  }
+
+  .study {
+    display: inline-block;
+    margin: 0;
+    font-size: var(--step--1);
+    font-weight: 600;
+  }
+
+
+  .more {
+    background: transparent;
+    border-style: dashed;
+  }
+
+  .more::before {
+    display: none;
+  }
+
+  .more .icon {
+    background: transparent;
+    border: 2px dashed var(--line);
+    box-shadow: none;
+  }
+
+  .more .icon span {
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 36rem) {
+    .app {
+      grid-template-columns: 1fr;
+      padding: var(--space-6);
+    }
+
+    .icon {
+      width: 4.5rem;
+      height: 4.5rem;
+      border-radius: 1.2rem;
+    }
+
+    .icon span {
+      font-size: 2.25rem;
+    }
+  }
+
+  /* The page's one playful moment: icons hop and tilt when you point at a card. */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .icon {
+      transition:
+        transform var(--duration) var(--ease-out),
+        box-shadow var(--duration) var(--ease-out);
+    }
+
+    .app:not(.more):hover .icon {
+      transform: translateY(-4px) rotate(-6deg) scale(1.04);
+      box-shadow:
+        0 1px 0 rgb(255 255 255 / 0.4) inset,
+        0 12px 24px color-mix(in oklab, var(--accent), transparent 70%);
+    }
+  }
+</style>
