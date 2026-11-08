@@ -41,4 +41,14 @@ export const projects: Project[] = [
     started: 'November 2026',
     repo: 'kyle-pace/world-cuisine',
   },
+  {
+    slug: 'transit',
+    title: 'Washington transit, live',
+    summary:
+      'Every bus, train and ferry in Washington that reports where it is, on one zoomable map with every route and stop. Positions refresh every 15 seconds.',
+    status: 'in-progress',
+    accent: 'sky',
+    started: 'November 2026',
+    repo: 'kyle-pace/wa-transit-map',
+  },
 ];
