@@ -99,7 +99,7 @@ Kyle is a product leader building his development skills through this work. Trea
 
 ## This project
 
-kylepace.dev is the hub for Kyle's experiments: the home page that lists them, plus shared pages (privacy, accessibility, 404). It looks and feels like kylepace.net (same tokens, Atkinson type and display settings) with a few differences: its own nav (Labs, Apps, How I build) and no blog, notes or drafts. The header's name ("Kyle Pace") and `.net`/`.dev` site switch (kp-design's `sitesFor`) sit in the same place on both sites so swapping between them feels like one site.
+kylepace.dev is where Kyle's builds live: a home page with a section for each kind of thing (Apps, Labs, How I build, with more kinds to come), the Apps page, and shared pages (privacy, accessibility, 404). "Labs" are the experiments, each in its own repo. It looks and feels like kylepace.net (same tokens, Atkinson type and display settings) with a few differences: its own nav (Labs, Apps, How I build) and no blog, notes or drafts. The header's name ("Kyle Pace") and `.net`/`.dev` site switch (kp-design's `sitesFor`) sit in the same place on both sites so swapping between them feels like one site.
 
 - **Each experiment is its own repo and Cloudflare Worker**, not part of this one. It's mounted at `kylepace.dev/<slug>/` by a Worker route in its own `wrangler.jsonc`. This repo only lists it in `src/data/projects.ts`. README: "Adding a project".
 - This Worker (`kylepace-dev`) owns the domain as a Custom Domain. A route on a path wins over the Custom Domain, so adding a project never needs a change here beyond the list entry.
