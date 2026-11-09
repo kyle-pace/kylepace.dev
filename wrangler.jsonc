@@ -4,6 +4,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kylepace-dev",
   "compatibility_date": "2026-11-01",
+  // Fetches to kylepace.dev itself (the Connections page reading
+  // /recipe-search/allowed-hosts.txt) go out the public way, so they reach the
+  // project Workers on their routes instead of skipping them.
+  "compatibility_flags": ["global_fetch_strictly_public"],
   "observability": { "enabled": true },
   // The hub owns the whole domain as its origin. Each project's Worker claims its own
   // path with a route (kylepace.dev/<slug>*), and routes win over a Custom Domain on
