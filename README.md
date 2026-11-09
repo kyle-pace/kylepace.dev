@@ -1,6 +1,6 @@
 # kylepace.dev
 
-The home for Kyle Pace's experiments. This repo is the hub: the home page that lists every experiment, plus the shared privacy, accessibility and 404 pages. Each experiment lives in its own repo and deploys its own Cloudflare Worker at `kylepace.dev/<slug>/`.
+The home for Kyle Pace's experiments. This repo is the hub: the home page (a short overview of each section), the Labs page (`/labs/`) that lists every experiment, plus the shared privacy, accessibility and 404 pages. Each experiment lives in its own repo and deploys its own Cloudflare Worker at `kylepace.dev/<slug>/`.
 
 Built with [Astro](https://astro.build) and hosted on Cloudflare Workers. It follows [kyle-pace/principles](https://github.com/kyle-pace/principles), synced into `AGENTS.md`.
 
