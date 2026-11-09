@@ -15,6 +15,13 @@ const others = [
     url: 'https://kylepace.net/',
     listUrl: 'https://kylepace.net/allowed-hosts.txt',
   },
+  // Private repo, so recipe search publishes its own list.
+  {
+    name: 'Recipe search',
+    repo: 'kyle-pace/recipe-search',
+    url: 'https://kylepace.dev/recipe-search/',
+    listUrl: 'https://kylepace.dev/recipe-search/allowed-hosts.txt',
+  },
   // Still at kylepace.net/labs/cuisines/ until it moves here.
   { name: 'Cuisine Explorer', repo: 'kyle-pace/cuisine-explorer', url: 'https://kylepace.net/labs/cuisines/' },
 ];

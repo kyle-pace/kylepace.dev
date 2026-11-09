@@ -65,4 +65,16 @@ export const projects: Project[] = [
     repo: 'kyle-pace/wa-transit-map',
     imageAlt: 'A dark map of the Puget Sound region, crisscrossed by colored transit routes and vehicle dots.',
   },
+  {
+    slug: 'recipe-search',
+    title: 'Recipe search',
+    blurb: 'One search box for the recipe sites I trust.',
+    summary:
+      'One search box across The Woks of Life, Hot Thai Kitchen and Smitten Kitchen, from a small index of my own. Search by dish, or add what you have and see what it makes; every result opens on the creator’s site.',
+    status: 'in-progress',
+    accent: 'mint',
+    started: 'November 2026',
+    repo: 'kyle-pace/recipe-search',
+    imageAlt: 'A recipe search field above a grid of dish photos, each with its cooking time and the site it comes from.',
+  },
 ];

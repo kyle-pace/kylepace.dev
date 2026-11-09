@@ -16,9 +16,15 @@ SLUGS = sys.argv[1:] or re.findall(r"slug: '([^']+)'", (ROOT / "src/data/project
 # The part of each page worth showing. Projects not listed use the first large
 # element below the page intro.
 SELECTORS = {
+    "recipe-search": "#app",
     "skill-tree": "#skill-tree",
     "world-cuisine": ".frame",
     "transit": ".maplibregl-map",
+}
+
+# A state worth showing, for projects that open empty.
+PATHS = {
+    "recipe-search": "?with=ginger,green-onion,tofu",
 }
 
 FIRST_BIG = """() => {
@@ -40,7 +46,7 @@ async def main():
             page = await browser.new_page(
                 viewport={"width": 1280, "height": 900}, color_scheme="dark", reduced_motion="reduce"
             )
-            await page.goto(f"https://kylepace.dev/{slug}/", wait_until="networkidle", timeout=60_000)
+            await page.goto(f"https://kylepace.dev/{slug}/{PATHS.get(slug, '')}", wait_until="networkidle", timeout=60_000)
             selector = SELECTORS.get(slug)
             if not selector:
                 await page.evaluate(FIRST_BIG)
