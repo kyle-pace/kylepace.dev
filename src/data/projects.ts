@@ -39,7 +39,7 @@ export const projects: Project[] = [
     started: 'November 2026',
     repo: 'kyle-pace/skill-tree',
     imageAlt:
-      'A stats card for a Director of Product, a row of career tracks, and branching skill trees for Hospitality, Project to Product and Design.',
+      'Career tracks listed down the left like binder tabs, beside small skill trees drawn on blueprint graph paper and a panel of quests in progress.',
   },
   {
     slug: 'world-cuisine',
@@ -63,7 +63,8 @@ export const projects: Project[] = [
     accent: 'sky',
     started: 'November 2026',
     repo: 'kyle-pace/wa-transit-map',
-    imageAlt: 'A dark map of the Puget Sound region, crisscrossed by colored transit routes and vehicle dots.',
+    imageAlt:
+      'A dark map of Puget Sound crisscrossed by colored routes and vehicle dots, with a green sign reading Washington transit and a list of layers.',
   },
   {
     slug: 'recipe-search',
@@ -75,6 +76,7 @@ export const projects: Project[] = [
     accent: 'mint',
     started: 'November 2026',
     repo: 'kyle-pace/recipe-search',
-    imageAlt: 'A recipe search field above a grid of dish photos, each with its cooking time and the site it comes from.',
+    imageAlt:
+      'The sentence “I have ginger, green onion, tofu”, with each ingredient highlighted, above rows of dish photos and recipe names.',
   },
 ];
