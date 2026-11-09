@@ -169,7 +169,9 @@ const statusLabel = { live: 'Live', beta: 'Beta', 'coming-soon': 'Coming soon' }
     color: var(--ink);
   }
 
+  /* About 70 characters a line, even when a card spans the page between two columns. */
   .body p {
+    max-width: 32em;
     margin-top: 0;
   }
 
