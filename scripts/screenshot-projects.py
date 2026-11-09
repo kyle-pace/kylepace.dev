@@ -24,7 +24,7 @@ SELECTORS = {
 
 # A state worth showing, for projects that open empty.
 PATHS = {
-    "recipe-search": "?with=ginger,green-onion,tofu",
+    "recipe-search": "?with=ginger,tofu&site=woks",
 }
 
 FIRST_BIG = """() => {

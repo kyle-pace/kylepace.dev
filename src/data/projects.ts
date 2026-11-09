@@ -71,12 +71,12 @@ export const projects: Project[] = [
     title: 'Recipe search',
     blurb: 'One search box for the recipe sites I trust.',
     summary:
-      'One search box across The Woks of Life, Hot Thai Kitchen and Smitten Kitchen, from a small index of my own. Search by dish, or add what you have and see what it makes; every result opens on the creator’s site.',
+      'One search box across The Woks of Life, Hot Thai Kitchen, Smitten Kitchen and the YouTube channels of the cooks I learn from, from a small index of my own. Search by dish, by what you have or by creator; every result opens on the creator’s site.',
     status: 'in-progress',
     accent: 'mint',
     started: 'November 2026',
     repo: 'kyle-pace/recipe-search',
     imageAlt:
-      'The sentence “I have ginger, green onion, tofu”, with each ingredient highlighted, above rows of dish photos and recipe names.',
+      'A search box holding “from The Woks of Life”, “ginger” and “tofu” as tags, above rows of dish photos and recipe names.',
   },
 ];
