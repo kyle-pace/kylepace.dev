@@ -19,19 +19,41 @@ const shotFor = (slug: string) => shots[`../assets/projects/${slug}.png`]?.defau
   imageAlt="kylepace.dev: things Kyle Pace is building, in public. Apps, experiments and how he builds them."
 >
   <header class="intro">
-    <p class="eyebrow">Built by Kyle Pace</p>
-    <h1>Things I’m building, in public.</h1>
+    <p class="path" aria-hidden="true"><span class="caret">~/</span>kylepace.dev</p>
+    <h1>Things I’m building, in public.<span class="cursor" aria-hidden="true"></span></h1>
     <p class="lede prose">
       Free apps, playful experiments and whatever I’m making next, plus how I build them. My portfolio, writing and
       case studies are on <a href="https://kylepace.net/">kylepace.net</a>.
     </p>
-    <p class="principles prose">
-      Everything here follows the same <a href="/how-i-build/">development principles</a>: accessibility first,
-      privacy right behind it, and nothing loaded from anyone else’s servers without a good reason.
-    </p>
+
+    <!-- A small terminal: what's on this site, as links, and the principles every project follows. -->
+    <div class="term">
+      <p class="term-bar" aria-hidden="true"><span>zsh</span><span>~/projects</span></p>
+      <div class="term-body">
+        <p class="cmd" aria-hidden="true"><span class="caret">$</span> ls ~/projects</p>
+        <ul class="ls" aria-label="What’s on this site">
+          <li>
+            <a href="#apps"><span class="dir">apps/</span></a>
+            <span class="note">{apps.length} free apps, all about food</span>
+          </li>
+          <li>
+            <a href="#labs"><span class="dir">labs/</span></a>
+            <span class="note">{projects.length} experiments, rough edges included</span>
+          </li>
+          <li>
+            <a href="/how-i-build/"><span class="dir">how-i-build/</span></a>
+            <span class="note">my workflow and the principles below</span>
+          </li>
+        </ul>
+        <p class="cmd" aria-hidden="true"><span class="caret">$</span> cat principles.txt</p>
+        <p class="out">
+          Accessibility first. Privacy right behind it. Nothing loaded from anyone else’s servers without a good reason.
+        </p>
+      </div>
+    </div>
   </header>
 
-  <section class="section" aria-labelledby="apps-heading">
+  <section class="section" id="apps" aria-labelledby="apps-heading">
     <div class="section-head">
       <h2 id="apps-heading">Apps</h2>
       <p>Small, free apps for everyday things. Right now they’re all about food.</p>
@@ -56,7 +78,7 @@ const shotFor = (slug: string) => shots[`../assets/projects/${slug}.png`]?.defau
     <p class="more"><a href="/apps/">All apps <span aria-hidden="true">→</span></a></p>
   </section>
 
-  <section class="section" aria-labelledby="labs-heading">
+  <section class="section" id="labs" aria-labelledby="labs-heading">
     <div class="section-head">
       <h2 id="labs-heading">Labs</h2>
       <p>Experiments I make for fun and keep refining. Expect rough edges, the occasional secret, and changes without notice.</p>
@@ -124,8 +146,95 @@ const shotFor = (slug: string) => shots[`../assets/projects/${slug}.png`]?.defau
     color: var(--ink-muted);
   }
 
-  .principles {
+  /* The top of the page reads like a terminal: a path above the headline, a cursor after it. */
+  .path {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
     color: var(--ink-muted);
+  }
+
+  .caret {
+    color: var(--accent-ink);
+  }
+
+  h1 .cursor {
+    height: 0.8em;
+    width: 0.45em;
+    margin-left: 0.12em;
+    vertical-align: -0.04em;
+  }
+
+  .term {
+    max-width: 44rem;
+    margin-top: var(--space-8);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    overflow: hidden;
+  }
+
+  .term-bar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-muted);
+  }
+
+  .term-body {
+    padding: var(--space-4) var(--space-4) var(--space-2);
+  }
+
+  .term p {
+    margin: 0 0 var(--space-2);
+  }
+
+  .cmd {
+    color: var(--ink);
+  }
+
+  .ls {
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+  }
+
+  .ls li {
+    display: grid;
+    grid-template-columns: minmax(9.5rem, auto) 1fr;
+    gap: 0 var(--space-4);
+    align-items: baseline;
+  }
+
+  .ls a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 600;
+  }
+
+  .note,
+  .out {
+    color: var(--ink-muted);
+  }
+
+  .out {
+    padding-bottom: var(--space-2);
+  }
+
+  @media (max-width: 30rem) {
+    .ls li {
+      grid-template-columns: 1fr;
+      padding-bottom: var(--space-2);
+    }
+
+    .ls a {
+      min-height: 2.25rem;
+    }
   }
 
   /* Each kind of thing gets a section: a heading, a line about it, then its cards. */
@@ -361,10 +470,12 @@ const shotFor = (slug: string) => shots[`../assets/projects/${slug}.png`]?.defau
     background: var(--accent);
   }
 
-  /* The page's one playful moment: the cursor blinks, only when motion is welcome. */
+  /* The page's one playful moment: the cursor blinks, only when motion is welcome, and
+     only four times (about 4.4 seconds). Anything that blinks longer than 5 seconds needs a
+     way to pause it (WCAG 2.2.2), so it settles into a solid block instead. */
   @media (prefers-reduced-motion: no-preference) {
     :root:not([data-motion='reduce']) .cursor {
-      animation: blink 1.1s steps(1) infinite;
+      animation: blink 1.1s steps(1) 4;
     }
 
     @keyframes blink {
