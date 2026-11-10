@@ -8,6 +8,13 @@ import { getPrinciples, REPO_URL } from '../lib/principles';
 export const prerender = true;
 
 const { html: principles } = await getPrinciples();
+
+// Each ### section of the principles becomes its own block, so wide screens can flow
+// them into two columns without splitting a section across columns.
+const principleSections = principles
+  .split(/(?=<h3 )/)
+  .map((chunk) => chunk.trim())
+  .filter(Boolean);
 ---
 
 <DevLayout
@@ -16,9 +23,9 @@ const { html: principles } = await getPrinciples();
   image="/og-how-i-build.png"
   imageAlt="How I build: a product manager who ships software, with AI agents and a shared set of principles."
 >
-  <article class="prose">
-    <header>
-      <p class="eyebrow">How I build</p>
+  <article class="page">
+    <header class="top">
+      <p class="path" aria-hidden="true"><span class="caret">~/</span>how-i-build</p>
       <h1>A product manager who ships software.</h1>
       <p class="lede">
         I’m Director of Product at <a href="https://www.localpublic.tv/">Local Public</a>. On nights and weekends I
@@ -28,7 +35,9 @@ const { html: principles } = await getPrinciples();
       </p>
     </header>
 
-    <h2>Not quite a developer, not just a PM</h2>
+    <section class="row" aria-labelledby="who">
+      <h2 id="who">Not quite a developer, not just a PM</h2>
+      <div class="body">
     <p>
       I came to product by way of UX design and project management. I’m not a developer by training. But I really am building apps now, and that’s an odd place to be.
     </p>
@@ -37,8 +46,11 @@ const { html: principles } = await getPrinciples();
       Typing code used to be the scarce skill. Now it’s deciding what to build, writing a clear brief, setting
       constraints, judging what comes back and saying “no, not like that.” That’s work I already do every day.
     </p>
+      </div>
+    </section>
 
-    <h2>How a project runs</h2>
+    <section class="row" aria-labelledby="how">
+      <h2 id="how">How a project runs</h2>
     <ol class="steps">
       <li>
         <strong>Decide what it’s for.</strong> Every project starts with a short brief: who it’s for, what it should do
@@ -72,35 +84,110 @@ const { html: principles } = await getPrinciples();
         actually check them.
       </li>
     </ol>
+    </section>
 
-    <h2>What I’m still learning</h2>
+    <section class="row" aria-labelledby="learning">
+      <h2 id="learning">What I’m still learning</h2>
+      <div class="body">
     <p>
       The gap isn’t syntax. It’s judging the output, because when I direct agents, I’m the only reviewer. So I keep
       working on understanding code well enough to judge it, and on data, which matters most for my day job right now.
     </p>
+      </div>
+    </section>
 
-    <h2 id="principles">The principles</h2>
+    <section class="row" aria-labelledby="principles">
+      <h2 id="principles">The principles</h2>
+      <div class="body">
     <p>
       These are written for the agents, which is why they talk about me in the third person. They’re pulled from <a href={REPO_URL}>github.com/kyle-pace/principles</a>{' '}
       each time this site builds, so this page always matches
       what the agents see.
     </p>
-    <div class="principles" set:html={principles} />
+      </div>
+      <div class="principles">
+        {principleSections.map((section) => <section class="principle" set:html={section} />)}
+      </div>
+    </section>
   </article>
 </DevLayout>
 
 <style>
-  article {
-    margin-inline: auto;
+  /* The page lines up with the header. Text stays at a readable width (--measure);
+     wide screens use the extra room for a heading column, two-up steps and two
+     columns of principles instead of longer lines. */
+  .top {
+    max-width: 52rem;
+  }
+
+  .path {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  .caret {
+    color: var(--accent-ink);
+  }
+
+  h1 {
+    max-width: 16ch;
   }
 
   .lede {
+    max-width: var(--measure);
     font-size: var(--step-1);
     color: var(--ink-muted);
   }
 
-  .steps li + li {
-    margin-top: var(--space-3);
+  .row {
+    margin-top: var(--space-16);
+  }
+
+  .row h2 {
+    margin-top: 0;
+  }
+
+  .body {
+    max-width: var(--measure);
+  }
+
+  .body > * + * {
+    margin-top: var(--space-4);
+  }
+
+  .body p:first-child {
+    margin-top: 0;
+  }
+
+  /* Steps: a numbered list, the number large and in the accent color. */
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-6) var(--space-12);
+  }
+
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.5rem;
+    max-width: var(--measure);
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -0.2em;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    line-height: 1.2;
+    color: var(--accent-ink);
   }
 
   .principles {
@@ -111,17 +198,54 @@ const { html: principles } = await getPrinciples();
     border-radius: var(--radius);
   }
 
-  .principles :global(h3) {
-    margin-top: var(--space-8);
+  .principle {
+    break-inside: avoid;
+    padding-bottom: var(--space-8);
   }
 
-  .principles :global(h3:first-child) {
+  .principle :global(h3) {
     margin-top: 0;
+  }
+
+  .principle :global(ul) {
+    padding-left: 1.25rem;
+  }
+
+  .principle :global(li + li) {
+    margin-top: var(--space-2);
   }
 
   @media (max-width: 40rem) {
     .principles {
       padding: var(--space-4);
+    }
+  }
+
+  /* Wide screens: headings in a left column that stays in view while you read. */
+  @media (min-width: 64rem) {
+    .row {
+      display: grid;
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: 0 var(--space-12);
+      align-items: start;
+    }
+
+    .row h2 {
+      position: sticky;
+      top: var(--space-8);
+      font-size: var(--step-1);
+    }
+
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* The principles take the full width, in two columns. */
+    .principles {
+      grid-column: 1 / -1;
+      columns: 2;
+      column-gap: var(--space-12);
+      padding: var(--space-8) var(--space-12);
     }
   }
 </style>
