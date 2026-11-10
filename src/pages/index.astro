@@ -1,10 +1,48 @@
 ---
-// The kylepace.dev home page: an overview of everything Kyle builds, with a short preview
-// of each kind of thing. The full lists have their own pages: /apps/ (src/data/apps.ts)
-// and /labs/ (src/data/projects.ts). A new kind of thing gets its own section here.
+// The kylepace.dev home page. The top shows the work itself: a shelf with a screenshot of
+// every app and lab, then a short ship log of what changed lately. The full lists have their
+// own pages: /apps/ (src/data/apps.ts) and /labs/ (src/data/projects.ts). The log is kept by
+// hand in src/data/log.ts.
 import DevLayout from 'kp-design/layouts/DevLayout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { projects } from '../data/projects';
 import { apps } from '../data/apps';
+import { log } from '../data/log';
+
+// Screenshots, made by scripts/screenshot-projects.py.
+const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/{projects,apps}/*.png', { eager: true });
+const shot = (path: string) => shots[`../assets/${path}.png`]?.default;
+
+// Apps first, then labs.
+const shelf = [
+  ...apps.map((a) => ({
+    kind: 'app',
+    title: a.name,
+    href: `/apps/#${a.id}`,
+    blurb: a.tagline,
+    accent: a.accent,
+    image: shot(`apps/${a.id}`),
+    imageAlt: a.imageAlt ?? '',
+  })),
+  ...projects.map((p) => ({
+    kind: 'lab',
+    title: p.title,
+    href: `/${p.slug}/`,
+    blurb: p.blurb ?? p.summary,
+    accent: p.accent,
+    image: shot(`projects/${p.slug}`),
+    imageAlt: p.imageAlt ?? '',
+  })),
+];
+
+const recent = log.slice(0, 5);
+const shortDate = (d: string) =>
+  new Date(`${d}T12:00:00Z`)
+    .toLocaleDateString('en-US', { month: 'short', day: '2-digit', timeZone: 'UTC' })
+    .toLowerCase();
+const longDate = (d: string) =>
+  new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 
 <DevLayout
@@ -15,87 +53,81 @@ import { apps } from '../data/apps';
     <p class="path" aria-hidden="true"><span class="caret">~/</span>kylepace.dev</p>
     <h1>Things I’m building, in public.<span class="cursor" aria-hidden="true"></span></h1>
     <p class="lede prose">
-      Free apps, playful experiments and whatever I’m making next, plus how I build them. My portfolio, writing and
-      case studies are on <a href="https://kylepace.net/">kylepace.net</a>.
+      Free apps and playful experiments, plus how I build them.
+      My portfolio, writing and case studies are on <a href="https://kylepace.net/">kylepace.net</a>.
     </p>
-
-    <!-- A small terminal: what's on this site, as links, and the principles every project follows. -->
-    <div class="term">
-      <p class="term-bar" aria-hidden="true"><span>zsh</span><span>~/projects</span></p>
-      <div class="term-body">
-        <p class="cmd" aria-hidden="true"><span class="caret">$</span> ls ~/projects</p>
-        <ul class="ls" aria-label="What’s on this site">
-          <li>
-            <a href="/apps/"><span class="dir">apps/</span></a>
-            <span class="note">{apps.length} free apps, all about food</span>
-          </li>
-          <li>
-            <a href="/labs/"><span class="dir">labs/</span></a>
-            <span class="note">{projects.length} experiments, rough edges included</span>
-          </li>
-          <li>
-            <a href="/how-i-build/"><span class="dir">how-i-build/</span></a>
-            <span class="note">my workflow and the principles below</span>
-          </li>
-        </ul>
-        <p class="cmd" aria-hidden="true"><span class="caret">$</span> cat principles.txt</p>
-        <p class="out">
-          Accessibility first. Privacy right behind it. Nothing loaded from anyone else’s servers without a good reason.
-        </p>
-      </div>
-    </div>
   </header>
 
-  <section class="section" id="apps" aria-labelledby="apps-heading">
-    <div class="section-head">
-      <h2 id="apps-heading">Apps</h2>
-      <p>Small, free apps for everyday things. Right now they’re all about food.</p>
-    </div>
-    <ul class="apps">
+  <!-- The shelf: every app and lab, screenshot first. -->
+  <section class="shelf-wrap" aria-labelledby="shelf-heading">
+    <h2 id="shelf-heading" class="visually-hidden">Apps and labs</h2>
+    <ul class="shelf">
       {
-        apps.map((app) => (
-          <li class="app" data-accent={app.accent}>
-            <div class="app-icon" aria-hidden="true">
-              {app.icon ? <img src={app.icon} alt="" width="56" height="56" /> : <span>{app.name[0]}</span>}
+        shelf.map((item) => (
+          <li class="item" data-accent={item.accent}>
+            <div class="shot">
+              {item.image ? (
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt}
+                  widths={[400, 700, 1000]}
+                  sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 100vw"
+                  format="webp"
+                  quality={80}
+                />
+              ) : (
+                <span class="shot-empty" aria-hidden="true">
+                  {item.title[0]}
+                </span>
+              )}
             </div>
-            <div>
+            <div class="item-text">
+              <p class="kind">{item.kind}</p>
               <h3>
-                <a href={`/apps/#${app.id}`}>{app.name}</a>
+                <a href={item.href}>{item.title}</a>
               </h3>
-              <p>{app.tagline}</p>
+              <p class="blurb">{item.blurb}</p>
             </div>
           </li>
         ))
       }
     </ul>
-    <p class="more"><a href="/apps/">All apps <span aria-hidden="true">→</span></a></p>
+    <p class="more">
+      <a href="/apps/">All apps <span aria-hidden="true">→</span></a>
+      <a href="/labs/">All labs <span aria-hidden="true">→</span></a>
+    </p>
   </section>
 
-  <section class="section" id="labs" aria-labelledby="labs-heading">
-    <div class="section-head">
-      <h2 id="labs-heading">Labs</h2>
-      <p>Experiments I make for fun and keep refining. Expect rough edges, the occasional secret, and changes without notice.</p>
+  <!-- The ship log: what changed lately, kept by hand in src/data/log.ts. -->
+  <section class="term" aria-labelledby="log-heading">
+    <div class="term-bar">
+      <h2 id="log-heading"><span aria-hidden="true">git log</span><span class="visually-hidden">Recently shipped</span></h2>
+      <span aria-hidden="true">~/projects</span>
     </div>
-    <ul class="labs">
-      {
-        projects.map((p) => (
-          <li class="lab" data-accent={p.accent}>
-            <h3>
-              <a href={`/${p.slug}/`}>{p.title}</a>
-            </h3>
-            <p>{p.blurb ?? p.summary}</p>
-          </li>
-        ))
-      }
-    </ul>
-    <p class="more"><a href="/labs/">All labs <span aria-hidden="true">→</span></a></p>
+    <div class="term-body">
+      <p class="cmd" aria-hidden="true"><span class="caret">$</span> git log --all --oneline</p>
+      <ol class="log">
+        {
+          recent.map((entry) => (
+            <li>
+              <time datetime={entry.date}>
+                <span aria-hidden="true">{shortDate(entry.date)}</span>
+                <span class="visually-hidden">{longDate(entry.date)}:</span>
+              </time>
+              <a href={entry.href}>{entry.project}</a>
+              <span class="msg">{entry.text}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </section>
 
   <section class="section how" aria-labelledby="how-heading">
     <h2 id="how-heading">How I build</h2>
     <p>
       I’m a product manager who ships software with AI coding agents. Here’s how that works, and the principles every
-      project follows.
+      project follows: accessibility first, privacy right behind it.
     </p>
     <p class="more"><a href="/how-i-build/">Read how I build <span aria-hidden="true">→</span></a></p>
   </section>
@@ -130,9 +162,124 @@ import { apps } from '../data/apps';
     vertical-align: -0.04em;
   }
 
+  /* The shelf: a screenshot of every app and lab. Three across on wide screens. */
+  .shelf {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-6) var(--space-4);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .item:hover {
+    border-color: var(--accent);
+  }
+
+  .shot {
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    background: color-mix(in oklab, var(--accent), var(--bg) 70%);
+  }
+
+  .shot img,
+  .shot-empty {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .shot-empty {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-3);
+    color: var(--accent-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion='reduce']) .shot img {
+      transition: transform 200ms cubic-bezier(0.2, 0.7, 0.3, 1);
+    }
+
+    :root:not([data-motion='reduce']) .item:hover .shot img {
+      transform: scale(1.03);
+    }
+  }
+
+  .item-text {
+    padding: var(--space-4) var(--space-4) var(--space-4);
+  }
+
+  .kind {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--accent-ink);
+  }
+
+  .item h3 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--step-1);
+  }
+
+  .item h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .item:hover h3 a {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+
+  /* The name links; its hit area covers the whole card. */
+  .item h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .blurb {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+  }
+
+  .more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: var(--space-6) 0 0;
+    font-weight: 600;
+  }
+
+  .more a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    min-height: 2.75rem;
+  }
+
+  /* The ship log: a small terminal with the latest changes. */
   .term {
-    max-width: 44rem;
-    margin-top: var(--space-8);
+    max-width: 52rem;
+    margin-top: var(--space-12);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-raised);
@@ -144,157 +291,67 @@ import { apps } from '../data/apps';
   .term-bar {
     display: flex;
     justify-content: space-between;
-    margin: 0;
+    align-items: baseline;
     padding: var(--space-2) var(--space-4);
     border-bottom: 1px solid var(--line);
     color: var(--ink-muted);
   }
 
-  .term-body {
-    padding: var(--space-4) var(--space-4) var(--space-2);
+  .term-bar h2 {
+    margin: 0;
+    font: inherit;
+    color: inherit;
   }
 
-  .term p {
-    margin: 0 0 var(--space-2);
+  .term-body {
+    padding: var(--space-4);
   }
 
   .cmd {
+    margin: 0 0 var(--space-3);
     color: var(--ink);
   }
 
-  .ls {
+  .log {
     list-style: none;
-    margin: 0 0 var(--space-4);
+    margin: 0;
     padding: 0;
   }
 
-  .ls li {
+  .log li {
     display: grid;
-    grid-template-columns: minmax(9.5rem, auto) 1fr;
+    grid-template-columns: 4.5rem 9.5rem 1fr;
     gap: 0 var(--space-4);
     align-items: baseline;
+    padding-block: var(--space-1);
   }
 
-  .ls a {
+  .log time,
+  .msg {
+    color: var(--ink-muted);
+  }
+
+  .log a {
     display: inline-flex;
     align-items: center;
-    min-height: 2.75rem;
+    min-height: 1.75rem;
     font-weight: 600;
+    overflow-wrap: anywhere;
   }
 
-  .note,
-  .out {
-    color: var(--ink-muted);
-  }
-
-  .out {
-    padding-bottom: var(--space-2);
-  }
-
-  @media (max-width: 30rem) {
-    .ls li {
-      grid-template-columns: 1fr;
-      padding-bottom: var(--space-2);
+  @media (max-width: 40rem) {
+    .log li {
+      grid-template-columns: auto 1fr;
+      padding-block: var(--space-2);
     }
 
-    .ls a {
-      min-height: 2.25rem;
+    .msg {
+      grid-column: 1 / -1;
     }
   }
 
-  /* Each kind of thing gets a section: a heading, a line about it, then its cards. */
   .section {
     margin-top: var(--space-16);
-  }
-
-  .section-head {
-    margin-bottom: var(--space-6);
-  }
-
-  .section-head h2,
-  .how h2 {
-    margin: 0 0 var(--space-2);
-  }
-
-  .section-head p,
-  .how p:not(.more) {
-    margin: 0;
-    max-width: var(--measure);
-    color: var(--ink-muted);
-  }
-
-  .more {
-    margin: var(--space-6) 0 0;
-    font-weight: 600;
-  }
-
-  /* Apps: a compact row, icon beside name and tagline. The full cards live on /apps/. */
-  .apps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-4);
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
-  }
-
-  .app {
-    position: relative;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-4);
-    align-items: center;
-    padding: var(--space-4) var(--space-6) var(--space-4) var(--space-4);
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-  }
-
-  .app:hover {
-    border-color: var(--accent);
-  }
-
-  .app-icon {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 0.9rem;
-    background: var(--accent);
-  }
-
-  .app-icon img {
-    width: 72%;
-    height: auto;
-  }
-
-  .app-icon span {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--step-2);
-    color: color-mix(in oklab, var(--accent), black 55%);
-  }
-
-  .app h3 {
-    margin: 0 0 var(--space-1);
-    font-size: var(--step-1);
-  }
-
-  .app h3 a {
-    color: var(--ink);
-  }
-
-  /* The name links; its hit area covers the whole card. */
-  .app h3 a::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .app p {
-    margin: 0;
-    color: var(--ink-muted);
-    font-size: var(--step--1);
   }
 
   .how {
@@ -303,49 +360,14 @@ import { apps } from '../data/apps';
     border-radius: var(--radius);
   }
 
-  /* Labs: a compact list, one line each. The full cards with screenshots live on /labs/. */
-  .labs {
-    list-style: none;
+  .how h2 {
+    margin: 0 0 var(--space-2);
+  }
+
+  .how p:not(.more) {
     margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-4);
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
-  }
-
-  .lab {
-    position: relative;
-    padding: var(--space-4) var(--space-6);
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-    border-left: 4px solid var(--accent);
-    border-radius: var(--radius);
-  }
-
-  .lab:hover {
-    border-color: var(--accent);
-  }
-
-  .lab h3 {
-    margin: 0 0 var(--space-1);
-    font-size: var(--step-1);
-  }
-
-  .lab h3 a {
-    color: var(--ink);
-  }
-
-  /* The name links; its hit area covers the whole card. */
-  .lab h3 a::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .lab p {
-    margin: 0;
+    max-width: var(--measure);
     color: var(--ink-muted);
-    font-size: var(--step--1);
   }
 
   .cursor {

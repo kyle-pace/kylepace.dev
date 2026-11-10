@@ -18,6 +18,9 @@ npm run preview   # builds, then runs it the way Cloudflare will
 | What | Where |
 | --- | --- |
 | The list of experiments | `src/data/projects.ts` |
+| The list of apps | `src/data/apps.ts` |
+| Screenshots on the home page shelf and /labs/ | `src/assets/projects/<slug>.png` and `src/assets/apps/<id>.png`, made by `scripts/screenshot-projects.py` |
+| The ship log on the home page | `src/data/log.ts`, kept by hand, newest first (the home page shows five) |
 | Page shell: colors, type, header, footer, display settings, analytics | `DevLayout` from [kp-design](https://github.com/kyle-pace/kp-design), pinned in `package.json`; the shared links are in its `lib/kylepace-dev.ts` |
 | Share cards | `design/og-*.html`, rendered to `public/og-*.png` at 1200×630 |
 | Search and crawler rules | `public/robots.txt`, `public/_headers` |

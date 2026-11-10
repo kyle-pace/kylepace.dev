@@ -1,9 +1,10 @@
 """Takes a fresh screenshot of each experiment's main view (the tree, the globe,
-the map) for the cards on the kylepace.dev home page. Saves 16:10 images to
-src/assets/projects/<slug>.png; Astro turns them into small WebP files at build.
+the map), and of each app's site, for the cards on the home page and /labs/.
+Saves 16:10 images to src/assets/projects/<slug>.png and src/assets/apps/<id>.png;
+Astro turns them into small WebP files at build.
 
-Usage: CHROME=/path/to/chrome python3 scripts/screenshot-projects.py [slug ...]
-Needs Playwright for Python. Run it again whenever an experiment's look changes.
+Usage: CHROME=/path/to/chrome python3 scripts/screenshot-projects.py [slug-or-app-id ...]
+Needs Playwright for Python. Run it again whenever an experiment's or app's look changes.
 """
 import asyncio, os, re, sys
 from pathlib import Path
@@ -11,7 +12,16 @@ from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "src/assets/projects"
-SLUGS = sys.argv[1:] or re.findall(r"slug: '([^']+)'", (ROOT / "src/data/projects.ts").read_text())
+APPS_OUT = ROOT / "src/assets/apps"
+
+# Apps live on their own sites. Each shot is the top of the page, as a visitor first sees it.
+APPS = {
+    "seattle-grocery-deals": "https://seattlegrocery.deals/",
+    "henwood": "https://henwood.app/",
+}
+
+ALL = re.findall(r"slug: '([^']+)'", (ROOT / "src/data/projects.ts").read_text()) + list(APPS)
+SLUGS = sys.argv[1:] or ALL
 
 # The part of each page worth showing. Projects not listed use the first large
 # element below the page intro.
@@ -36,6 +46,7 @@ FIRST_BIG = """() => {
 
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
+    APPS_OUT.mkdir(parents=True, exist_ok=True)
     async with async_playwright() as p:
         browser = await p.chromium.launch(
             executable_path=os.environ.get("CHROME") or None,
@@ -46,7 +57,17 @@ async def main():
             page = await browser.new_page(
                 viewport={"width": 1280, "height": 900}, color_scheme="dark", reduced_motion="reduce"
             )
-            await page.goto(f"https://kylepace.dev/{slug}/{PATHS.get(slug, '')}", wait_until="networkidle", timeout=60_000)
+            url = APPS.get(slug) or f"https://kylepace.dev/{slug}/{PATHS.get(slug, '')}"
+            await page.goto(url, wait_until="networkidle", timeout=60_000)
+            if slug in APPS:
+                await page.evaluate("""() => document.querySelectorAll('body *').forEach(e => {
+                  if (getComputedStyle(e).position === 'fixed') e.style.visibility = 'hidden';
+                })""")
+                await page.wait_for_timeout(2000)
+                await page.screenshot(path=str(APPS_OUT / f"{slug}.png"), clip={"x": 0, "y": 0, "width": 1280, "height": 800})
+                print("saved", slug)
+                await page.close()
+                continue
             selector = SELECTORS.get(slug)
             if not selector:
                 await page.evaluate(FIRST_BIG)
