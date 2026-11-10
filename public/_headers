@@ -1,2 +1,15 @@
 # Cloudflare static asset headers for the hub's own pages. Each project sets its own
 # headers in its own repo (an experiment that shouldn't be indexed sends X-Robots-Tag: noindex).
+
+# Security headers on every response:
+# - Strict-Transport-Security: browsers only ever use HTTPS for this site.
+# - X-Content-Type-Options: browsers don't guess a file's type.
+# - Referrer-Policy: other sites learn only the domain a visitor came from, not the page.
+# - X-Frame-Options: other sites can't embed these pages in a frame.
+# - Permissions-Policy: no page here can use the camera, microphone or location.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

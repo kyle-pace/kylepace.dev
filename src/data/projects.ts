@@ -50,7 +50,8 @@ export const projects: Project[] = [
     status: 'in-progress',
     accent: 'tangerine',
     started: 'November 2026',
-    repo: 'kyle-pace/world-cuisine',
+    // The repo kept its first name when the experiment was renamed World cuisine.
+    repo: 'kyle-pace/cuisine-explorer',
     imageAlt: 'A globe turned to East Asia and the Pacific, beside a search box and a list of nearby cuisines.',
   },
   {
