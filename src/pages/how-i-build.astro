@@ -9,8 +9,7 @@ export const prerender = true;
 
 const { html: principles } = await getPrinciples();
 
-// Each ### section of the principles becomes its own block, so wide screens can flow
-// them into two columns without splitting a section across columns.
+// Each ### section of the principles becomes its own block, with a rule between them.
 const principleSections = principles
   .split(/(?=<h3 )/)
   .map((chunk) => chunk.trim())
@@ -113,9 +112,8 @@ const principleSections = principles
 </DevLayout>
 
 <style>
-  /* The page lines up with the header. Text stays at a readable width (--measure);
-     wide screens use the extra room for a heading column, two-up steps and two
-     columns of principles instead of longer lines. */
+  /* The page lines up with the header. Text stays in one readable column (--measure);
+     wide screens use the extra room for a heading column beside it. */
   .top {
     max-width: 52rem;
   }
@@ -198,9 +196,11 @@ const principleSections = principles
     border-radius: var(--radius);
   }
 
-  .principle {
-    break-inside: avoid;
-    padding-bottom: var(--space-8);
+  /* Each principle is its own block, with a rule between them. */
+  .principle + .principle {
+    margin-top: var(--space-8);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--line);
   }
 
   .principle :global(h3) {
@@ -236,16 +236,10 @@ const principleSections = principles
       font-size: var(--step-1);
     }
 
-    .steps {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    /* The principles take the full width, in two columns. */
+    /* The principles sit in the text column, like everything else: one column to read. */
     .principles {
-      grid-column: 1 / -1;
-      columns: 2;
-      column-gap: var(--space-12);
-      padding: var(--space-8) var(--space-12);
+      grid-column: 2;
+      max-width: 46rem;
     }
   }
 </style>
