@@ -1,48 +1,47 @@
 ---
 // The kylepace.dev home page. The top shows the work itself: a shelf with a screenshot of
-// every app and lab, then a short ship log of what changed lately. The full lists have their
-// own pages: /apps/ (src/data/apps.ts) and /labs/ (src/data/projects.ts). The log is kept by
-// hand in src/data/log.ts.
+// every app and lab, the one worked on most recently first, then a short ship log of what
+// changed lately. The full lists have their own pages: /apps/ (src/data/apps.ts), /labs/
+// (src/data/projects.ts) and /log/ (src/data/log.ts and src/data/next.ts).
 import DevLayout from 'kp-design/layouts/DevLayout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { projects } from '../data/projects';
 import { apps } from '../data/apps';
-import { log } from '../data/log';
+import { byRecent, entries, shortDate, longDate } from '../lib/log';
 
 // Screenshots, made by scripts/screenshot-projects.py.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/{projects,apps}/*.png', { eager: true });
 const shot = (path: string) => shots[`../assets/${path}.png`]?.default;
 
-// Apps first, then labs.
-const shelf = [
-  ...apps.map((a) => ({
-    kind: 'app',
-    title: a.name,
-    href: `/apps/#${a.id}`,
-    blurb: a.tagline,
-    accent: a.accent,
-    image: shot(`apps/${a.id}`),
-    imageAlt: a.imageAlt ?? '',
-  })),
-  ...projects.map((p) => ({
-    kind: 'lab',
-    title: p.title,
-    href: `/${p.slug}/`,
-    blurb: p.blurb ?? p.summary,
-    accent: p.accent,
-    image: shot(`projects/${p.slug}`),
-    imageAlt: p.imageAlt ?? '',
-  })),
-];
+// Apps and labs together, whatever was worked on most recently first (src/lib/log.ts).
+const shelf = byRecent(
+  [
+    ...apps.map((a) => ({
+      about: a.id,
+      kind: 'app',
+      title: a.name,
+      href: `/apps/#${a.id}`,
+      blurb: a.tagline,
+      accent: a.accent,
+      image: shot(`apps/${a.id}`),
+      imageAlt: a.imageAlt ?? '',
+    })),
+    ...projects.map((p) => ({
+      about: p.slug,
+      kind: 'lab',
+      title: p.title,
+      href: `/${p.slug}/`,
+      blurb: p.blurb ?? p.summary,
+      accent: p.accent,
+      image: shot(`projects/${p.slug}`),
+      imageAlt: p.imageAlt ?? '',
+    })),
+  ],
+  (item) => item.about,
+);
 
-const recent = log.slice(0, 5);
-const shortDate = (d: string) =>
-  new Date(`${d}T12:00:00Z`)
-    .toLocaleDateString('en-US', { month: 'short', day: '2-digit', timeZone: 'UTC' })
-    .toLowerCase();
-const longDate = (d: string) =>
-  new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
+const recent = entries.slice(0, 5);
 ---
 
 <DevLayout
@@ -99,7 +98,7 @@ const longDate = (d: string) =>
     </p>
   </section>
 
-  <!-- The ship log: what changed lately, kept by hand in src/data/log.ts. -->
+  <!-- The ship log: what changed lately, kept by hand in src/data/log.ts. The rest is on /log/. -->
   <section class="term" aria-labelledby="log-heading">
     <div class="term-bar">
       <h2 id="log-heading"><span aria-hidden="true">git log</span><span class="visually-hidden">Recently shipped</span></h2>
@@ -115,7 +114,7 @@ const longDate = (d: string) =>
                 <span aria-hidden="true">{shortDate(entry.date)}</span>
                 <span class="visually-hidden">{longDate(entry.date)}:</span>
               </time>
-              <a href={entry.href}>{entry.project}</a>
+              <a href={entry.href}>{entry.label}</a>
               <span class="msg">{entry.text}</span>
             </li>
           ))
@@ -123,6 +122,9 @@ const longDate = (d: string) =>
       </ol>
     </div>
   </section>
+  <p class="more">
+    <a href="/log/">Full log and what’s next <span aria-hidden="true">→</span></a>
+  </p>
 
   <section class="section how" aria-labelledby="how-heading">
     <h2 id="how-heading">How I build</h2>
@@ -349,6 +351,10 @@ const longDate = (d: string) =>
     .msg {
       grid-column: 1 / -1;
     }
+  }
+
+  .term + .more {
+    margin-top: var(--space-3);
   }
 
   .section {

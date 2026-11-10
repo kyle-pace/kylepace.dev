@@ -1,0 +1,45 @@
+# Keeps the lab I worked on most recently at the top of the home page and /labs/.
+# Every hour, scripts/lab-activity.mjs checks each lab's repo for its newest commit made by
+# a person and writes src/data/activity.json. If that changed, it's committed, and the push
+# redeploys the site through Cloudflare Workers Builds.
+#
+# Public repos need nothing extra. A private lab repo needs a read-only token: a fine-grained
+# personal access token with Contents: Read on it, saved as the LABS_READ_TOKEN secret.
+# Without one, a private lab is ordered by its newest ship log entry instead.
+name: Lab activity
+
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: lab-activity
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Check each lab's newest commit
+        run: node scripts/lab-activity.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.LABS_READ_TOKEN || github.token }}
+      - name: Commit if anything moved
+        run: |
+          if git diff --quiet -- src/data/activity.json; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/activity.json
+          git commit -m 'Update lab activity'
+          git pull --rebase origin main
+          git push origin HEAD:main

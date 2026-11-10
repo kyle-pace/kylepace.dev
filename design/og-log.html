@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* Share card for /log/ (public/og-log.png). Render at 1200x630 (share-card skill).
+   Colors are the dark-theme tokens from kp-design. The lines are a snapshot of the log;
+   the card doesn't need to change every time the log does. */
+@font-face{font-family:A;src:url("../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2")}
+@font-face{font-family:A;font-weight:700;src:url("../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-700-normal.woff2")}
+@font-face{font-family:M;src:url("../node_modules/@fontsource/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-400-normal.woff2")}
+html,body{margin:0}
+body{width:1200px;height:630px;background:#141317;font-family:A;overflow:hidden;position:relative;color:#f3efe8}
+.glow{position:absolute;inset:-220px auto auto -220px;width:900px;height:620px;background:radial-gradient(ellipse at center,rgba(45,212,191,.18),transparent 65%)}
+.card{position:relative;box-sizing:border-box;width:1200px;height:630px;padding:80px 88px;display:flex;flex-direction:column;justify-content:space-between}
+.mark{font-family:M;font-size:44px}.mark b{font-weight:400;color:#b9a0ff}
+h1{margin:0;font-size:104px;line-height:1.02;letter-spacing:-0.02em;font-weight:700}
+.sub{margin:24px 0 0;font-size:34px;line-height:1.3;color:#aaa5b2;max-width:470px}
+.log{position:absolute;right:72px;top:96px;width:520px;font-family:M;font-size:25px;line-height:1.35}
+.row{padding:18px 0 18px 22px;border-left:4px solid var(--c);margin-bottom:22px}
+.row .p{color:var(--c)}
+.row .t{font-family:A;font-weight:700;color:#f3efe8;font-size:28px;margin-top:4px}
+.next{border-left-style:dashed}
+.next .t{color:#aaa5b2;font-weight:400}
+</style></head><body>
+<div class="glow"></div>
+<div class="log">
+  <div class="row next" style="--c:#ffa463"><span class="p">up next</span><div class="t">A game for learning the world’s cuisines.</div></div>
+  <div class="row" style="--c:#5eead4"><span class="p">recipe-search</span><div class="t">One vetted list of recipe sites for all my food projects.</div></div>
+  <div class="row" style="--c:#b9a0ff"><span class="p">skill-tree</span><div class="t">A character-sheet look, on its own page.</div></div>
+</div>
+<div class="card">
+  <div class="mark">kylepace<b>.dev</b></div>
+  <div>
+    <h1>Ship log</h1>
+    <p class="sub">What I shipped lately, and what’s next.</p>
+  </div>
+  <div></div>
+</div>
+</body></html>

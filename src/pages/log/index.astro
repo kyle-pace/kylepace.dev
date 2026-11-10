@@ -1,0 +1,231 @@
+---
+// /log/: the running ship log. What's next at the top (src/data/next.ts), then everything
+// that shipped, newest first, grouped by day (src/data/log.ts). The home page shows the newest
+// five lines; /log/feed.xml is the same log as an RSS feed.
+import DevLayout from 'kp-design/layouts/DevLayout.astro';
+import { entries, upNext, longDate, type ResolvedEntry } from '../../lib/log';
+
+// One group per day, newest first.
+const days: { date: string; items: ResolvedEntry[] }[] = [];
+for (const entry of entries) {
+  const day = days.at(-1);
+  if (day?.date === entry.date) day.items.push(entry);
+  else days.push({ date: entry.date, items: [entry] });
+}
+
+const year = (d: string) => d.slice(0, 4);
+---
+
+<DevLayout
+  title="Ship log"
+  description="What Kyle Pace shipped lately across his apps and labs, and what he’s working on next."
+  image="/og-log.png"
+  imageAlt="Ship log on kylepace.dev: what Kyle Pace shipped lately and what's next."
+>
+  <link slot="head" rel="alternate" type="application/rss+xml" title="kylepace.dev ship log" href="/log/feed.xml" />
+
+  <header class="intro">
+    <p class="path" aria-hidden="true"><span class="caret">~/</span>log</p>
+    <h1>Ship log</h1>
+    <p class="lede prose">
+      A running log of what I’ve changed across my <a href="/apps/">apps</a> and <a href="/labs/">labs</a>, newest
+      first, and what I’m working on next. Follow along with the <a href="/log/feed.xml">RSS feed</a>.
+    </p>
+  </header>
+
+  {
+    upNext.length > 0 && (
+      <section class="next" aria-labelledby="next-heading">
+        <h2 id="next-heading">Up next</h2>
+        <ul>
+          {upNext.map((item) => (
+            <li data-accent={item.accent}>
+              <a class="proj" href={item.href}>
+                {item.label}
+              </a>
+              <span>{item.text}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class="shipped" aria-labelledby="shipped-heading">
+    <h2 id="shipped-heading" class="visually-hidden">Shipped</h2>
+    {
+      days.map((day, i) => (
+        <section class="day" aria-labelledby={`day-${day.date}`}>
+          <h3 id={`day-${day.date}`}>
+            <time datetime={day.date}>
+              {longDate(day.date)}
+              {(i === 0 || year(days[i - 1].date) !== year(day.date)) && <span class="year">{year(day.date)}</span>}
+            </time>
+          </h3>
+          <ul class="entries">
+            {day.items.map((entry) => (
+              <li class="entry" id={entry.id} data-accent={entry.accent}>
+                <a class="proj" href={entry.href}>
+                  {entry.label}
+                  <span class="visually-hidden">: </span>
+                </a>
+                <p class="text">{entry.text}</p>
+                {entry.notes?.map((note) => (
+                  <p class="note">{note}</p>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </section>
+</DevLayout>
+
+<style>
+  .intro {
+    padding-bottom: var(--space-8);
+  }
+
+  .intro h1 {
+    margin-bottom: var(--space-4);
+  }
+
+  .path {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  .caret {
+    color: var(--accent-ink);
+  }
+
+  .lede {
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+  }
+
+  /* The project's name, in the same monospace as the home page's terminal, in its own color. */
+  .proj {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--accent-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* Up next: dashed, like the outline of something not built yet. */
+  .next {
+    max-width: 52rem;
+    padding: var(--space-6) var(--space-8);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+
+  .next h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--step-1);
+  }
+
+  .next ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .next li {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: var(--space-1) var(--space-4);
+    align-items: baseline;
+  }
+
+  .next li span {
+    color: var(--ink-muted);
+  }
+
+  /* The log: dates down a rail on the left, what shipped on the right. */
+  .shipped {
+    max-width: 52rem;
+    margin-top: var(--space-12);
+  }
+
+  .day {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .day h3 {
+    margin: 0;
+    font-size: var(--step-0);
+  }
+
+  .day time {
+    display: grid;
+    position: sticky;
+    top: var(--space-4);
+  }
+
+  .year {
+    font-weight: 400;
+    color: var(--ink-muted);
+  }
+
+  .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .entry {
+    max-width: var(--measure);
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--accent);
+    scroll-margin-top: var(--space-8);
+  }
+
+  .entry:target {
+    background: color-mix(in oklab, var(--accent), transparent 88%);
+  }
+
+  .text {
+    margin: var(--space-1) 0 0;
+    font-size: var(--step-1);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .note {
+    margin: var(--space-2) 0 0;
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 40rem) {
+    .next {
+      padding: var(--space-6) var(--space-4);
+    }
+
+    .next li,
+    .day {
+      grid-template-columns: 1fr;
+    }
+
+    .day time {
+      position: static;
+      display: block;
+    }
+
+    .year::before {
+      content: ' ';
+    }
+  }
+</style>

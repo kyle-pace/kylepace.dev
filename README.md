@@ -20,7 +20,10 @@ npm run preview   # builds, then runs it the way Cloudflare will
 | The list of experiments | `src/data/projects.ts` |
 | The list of apps | `src/data/apps.ts` |
 | Screenshots on the home page shelf and /labs/ | `src/assets/projects/<slug>.png` and `src/assets/apps/<id>.png`, made by `scripts/screenshot-projects.py` |
-| The ship log on the home page | `src/data/log.ts`, kept by hand, newest first (the home page shows five) |
+| The ship log (home page, `/log/`, `/log/feed.xml`) | `src/data/log.ts`, kept by hand, newest first (the home page shows five) |
+| What I'm working on next (`/log/` and each card on `/labs/`) | `src/data/next.ts`, kept by hand; delete an item when it ships and log it |
+| The order of the shelf and `/labs/` (most recently worked on first) | `src/lib/log.ts`, from each lab's newest log entry and `src/data/activity.json` |
+| When each lab was last worked on | `src/data/activity.json`, written hourly by `.github/workflows/lab-activity.yml` (`scripts/lab-activity.mjs`) |
 | Page shell: colors, type, header, footer, display settings, analytics | `DevLayout` from [kp-design](https://github.com/kyle-pace/kp-design), pinned in `package.json`; the shared links are in its `lib/kylepace-dev.ts` |
 | Share cards | `design/og-*.html`, rendered to `public/og-*.png` at 1200×630 |
 | Search and crawler rules | `public/robots.txt`, `public/_headers` |
@@ -46,7 +49,7 @@ Cloudflare runs a route before a Custom Domain on the same hostname, so an exper
    ]
    ```
 3. **Make it feel like part of the site.** Install [kp-design](https://github.com/kyle-pace/kp-design) and wrap every page in its `DevLayout`, which brings the hub's header, footer, display settings and analytics. Give it its own share card.
-4. **List it.** Add an entry to `src/data/projects.ts` here, with an `imageAlt` describing its screenshot. Once it's live, run `CHROME=/path/to/chrome python3 scripts/screenshot-projects.py <slug>` to make the card image (`src/assets/projects/<slug>.png`). If the shot doesn't land on the interesting part, add a CSS selector for it to `SELECTORS` in that script. Then push.
+4. **List it.** Add an entry to `src/data/projects.ts` here (the hourly lab-activity job picks up its repo from there), with an `imageAlt` describing its screenshot. Once it's live, run `CHROME=/path/to/chrome python3 scripts/screenshot-projects.py <slug>` to make the card image (`src/assets/projects/<slug>.png`). If the shot doesn't land on the interesting part, add a CSS selector for it to `SELECTORS` in that script. Then push.
 5. **Point to it from kylepace.net.** If it used to live at `kylepace.net/labs/<slug>/`, add a 301 there in `public/_redirects`.
 
 An experiment that shouldn't show up in search sends `X-Robots-Tag: noindex` from its own `public/_headers`.
