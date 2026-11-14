@@ -35,7 +35,25 @@ const statusLabel = { live: 'Live', beta: 'Beta', 'coming-soon': 'Coming soon' }
             <ul class="platforms" aria-label={`Where to get ${app.name}`}>
               {app.platforms.map((platform) => (
                 <li class:list={['platform', platform.status, platform.store && 'store']}>
-                  {platform.store ? (
+                  {platform.store === 'testflight' && platform.url ? (
+                    <a class="testflight" href={platform.url}>
+                      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                        <path
+                          d="M21.5 2.5 2.8 9.9l6.3 2.9m12.4-10.3L9.1 12.8m12.4-10.3-5.9 18.3-3.6-6.1m-2.9-1.9v6l2.9-4.1"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      <span>
+                        <span class="small">Join the beta on</span>
+                        <span class="big">TestFlight</span>
+                        <span class="visually-hidden">: {app.name} for {platform.name}</span>
+                      </span>
+                    </a>
+                  ) : platform.store ? (
                     platform.url && platform.status !== 'coming-soon' ? (
                       <a class="badge" href={platform.url}>
                         <img src="/badges/app-store.svg" alt={`Download ${app.name} on the App Store`} width="120" height="40" />
@@ -206,6 +224,46 @@ const statusLabel = { live: 'Live', beta: 'Beta', 'coming-soon': 'Coming soon' }
     font-size: var(--step--1);
     font-weight: 600;
     color: var(--ink-muted);
+  }
+
+  /* Our own TestFlight badge (Apple has none): black in both modes like a store badge, with
+     a gray edge so it holds on a dark page. White on black is 21:1. */
+  .testflight {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    padding: 0.3rem 1rem 0.3rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid #a6a6a6;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    line-height: 1.15;
+  }
+
+  .testflight:hover {
+    background: #1c1c1e;
+    color: #fff;
+  }
+
+  .testflight svg {
+    flex: none;
+  }
+
+  .testflight .small,
+  .testflight .big {
+    display: block;
+  }
+
+  .testflight .small {
+    font-size: 0.6875rem;
+    font-weight: 500;
+  }
+
+  .testflight .big {
+    font-size: 1.125rem;
+    font-weight: 700;
   }
 
   .platform:not(.store) > a,

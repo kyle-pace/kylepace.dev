@@ -27,6 +27,12 @@ export interface LogEntry {
 
 export const log: LogEntry[] = [
   {
+    date: '2026-11-13',
+    about: 'seattle-grocery-deals',
+    text: 'The iPhone and iPad app is in public beta. Anyone can join on TestFlight.',
+    href: 'https://testflight.apple.com/join/NbQ9pXvw',
+  },
+  {
     date: '2026-11-09',
     about: 'recipe-search',
     text: 'Recipe sites now come from one vetted list that all my food projects share.',

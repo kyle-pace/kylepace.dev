@@ -4,7 +4,8 @@
 
   - platforms: each place the app runs. status is live, beta or coming-soon; add url when
     there's somewhere to go. store: 'app-store' shows Apple's official badge, which links
-    once status is live and there's a url.
+    once status is live and there's a url. store: 'testflight' shows our own "Join the beta
+    on TestFlight" badge (Apple has no official one) linking to the public TestFlight url.
   - icon: a square image in public/apps/ (leave it out to show the app's initial).
   - imageAlt: describes the home page screenshot of the app's site (src/assets/apps/<id>.png,
     made by scripts/screenshot-projects.py) for anyone who can't see it.
@@ -23,7 +24,7 @@ export interface App {
   imageAlt?: string;
   /** An accent name from kp-design's tokens.css. */
   accent: string;
-  platforms: { name: string; status: AppStatus; url?: string; label?: string; store?: 'app-store' }[];
+  platforms: { name: string; status: AppStatus; url?: string; label?: string; store?: 'app-store' | 'testflight' }[];
   caseStudy?: string;
 }
 
@@ -40,7 +41,12 @@ export const apps: App[] = [
     accent: 'evening',
     platforms: [
       { name: 'Web', status: 'live', url: 'https://seattlegrocery.deals', label: 'seattlegrocery.deals' },
-      { name: 'iPhone', status: 'coming-soon', store: 'app-store' },
+      {
+        name: 'iPhone and iPad',
+        status: 'beta',
+        url: 'https://testflight.apple.com/join/NbQ9pXvw',
+        store: 'testflight',
+      },
     ],
   },
   {
