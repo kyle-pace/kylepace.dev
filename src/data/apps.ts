@@ -59,6 +59,9 @@ export const apps: App[] = [
     icon: '/apps/henwood.svg',
     imageAlt: 'A round brown hen above the word Henwood in a big serif, with a green Coming soon pill.',
     accent: 'sage',
-    platforms: [{ name: 'iPhone, iPad and Mac', status: 'coming-soon', store: 'app-store' }],
+    platforms: [
+      { name: 'Web', status: 'live', url: 'https://henwood.app', label: 'henwood.app' },
+      { name: 'iPhone, iPad and Mac', status: 'coming-soon', store: 'app-store' },
+    ],
   },
 ];
