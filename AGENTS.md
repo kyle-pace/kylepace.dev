@@ -67,6 +67,7 @@ Use these unless the project's section says otherwise. **Do not add any other th
 - **Web hosting: Cloudflare** (Workers with static assets). GitHub Pages is fine for a simple static site.
 - **Design system for Kyle's websites: [kp-design](https://github.com/kyle-pace/kp-design)**, installed from GitHub and pinned to a commit. It holds the tokens, self-hosted Atkinson, header, footer, display settings and analytics; projects on kylepace.dev use its `DevLayout`. Don't copy these into a project; change them in kp-design. (Apple apps don't use it.)
 - Put each outside service behind its own module (one file talks to Amplitude, one to Firebase), so switching tools means changing one file.
+- CI checks the stack on every push: Amplitude is in every site and app, Firebase Analytics isn't, each Firebase config file is for a bundle ID the app really has, and Firestore rules aren't open. It can't see inside the Amplitude or Firebase consoles, so settings there (APNs keys, API key restrictions, a separate production project) still need a person.
 - Keep running costs near zero: prefer static pages, free tiers and on-device work, and ask before adding anything that bills.
 
 ### Analytics events
@@ -169,7 +170,7 @@ Match the checking to the change. If you're unsure which tier a change is, use t
 - Everything under "Every new page or project ships with".
 - Check it against the performance budgets.
 
-CI runs the check command where a project has one, plus a third-party check that fails if a page loads scripts, styles, fonts or images from a host that isn't allowed. Don't add a host just to get past it: ask Kyle, or for a content image follow the image rule above.
+CI runs the check command where a project has one, the stack check (see "Default stack"), and a third-party check that fails if a page loads scripts, styles, fonts or images from a host that isn't allowed. Don't add a host just to get past it: ask Kyle, or for a content image follow the image rule above.
 
 <!-- END principles -->
 
