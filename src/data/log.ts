@@ -29,10 +29,10 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-14',
     about: 'site',
-    text: 'Three labs now have a page that shows how they work: the transit map, the skill tree and World cuisine.',
+    text: 'Every lab now has an About page that shows how it works: the transit map, the skill tree, World cuisine and Recipe search.',
     notes: [
-      'Each one walks through where its information comes from and the steps it takes to reach your screen, in the lab’s own style. The transit map’s is a line with six stops, the skill tree’s is a five-tier build order, and World cuisine’s is a recipe. Recipe search already had one.',
-      'Find them under About on each lab: kylepace.dev/transit/about/, kylepace.dev/skill-tree/about/ and kylepace.dev/world-cuisine/about/.',
+      'They all use the same sections, in the same order: what it is, how it works step by step, where the data comes from, privacy, and how to get in touch. Each one keeps its lab’s own look: the transit map’s steps run down a transit line, and the skill tree’s sit on graph paper.',
+      'Find them under About on each lab.',
     ],
     href: 'https://kylepace.dev/labs/',
   },
