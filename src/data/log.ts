@@ -27,6 +27,16 @@ export interface LogEntry {
 
 export const log: LogEntry[] = [
   {
+    date: '2026-11-14',
+    about: 'site',
+    text: 'Three labs now have a page that shows how they work: the transit map, the skill tree and World cuisine.',
+    notes: [
+      'Each one walks through where its information comes from and the steps it takes to reach your screen, in the lab’s own style. The transit map’s is a line with six stops, the skill tree’s is a five-tier build order, and World cuisine’s is a recipe. Recipe search already had one.',
+      'Find them under About on each lab: kylepace.dev/transit/about/, kylepace.dev/skill-tree/about/ and kylepace.dev/world-cuisine/about/.',
+    ],
+    href: 'https://kylepace.dev/labs/',
+  },
+  {
     date: '2026-11-13',
     about: 'seattle-grocery-deals',
     text: 'The iPhone and iPad app is in public beta. Anyone can try it free through TestFlight, Apple’s app for testing apps early.',
