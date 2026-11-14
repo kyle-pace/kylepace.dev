@@ -40,19 +40,16 @@ Cloudflare runs a route before a Custom Domain on the same hostname, so an exper
 
 ## Adding a project
 
-1. **Make the repo.** One repo per experiment under `kyle-pace`. Copy `.github/workflows/principles.yml` from [kyle-pace/principles](https://github.com/kyle-pace/principles/tree/main/template) and run its sync once.
-2. **Serve it under its path.** Build it to live at `/<slug>/` (in Astro, set `base: '/<slug>'` and `site: 'https://kylepace.dev'`), and claim the path in its `wrangler.jsonc`:
-   ```jsonc
-   "routes": [
-     { "pattern": "kylepace.dev/<slug>", "zone_name": "kylepace.dev" },
-     { "pattern": "kylepace.dev/<slug>/*", "zone_name": "kylepace.dev" }
-   ]
-   ```
-3. **Make it feel like part of the site.** Install [kp-design](https://github.com/kyle-pace/kp-design) and wrap every page in its `DevLayout`, which brings the hub's header, footer, display settings and analytics. Give it its own share card.
-4. **List it.** Add an entry to `src/data/projects.ts` here (the hourly lab-activity job picks up its repo from there), with an `imageAlt` describing its screenshot. Once it's live, run `CHROME=/path/to/chrome python3 scripts/screenshot-projects.py <slug>` to make the card image (`src/assets/projects/<slug>.png`). If the shot doesn't land on the interesting part, add a CSS selector for it to `SELECTORS` in that script. Then push.
-5. **Point to it from kylepace.net.** If it used to live at `kylepace.net/labs/<slug>/`, add a 301 there in `public/_redirects`.
+The steps live in [`.agents/skills/add-lab/SKILL.md`](.agents/skills/add-lab/SKILL.md), written so a coding agent (or a person) can follow them. In short: the experiment gets its own repo and Worker, claims `kylepace.dev/<slug>/` with a route, uses kp-design's `LabLayout` with its own look, and is listed here in `src/data/projects.ts`.
 
-An experiment that shouldn't show up in search sends `X-Robots-Tag: noindex` from its own `public/_headers`.
+## Checking a change
+
+```sh
+npm run build
+npm run check
+```
+
+`npm run check` runs axe on every page in light and dark, fails if a page scrolls sideways or ships too much JavaScript, and saves screenshots at four widths to `.check/`. CI runs it on every push. See [`.agents/skills/page-check/SKILL.md`](.agents/skills/page-check/SKILL.md).
 
 ## Deploying
 

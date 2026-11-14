@@ -1,4 +1,4 @@
-<!-- BEGIN principles: synced from github.com/kyle-pace/principles. Edit them there; changes made here are overwritten. -->
+<!-- BEGIN principles (web): synced from github.com/kyle-pace/principles. Edit them there; changes made here are overwritten. -->
 
 ## Development principles
 
@@ -22,21 +22,23 @@ Accessibility is designed in from the first commit, not audited in at the end.
 - Use semantic, native elements first (`button`, `a`, `label`, headings in order, landmarks). Add ARIA only when no native element does the job.
 - Everything interactive works with a keyboard, has a visible focus style and has an accessible name. Touch targets are at least 24×24 px; aim for 44×44.
 - Never carry meaning with color alone. Meaningful images get alt text; decorative ones get empty alt.
-- Respect user settings: reduced motion, light/dark preference, text zoom to 200% without breaking layout. On Apple platforms: Dynamic Type, VoiceOver labels and hints, Reduce Motion, Increase Contrast.
-- Motion is short (under 300 ms for interface animation), never `ease-in`, and on the web only runs inside `@media (prefers-reduced-motion: no-preference)`.
+- Respect user settings: reduced motion, light/dark preference, text zoom to 200% without breaking layout.
+- Motion is short (under 300 ms for interface animation) and never `ease-in`.
+- On the web, motion only runs inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Every screen size from day one
 
 Layouts are designed for phones, tablets and big screens from the first commit, not stretched or squeezed in later.
 
-- **Apps** are built for both phone and tablet from day one. On Apple platforms that means one universal iPhone and iPad app that supports iPad multitasking (Split View, Slide Over, Stage Manager) and resizable windows. On iPad, support every orientation. On iPhone, portrait is the default; add landscape only where it helps the app (video, maps, wide charts, a recipe propped up while cooking). Use size classes and adaptive SwiftUI layouts (`NavigationSplitView`, `ViewThatFits`, grids) so iPad gets a layout that uses the space, not a blown-up phone screen.
 - **Web projects** are fully responsive: mobile first, fluid from 320 px wide up to large desktop monitors. No sideways scrolling at 320 px. Cap line length for reading (about 70 characters), and let wider screens add columns instead of stretching text.
-- Prefer fluid layouts (flexbox, grid, `clamp()`, container queries) over many fixed breakpoints. Handle touch, mouse and keyboard on every size, and respect safe areas and notches.
+- Prefer fluid layouts (flexbox, grid, `clamp()`, container queries) over many fixed breakpoints.
+- Handle touch, mouse and keyboard on every size, and respect safe areas and notches.
 
 ### Type
 
 - Atkinson Hyperlegible Next for all text and Atkinson Hyperlegible Mono for code, in every product.
-- Self-host the fonts: on the web use the `@fontsource/atkinson-hyperlegible-next` and `@fontsource/atkinson-hyperlegible-mono` packages; in apps, bundle the font files. Never load fonts from Google Fonts or any other font CDN.
+- Self-host the fonts. Never load them from Google Fonts or any other font CDN.
+- On the web, use the `@fontsource/atkinson-hyperlegible-next` and `@fontsource/atkinson-hyperlegible-mono` packages.
 - Offering a setting to switch to the device's own font is fine.
 
 ### Privacy comes second, and right behind
@@ -46,7 +48,6 @@ Layouts are designed for phones, tablets and big screens from the first commit, 
 - Respect Global Privacy Control and Do Not Track by sending no analytics at all, and give people an opt-out.
 - No cookies for analytics (keep the ID in `localStorage`), so no cookie banner is needed.
 - Analytics only runs on the live production domain, never on localhost or preview builds.
-- In Apple apps, keep personal data on the device or in the user's own iCloud unless a feature truly needs a server.
 - Any project that collects data has a short, plain-language privacy page.
 - Secrets never go in Git. (Browser API keys that are public by design, like Amplitude's, are fine in code.)
 
@@ -54,7 +55,8 @@ Layouts are designed for phones, tablets and big screens from the first commit, 
 
 Use these unless the project's section says otherwise. **Do not add any other third-party service, SDK, script, font or paid tool without asking Kyle first.**
 
-- **Product analytics: Amplitude**, set up the private way (on the web, use `startAnalytics` from kp-design's `kp-design/analytics`, which does all of this):
+- **Product analytics: Amplitude**, set up the private way:
+  - on the web, use `startAnalytics` from kp-design's `kp-design/analytics`, which does all of this
   - autocapture on, IP address tracking off, identity in `localStorage`
   - off under GPC, Do Not Track or the opt-out; only on the live domain
   - Session Replay only if the project wants it: a small sample (about 5%), conservative masking, and its code only loaded for sampled sessions
@@ -64,7 +66,6 @@ Use these unless the project's section says otherwise. **Do not add any other th
   - Firebase Analytics stays off; Amplitude covers analytics.
 - **Web hosting: Cloudflare** (Workers with static assets). GitHub Pages is fine for a simple static site.
 - **Design system for Kyle's websites: [kp-design](https://github.com/kyle-pace/kp-design)**, installed from GitHub and pinned to a commit. It holds the tokens, self-hosted Atkinson, header, footer, display settings and analytics; projects on kylepace.dev use its `DevLayout`. Don't copy these into a project; change them in kp-design. (Apple apps don't use it.)
-- **Apple apps:** native Swift and SwiftUI.
 - Put each outside service behind its own module (one file talks to Amplitude, one to Firebase), so switching tools means changing one file.
 - Keep running costs near zero: prefer static pages, free tiers and on-device work, and ask before adding anything that bills.
 
@@ -75,14 +76,16 @@ Every project uses the same rules, so charts read the same way everywhere.
 - **Event names:** Title Case, past-tense verb first, then the object: "Saved Recipe", "Viewed Deal", "Completed Onboarding". Not "Recipe Saved" and not `save_recipe`. Use the same verb for the same action across projects (Viewed, Opened, Tapped, Added, Removed, Changed, Saved, Completed).
 - **Property names:** lowercase `snake_case` (`deal_id`, `stores_picked`). Keep names and values the same across events and projects when they mean the same thing.
 - Leave Amplitude's own `[Amplitude] …` events alone. Add custom events only for actions that answer a real product question; autocapture covers page views and clicks.
-- **One Amplitude project per product.** kylepace.dev and every experiment on it share the kylepace.dev project, so each experiment's custom events also send `experiment` with the project's slug (`experiment: "skill-tree"`).
+- **One Amplitude project per product.**
+- kylepace.dev and every experiment on it share the kylepace.dev project, so each experiment's custom events also send `experiment` with the project's slug (`experiment: "skill-tree"`).
 - **Tracking plan first:** add each new event to the project's tracking plan in Amplitude, with a description and category, when it ships. Nothing should arrive as "unexpected".
 - **Renaming an event:** rename it in code, then merge the old name into the new one in Amplitude so history stays connected. Don't rename in Amplitude alone.
 - **New product:** create its Amplitude project and add a row for it to the "All projects overview" dashboard. A new experiment on kylepace.dev needs neither: it appears there by page path.
 
 ### Self-host everything; approve outside hosts one at a time
 
-- Serve libraries, fonts and assets from the project itself. Install them from npm and bundle them, or keep a pinned copy in the repo (for example in `vendor/`) with a script that refreshes it. Never load them from a CDN like jsDelivr, unpkg or cdnjs.
+- Serve libraries, fonts and assets from the project itself. Install them from npm and bundle them, or keep a pinned copy in the repo (for example in `vendor/`) with a script that refreshes it.
+- Never load them from a CDN like jsDelivr, unpkg or cdnjs.
 - **Scripts, styles, fonts and APIs** from an outside host need Kyle's OK every time. Approvals are per project and per host. Once he approves, add the host to that project's `.agents/allowed-hosts.txt` with a comment saying what it's for and the date he approved it.
 - **Images** are lighter, because an outside image can only learn that someone visited, not run code. An image host can be added without asking when the image belongs to the content being shown (a recipe site's own photo on a result for its recipe, a book's cover from the library that lists it). Load those images with `referrerpolicy="no-referrer"` and `loading="lazy"`, add the host to `.agents/allowed-hosts.txt` with a comment saying what it's for, and mention the new host to Kyle when you report back. Decorative images, stock photos and anything that looks like tracking still need his OK.
 - All of this applies to hosts that JavaScript calls at runtime too, even though the CI check only sees HTML and CSS. List those in the same file.
@@ -100,6 +103,31 @@ Every project uses the same rules, so charts read the same way everywhere.
 - Colors, type and spacing live in one tokens file. Light and dark mode exist from the start.
 - Copy is plain language, written for the person using it.
 - Don't add "Built with AI" lines or other AI credits to sites or apps unless Kyle asks.
+
+### Correctness
+
+- Anything that reads data from outside the project (a feed, a flyer, an API response, a file someone picks) gets a test that runs it against a saved real sample, plus one broken sample.
+- One bad record never takes down the rest: skip it, log it, and keep going.
+- A scheduled job that fails must fail out loud (a red run), and must never replace good published data with empty or partial data.
+- A bug fix comes with a test that fails without the fix, when the project has tests.
+
+### Performance
+
+Budgets, not goals. If a project needs to go over (a map, a globe, a video player), its section says so and by how much.
+
+- Content pages ship no more than 50 KB of JavaScript (compressed), and read fine without it.
+- No single image over 200 KB. Images are sized to how they're shown, served as AVIF or WebP, given `width` and `height`, and lazy-loaded below the first screen.
+- On a mid-range phone: the main content shows within 2.5 seconds (Largest Contentful Paint) and the layout shifts less than 0.1 (Cumulative Layout Shift). Lighthouse performance is 90 or higher on mobile.
+
+### Shipping
+
+- Small commits, each with a plain sentence saying what changed for the person using it.
+- Websites deploy from `main`. Once the checks for the change's tier pass (see "Before you call it done"), push to `main`; no need to wait for Kyle. Use a branch and pull request when he asks for one, or when you want him to look before it goes live.
+- Never force-push `main`, skip a failing check to get something out, or commit a secret.
+- Changing the principles or kp-design changes every project. Test the change against one real project first, then roll it out.
+- **Ask Kyle first, every time:** anything that costs money; a new outside service, SDK or host (see above); DNS, domain or email changes; deleting data, a repo or a deployed project; making a private repo public or a public one private; publishing something he hasn't linked publicly yet (a draft, a case study, an unannounced app); anything that speaks for him (his résumé, LinkedIn, a post or message in his name).
+- When Kyle has to do a step himself (approve a setting, create a repo, sign in), give him the direct link to the exact page.
+- If you couldn't finish or couldn't check something, say so plainly in your report. Don't describe work as done when a step was skipped.
 
 ### Teach Kyle as you go
 
@@ -119,10 +147,29 @@ Kyle is a product leader building his development skills through this work. Trea
 
 ### Before you call it done
 
+Match the checking to the change. If you're unsure which tier a change is, use the higher one. In your report, say which tier you used and what you ran.
+
+**Tier 1: words and data.** Copy, a link, a value in a data file, a dependency pin, docs.
+
 - The build passes, and so do any tests and linters.
-- Run an accessibility check on what changed (axe on the web, Accessibility Inspector on Apple platforms), fix what it finds, and tab through new UI with the keyboard.
-- Look at it in both light and dark mode at phone, tablet and desktop sizes: on the web at least 320, 768, 1280 and 1920 px wide; for Apple apps on the smallest iPhone, a large iPhone and an iPad in portrait, landscape and Split View.
-- CI runs a third-party check that fails if a page loads scripts, styles, fonts or images from a host that isn't allowed. Don't add a host just to get past it: ask Kyle, or for a content image follow the image rule above.
+- Read the changed text where it shows up in the built output.
+
+**Tier 2: something people see or use changed.** Layout, styles, a component, a new control, new behavior.
+
+- Everything in tier 1.
+- Run the project's check command (`npm run check` where a project has one). It runs axe on every page in light and dark, fails on sideways scrolling, and saves screenshots at 320, 768, 1280 and 1920 px. Fix what it finds.
+- Look at the changed screen in light and dark, at the smallest size and a large one.
+- Use new controls with the keyboard (and VoiceOver in apps): reachable, visible focus, a name that makes sense.
+
+**Tier 3: a new page, screen or project, or a redesign.**
+
+- Everything in tier 2.
+- Look at every size in light and dark: 320, 768, 1280 and 1920 px wide.
+- Check it at 200% text zoom (the largest Dynamic Type size in apps) and with reduced motion on.
+- Everything under "Every new page or project ships with".
+- Check it against the performance budgets.
+
+CI runs the check command where a project has one, plus a third-party check that fails if a page loads scripts, styles, fonts or images from a host that isn't allowed. Don't add a host just to get past it: ask Kyle, or for a content image follow the image rule above.
 
 <!-- END principles -->
 
@@ -130,15 +177,16 @@ Kyle is a product leader building his development skills through this work. Trea
 
 kylepace.dev is where Kyle’s builds live: a home page that gives a short overview of each kind of thing (Apps, Labs, How I build, with more kinds to come), the Apps page (`/apps/`), the Labs page (`/labs/`, every experiment with its screenshot), and shared pages (privacy, accessibility, 404). "Labs" are the experiments, each in its own repo. It looks and feels like kylepace.net (same tokens, Atkinson type and display settings) with a few differences: its own nav (Labs, Apps, How I build) and no blog, notes or drafts. The header's name ("Kyle Pace") and `.net`/`.dev` site switch (kp-design's `sitesFor`) sit in the same place on both sites so swapping between them feels like one site.
 
-- **Each experiment is its own repo, Cloudflare Worker and page**, not part of this one or of the site's look. Experiments use kp-design's `LabLayout` (a back link to kylepace.dev and an About link in a slim top bar, no site header) and their own look in their own `theme.css` and `design/PLAN.md`. The app comes first; the explanation lives in its About section. It's mounted at `kylepace.dev/<slug>/` by a Worker route in its own `wrangler.jsonc`. This repo only lists it in `src/data/projects.ts`. README: "Adding a project".
+- **Each experiment is its own repo, Cloudflare Worker and page**, not part of this one or of the site's look. Experiments use kp-design's `LabLayout` (a back link to kylepace.dev and an About link in a slim top bar, no site header) and their own look in their own `theme.css` and `design/PLAN.md`. The app comes first; the explanation lives in its About section. It's mounted at `kylepace.dev/<slug>/` by a Worker route in its own `wrangler.jsonc`. This repo only lists it in `src/data/projects.ts`. To add one, follow the `add-lab` skill.
 - This Worker (`kylepace-dev`) owns the domain as a Custom Domain. A route on a path wins over the Custom Domain, so adding a project never needs a change here beyond the list entry.
-- Every page uses `DevLayout` from [kyle-pace/kp-design](https://github.com/kyle-pace/kp-design), pinned to a commit in package.json: tokens, header, footer, display settings and analytics. The hub's nav and footer links and Amplitude project live in kp-design's `lib/kylepace-dev.ts`, so the experiments share them. Change them there, then update the pin in every kylepace.dev repo.
+- Every page uses `DevLayout` from [kyle-pace/kp-design](https://github.com/kyle-pace/kp-design), pinned to a commit in package.json: tokens, header, footer, display settings and analytics. The hub's nav and footer links and Amplitude project live in kp-design's `lib/kylepace-dev.ts`, so the experiments share them. Change them there, then roll the new pin out with the `bump-kp-design` skill.
 - Analytics goes to its own Amplitude project, kylepace.dev (902556), separate from kylepace.net's, set in kp-design's `lib/kylepace-dev.ts`. It only runs on kylepace.dev, and the experiments send to the same project.
 - Every page is indexed by default. An experiment that shouldn't be sends `X-Robots-Tag: noindex` from its own repo.
 - **Apps** (`/apps/`, from `src/data/apps.ts`) moved here from kylepace.net/apps/ on November 8, 2026; the old address 301s here. Add an app's `caseStudy` link only once that case study is published on kylepace.net.
 - `/projects.json` publishes the project list (`src/pages/projects.json.ts`). kylepace.net reads it at build time for its home page's Labs section, so keep its fields stable.
 - Share cards live in `design/og-*.html` and render to `public/og-*.png` (see the share-card skill).
-- Each project card on the Labs page shows a screenshot of the experiment's main view, from `src/assets/projects/<slug>.png`. `scripts/screenshot-projects.py` takes them from the live site in dark mode; rerun it when a project is added or its look changes, and keep each project's `imageAlt` accurate.
-- Run `npm run build` before pushing; it must pass. Deploys run on Cloudflare Workers Builds when `main` changes.
+- Each project card on the Labs page shows a screenshot of the experiment's main view, from `src/assets/projects/<slug>.png`. Retake them with the `card-screenshots` skill when a project is added or its look changes.
+- Run `npm run build` before pushing; it must pass. For tier 2 and 3 changes also run `npm run check` (the `page-check` skill) and look at the screenshots in `.check/`. It covers the pages built as files; `/connections/` and anything else rendered on request needs a look by hand. Deploys run on Cloudflare Workers Builds when `main` changes.
 - **What's most recent comes first.** The home page shelf, `/labs/` and `/projects.json` sort by when each thing was last worked on (`src/lib/log.ts`): the newer of its newest ship log entry and, for labs, its newest commit made by a person, which `.github/workflows/lab-activity.yml` writes to `src/data/activity.json` every hour. Bots and kp-design bumps don't count.
-- **The ship log is the running blog.** `src/data/log.ts` (what shipped, newest first, with optional `notes` paragraphs) feeds the home page terminal, `/log/` and `/log/feed.xml`; `src/data/next.ts` is what's up next. When a session ships something a visitor would notice on any app or lab, add a line to the log in plain language, and update `next.ts` if it finished or changed what's next. Leave out anything Kyle hasn't linked publicly yet.
+- **The ship log is the running blog.** `src/data/log.ts` (what shipped, newest first, with optional `notes` paragraphs) feeds the home page terminal, `/log/` and `/log/feed.xml`; `src/data/next.ts` is what's up next. When a session ships something a visitor would notice on any app or lab, add a line with the `ship-log` skill.
+- **Skills** live in `.agents/skills/`. `share-card`, `page-check` and `bump-kp-design` are shared and synced from the principles repo (edit them there). `add-lab`, `ship-log` and `card-screenshots` belong to this repo.
