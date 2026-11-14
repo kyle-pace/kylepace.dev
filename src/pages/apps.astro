@@ -36,23 +36,28 @@ const statusLabel = { live: 'Live', beta: 'Beta', 'coming-soon': 'Coming soon' }
               {app.platforms.map((platform) => (
                 <li class:list={['platform', platform.status, platform.store && 'store']}>
                   {platform.store === 'testflight' && platform.url ? (
-                    <a class="testflight" href={platform.url}>
-                      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                        <path
-                          d="M21.5 2.5 2.8 9.9l6.3 2.9m12.4-10.3L9.1 12.8m12.4-10.3-5.9 18.3-3.6-6.1m-2.9-1.9v6l2.9-4.1"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.7"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                      <span>
-                        <span class="small">Join the beta on</span>
-                        <span class="big">TestFlight</span>
-                        <span class="visually-hidden">: {app.name} for {platform.name}</span>
-                      </span>
-                    </a>
+                    <>
+                      <a class="testflight" href={platform.url}>
+                        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                          <path
+                            d="M21.5 2.5 2.8 9.9l6.3 2.9m12.4-10.3L9.1 12.8m12.4-10.3-5.9 18.3-3.6-6.1m-2.9-1.9v6l2.9-4.1"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span>
+                          <span class="small">Free beta for {platform.name}</span>
+                          <span class="big">Get it on TestFlight</span>
+                          <span class="visually-hidden">: {app.name}</span>
+                        </span>
+                      </a>
+                      <p class="testflight-note">
+                        TestFlight is Apple’s free app for trying apps before they reach the App Store.
+                      </p>
+                    </>
                   ) : platform.store ? (
                     platform.url && platform.status !== 'coming-soon' ? (
                       <a class="badge" href={platform.url}>
@@ -240,6 +245,12 @@ const statusLabel = { live: 'Live', beta: 'Beta', 'coming-soon': 'Coming soon' }
     color: #fff;
     text-decoration: none;
     line-height: 1.15;
+  }
+
+  .body .testflight-note {
+    margin: var(--space-2) 0 0;
+    font-size: var(--step--1);
+    color: var(--ink-muted);
   }
 
   .testflight:hover {

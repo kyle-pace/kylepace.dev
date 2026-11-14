@@ -29,7 +29,7 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-13',
     about: 'seattle-grocery-deals',
-    text: 'The iPhone and iPad app is in public beta. Anyone can join on TestFlight.',
+    text: 'The iPhone and iPad app is in public beta. Anyone can try it free through TestFlight, Apple’s app for testing apps early.',
     href: 'https://testflight.apple.com/join/NbQ9pXvw',
   },
   {

@@ -4,8 +4,9 @@
 
   - platforms: each place the app runs. status is live, beta or coming-soon; add url when
     there's somewhere to go. store: 'app-store' shows Apple's official badge, which links
-    once status is live and there's a url. store: 'testflight' shows our own "Join the beta
-    on TestFlight" badge (Apple has no official one) linking to the public TestFlight url.
+    once status is live and there's a url. store: 'testflight' shows our own TestFlight
+    badge (Apple has no official one) linking to the public TestFlight url; the badge names
+    the devices (name) and a line under it says what TestFlight is.
   - icon: a square image in public/apps/ (leave it out to show the app's initial).
   - imageAlt: describes the home page screenshot of the app's site (src/assets/apps/<id>.png,
     made by scripts/screenshot-projects.py) for anyone who can't see it.
