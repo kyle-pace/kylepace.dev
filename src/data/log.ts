@@ -29,11 +29,11 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-14',
     about: 'world-cuisine',
-    text: 'World cuisine has an ingredient map: every ingredient near the ones it’s cooked with, in 15 neighborhoods that formed on their own.',
+    text: 'World cuisine lists every ingredient in one place: all 1,344, shelved with the ones they’re cooked with.',
     notes: [
-      'Lemongrass ends up beside galangal, candlenut and turmeric; butter beside flour, sugar and eggs; potato beside carrot, cabbage and dill. Nobody sorted them. Two ingredients are close when they share dishes, and a standard method for finding groups in a network did the rest. Point at one to light up its neighbors, or read the list underneath.',
+      'Lemongrass sits with galangal, candlenut and turmeric; butter with flour, sugar and eggs; potato with carrot and cabbage. Nobody sorted them. Two ingredients count as close when they share dishes, and a standard method for finding groups in a network did the rest. It started the same night as a map of dots, which was too crowded to read, so now it’s words with a find box.',
     ],
-    href: 'https://kylepace.dev/world-cuisine/ingredient-map/',
+    href: 'https://kylepace.dev/world-cuisine/ingredients/',
   },
   {
     date: '2026-11-14',
