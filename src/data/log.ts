@@ -28,6 +28,14 @@ export interface LogEntry {
 export const log: LogEntry[] = [
   {
     date: '2026-11-14',
+    about: 'world-cuisine',
+    text: 'Ingredient pages now link to recipes: palm sugar shows 143 recipes with it, one tap into Recipe search.',
+    notes: [
+      'World cuisine names its ingredients the way Wikipedia does, which is not how anyone shops: "Maize", "Agaricus bisporus". Each one is now matched to the same grocery list Recipe search and my other food projects use, so they finally agree on what corn is. Building it turned up 32 everyday groceries that list was missing, sugar and vinegar among them, which also means Recipe search now matches more of every recipe.',
+    ],
+  },
+  {
+    date: '2026-11-14',
     about: 'site',
     text: 'New labs now start from a template: one command gives me a working, checked page with its own address, About page and share card.',
     notes: [
