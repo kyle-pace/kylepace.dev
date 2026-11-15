@@ -196,6 +196,11 @@ const principleSections = principles
     border-radius: var(--radius);
   }
 
+  /* Long addresses in the principles (a bare link) wrap instead of pushing the page sideways on phones. */
+  .principle {
+    overflow-wrap: anywhere;
+  }
+
   /* Each principle is its own block, with a rule between them. */
   .principle + .principle {
     margin-top: var(--space-8);
