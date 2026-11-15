@@ -16,7 +16,7 @@
     "@astrojs/cloudflare": "^14.4.6",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.4.7",
-    "kp-design": "github:kyle-pace/kp-design#d464a8fb5fdf124fb30ac0f828d32cb9ec616f8c",
+    "kp-design": "github:kyle-pace/kp-design#426d641333868febe22efc709c91f8c790ba8f89",
     "marked": "^16.4.2"
   },
   "devDependencies": {
