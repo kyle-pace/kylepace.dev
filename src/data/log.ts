@@ -29,6 +29,15 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-14',
     about: 'world-cuisine',
+    text: 'World cuisine has an ingredient map: every ingredient near the ones it’s cooked with, in 15 neighborhoods that formed on their own.',
+    notes: [
+      'Lemongrass ends up beside galangal, candlenut and turmeric; butter beside flour, sugar and eggs; potato beside carrot, cabbage and dill. Nobody sorted them. Two ingredients are close when they share dishes, and a standard method for finding groups in a network did the rest. Point at one to light up its neighbors, or read the list underneath.',
+    ],
+    href: 'https://kylepace.dev/world-cuisine/ingredient-map/',
+  },
+  {
+    date: '2026-11-14',
+    about: 'world-cuisine',
     text: 'Ingredient pages now link to recipes: palm sugar shows 143 recipes with it, one tap into Recipe search.',
     notes: [
       'World cuisine names its ingredients the way Wikipedia does, which is not how anyone shops: "Maize", "Agaricus bisporus". Each one is now matched to the same grocery list Recipe search and my other food projects use, so they finally agree on what corn is. Building it turned up 32 everyday groceries that list was missing, sugar and vinegar among them, which also means Recipe search now matches more of every recipe.',
