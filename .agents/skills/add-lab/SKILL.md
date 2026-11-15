@@ -29,7 +29,7 @@ What the template already has, for reference (and for a lab made before it exist
     { "pattern": "kylepace.dev/<slug>/*", "zone_name": "kylepace.dev" }
   ]
   ```
-- **`LabLayout` from kp-design**, pinned to a commit (see the `bump-kp-design` skill): a slim top bar with a back link and an About link, no site header. Analytics goes to the shared kylepace.dev Amplitude project through it.
+- **`LabLayout` from kp-design**, pinned to a commit (see the `bump-kp-design` skill): a slim top bar of buttons ("More labs by Kyle", and with the `about` and `lab` props, "About this project" and "Back to <lab>" on the About page), no site header. Analytics goes to the shared kylepace.dev Amplitude project through it.
 - **The check command** (the `page-check` skill) and an empty `.agents/allowed-hosts.txt`.
 - A lab that shouldn't appear in search sends `X-Robots-Tag: noindex` from its own `public/_headers`.
 
