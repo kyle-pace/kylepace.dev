@@ -59,7 +59,7 @@ export const projects: Project[] = [
     title: 'World transit',
     blurb: 'Every transit route on Earth, on one globe, live.',
     summary:
-      'Every bus, train, tram and ferry route with an open schedule, 675,000 of them in 158 countries, on one globe you can spin and zoom into a single street, with vehicles moving live in over 750 cities and regions. It grew out of the Washington live map.',
+      'Every bus, train, tram and ferry route with an open schedule, 675,000 of them in 158 countries, on one globe you can spin and zoom into a single street, with vehicles moving live in over 750 cities and regions.',
     status: 'in-progress',
     accent: 'sky',
     started: 'November 2026',

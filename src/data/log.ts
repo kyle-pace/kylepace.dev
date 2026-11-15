@@ -29,9 +29,9 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-15',
     about: 'world-transit',
-    text: 'New lab: World transit, every transit route on Earth with an open schedule on one globe, with live vehicles in over 750 cities. It replaces the Washington map.',
+    text: 'New lab: World transit, every transit route on Earth with an open schedule on one globe, with live vehicles in over 750 cities.',
     notes: [
-      'It started as the Washington live map and kept going: every open schedule in the three big catalogs, OpenStreetMap lines where countries publish none, and live feeds from Seattle to Helsinki to Sydney, 675,000 routes in all. The hard part was making a planet of routes readable, so trains stay bold, buses go quiet until you zoom in to a street, and the world view draws each rail corridor once. Search for a city or an agency, or try Somewhere random. Old /transit/ links now open the globe on Puget Sound.',
+      'It pulls together every open schedule in the three big catalogs, OpenStreetMap lines where countries publish none, and live feeds from Seattle to Helsinki to Sydney, 675,000 routes in all. The hard part was making a planet of routes readable, so trains stay bold, buses go quiet until you zoom in to a street, and the world view draws each rail corridor once. Search for a city or an agency, or try Somewhere random.',
     ],
   },
   {
