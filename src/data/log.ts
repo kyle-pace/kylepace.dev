@@ -29,9 +29,9 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-14',
     about: 'world-cuisine',
-    text: 'World cuisine lists every ingredient in one place: all 1,344, shelved with the ones they’re cooked with.',
+    text: 'World cuisine lists every ingredient in one place: all 1,344, each under the part of the world where it’s most at home.',
     notes: [
-      'Lemongrass sits with galangal, candlenut and turmeric; butter with flour, sugar and eggs; potato with carrot and cabbage. Nobody sorted them. Two ingredients count as close when they share dishes, and a standard method for finding groups in a network did the rest. It started the same night as a map of dots, which was too crowded to read, so now it’s words with a find box.',
+      'Lemongrass lands in Southeast Asia, suet in the British Isles and pasta in Southern Europe; garlic, sugar and eggs are all over the world. Filter by part of the world, switch to A to Z, or type to find one. It took three tries in one night: a map of dots that was too crowded, then shelves of what’s cooked together that felt arbitrary, then this.',
     ],
     href: 'https://kylepace.dev/world-cuisine/ingredients/',
   },
