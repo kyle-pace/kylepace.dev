@@ -55,17 +55,17 @@ export const projects: Project[] = [
     imageAlt: 'A globe turned to East Asia and the Pacific, beside a search box and a list of nearby cuisines.',
   },
   {
-    slug: 'transit',
-    title: 'Washington transit, live',
-    blurb: 'Every bus, train and ferry in Washington, live.',
+    slug: 'world-transit',
+    title: 'World transit',
+    blurb: 'Every transit route on Earth, on one globe, live.',
     summary:
-      'Every bus, train and ferry in Washington that reports where it is, on one zoomable map with every route and stop. Positions refresh every 15 seconds.',
+      'Every bus, train, tram and ferry route with an open schedule, 675,000 of them in 158 countries, on one globe you can spin and zoom into a single street, with vehicles moving live in over 750 cities and regions. It grew out of the Washington live map.',
     status: 'in-progress',
     accent: 'sky',
     started: 'November 2026',
-    repo: 'kyle-pace/wa-transit-map',
+    repo: 'kyle-pace/world-transit',
     imageAlt:
-      'A dark map of Puget Sound crisscrossed by colored routes and vehicle dots, with a green sign reading Washington transit and a list of layers.',
+      'Seattle on a dark map, crossed by colored bus, light rail and ferry lines with live vehicle dots, beside a green sign reading World transit with search and a legend.',
   },
   {
     slug: 'recipe-search',

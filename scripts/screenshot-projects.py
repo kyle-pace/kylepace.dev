@@ -29,12 +29,13 @@ SELECTORS = {
     "recipe-search": "#app",
     "skill-tree": "#skill-tree",
     "world-cuisine": ".frame",
-    "transit": ".maplibregl-map",
+    "world-transit": ".frame",
     "live-earth": "[data-viewer]",
 }
 
 # A state worth showing, for projects that open empty.
 PATHS = {
+    "world-transit": "?at=-122.33,47.6,10.5",
     "live-earth": "?sat=east&view=earth",
     "recipe-search": "?with=ginger,tofu&site=woks",
 }
