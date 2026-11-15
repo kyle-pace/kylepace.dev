@@ -80,4 +80,17 @@ export const projects: Project[] = [
     imageAlt:
       'A search box holding “from The Woks of Life”, “ginger” and “tofu” as tags, above rows of dish photos and recipe names.',
   },
+  {
+    slug: 'live-earth',
+    title: 'Live Earth',
+    blurb: 'The whole planet, live, from five weather satellites.',
+    summary:
+      'The newest pictures from five weather satellites spaced around the equator, as big as your screen allows: the whole Earth from any of them, or one of 40 regions from Alaska to Australia. Leave it open on a spare screen, or play back the last 12 hours.',
+    status: 'in-progress',
+    accent: 'sunshine',
+    started: 'November 2026',
+    repo: 'kyle-pace/live-earth',
+    imageAlt:
+      'The whole Earth from over the Americas on a black screen, beside controls for picking a satellite, a view and a time-lapse.',
+  },
 ];

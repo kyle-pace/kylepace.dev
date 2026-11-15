@@ -30,11 +30,18 @@ SELECTORS = {
     "skill-tree": "#skill-tree",
     "world-cuisine": ".frame",
     "transit": ".maplibregl-map",
+    "live-earth": "[data-viewer]",
 }
 
 # A state worth showing, for projects that open empty.
 PATHS = {
+    "live-earth": "?sat=east&view=earth",
     "recipe-search": "?with=ginger,tofu&site=woks",
+}
+
+# Projects that load their main picture after the page is up: wait until this is true.
+READY = {
+    "live-earth": "document.querySelector('[data-status]')?.hidden && !document.querySelector('.is-loading')",
 }
 
 FIRST_BIG = """() => {
@@ -79,6 +86,8 @@ async def main():
               if (getComputedStyle(e).position === 'fixed') e.style.visibility = 'hidden';
             })""")
             await el.evaluate("e => e.scrollIntoView({ block: 'start' })")
+            if slug in READY:
+                await page.wait_for_function(READY[slug], timeout=90_000)
             await page.wait_for_timeout(4000)  # let maps, globes and canvases draw
             box = await el.bounding_box()
             height = min(box["height"], box["width"] * 10 / 16)

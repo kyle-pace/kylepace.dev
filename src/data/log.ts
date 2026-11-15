@@ -27,6 +27,14 @@ export interface LogEntry {
 
 export const log: LogEntry[] = [
   {
+    date: '2026-11-15',
+    about: 'live-earth',
+    text: 'New lab: Live Earth, the whole planet as five weather satellites see it right now, from the Americas to Africa to Australia.',
+    notes: [
+      'It started as a question about live satellite wallpaper. GOES pictures from NOAA came first, then Meteosat from EUMETSAT, which only serves flat maps, so the browser bends each one back into a round planet. Himawari comes from CIRA, the lab that invented GeoColor, as tiles that a tiny server stitches together. Five satellites ring the equator, so between them you can see everywhere but the poles.',
+    ],
+  },
+  {
     date: '2026-11-14',
     about: 'world-cuisine',
     text: 'World cuisine lists every ingredient in one place: all 1,344, each under the part of the world where it’s most at home.',
