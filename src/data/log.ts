@@ -29,6 +29,16 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-14',
     about: 'site',
+    text: 'New labs now start from a template: one command gives me a working, checked page with its own address, About page and share card.',
+    notes: [
+      'Every lab here is its own small site on its own corner of kylepace.dev. Setting one up used to mean copying pieces from the skill tree by hand. The template is a lab with placeholder names; a setup script fills in the real ones, and it already passes the same accessibility and layout checks as every other page.',
+      'The code is public if you want to see how a lab is put together.',
+    ],
+    href: 'https://github.com/kyle-pace/lab-template',
+  },
+  {
+    date: '2026-11-14',
+    about: 'site',
     text: 'Every lab now has an About page that shows how it works: the transit map, the skill tree, World cuisine and Recipe search.',
     notes: [
       'They all use the same sections, in the same order: what it is, how it works step by step, where the data comes from, privacy, and how to get in touch. Each one keeps its lab’s own look: the transit map’s steps run down a transit line, and the skill tree’s sit on graph paper.',

@@ -9,21 +9,29 @@ A lab is its own repo, its own Cloudflare Worker and its own page with its own l
 
 ## In the lab's own repo
 
-1. **Make the repo** under `kyle-pace`, one per lab. Ask Kyle to create it if you can't, and give him the link: https://github.com/new
-2. **Bring in the principles.** Copy `template/.github/workflows/principles.yml` from [kyle-pace/principles](https://github.com/kyle-pace/principles/tree/main/template), set its `output-dir`, then run the sync once with `--platforms web`.
-3. **Build it to live under its path.** Put the pages under `src/pages/<slug>/`. Don't use Astro's `base` option: it breaks with the Cloudflare adapter. Set `site: 'https://kylepace.dev'`.
-4. **Claim the path** in the lab's `wrangler.jsonc`:
-   ```jsonc
-   "routes": [
-     { "pattern": "kylepace.dev/<slug>", "zone_name": "kylepace.dev" },
-     { "pattern": "kylepace.dev/<slug>/*", "zone_name": "kylepace.dev" }
-   ]
-   ```
-5. **Use `LabLayout` from kp-design**, pinned to the same commit as the other sites (see the `bump-kp-design` skill). It gives a slim top bar with a back link to Labs and an About link, and no site header. The app comes first; the explanation goes in the About section.
-6. **Give it its own look.** Write `design/PLAN.md` first, keep its colors in its own `theme.css`, and follow "Look and feel" in the principles. A lab should not look like a page of the hub.
-7. **Set up the check command** (the `page-check` skill) and make its share card (the `share-card` skill).
-8. **Analytics** goes to the shared kylepace.dev Amplitude project through kp-design. Custom events send `experiment: '<slug>'`.
-9. A lab that shouldn't appear in search sends `X-Robots-Tag: noindex` from its own `public/_headers`.
+Start from [kyle-pace/lab-template](https://github.com/kyle-pace/lab-template). It already does steps 2 to 9 below, so a new lab is a working, checked page before any of its own code exists.
+
+1. **Make the repo from the template** under `kyle-pace`, one per lab. Ask Kyle to create it if you can't, and give him the link: https://github.com/new?template_name=lab-template&template_owner=kyle-pace
+2. **Set it up:** `npm install`, then `npm run new-lab -- <slug> "<Name>" "<One sentence.>"`. That fills in the slug, name and description, moves the page to `src/pages/<slug>/` and removes the template notes.
+3. **Give it its own look.** Write `design/PLAN.md` first, keep its colors in `src/styles/theme.css`, and follow "Look and feel" in the principles. A lab should not look like a page of the hub.
+4. **Build the app** in `src/pages/<slug>/index.astro` (the app comes first) and fill in the About page (the `about-page` skill). Send custom events with `track()` from `src/lib/track.ts`, which adds `experiment: '<slug>'`, and put each in the kylepace.dev tracking plan.
+5. **Share cards:** restyle `design/og*.html` in the lab's look and run `npm run og`.
+6. `npm run build && npm run check`, then push. Connect the repo in Cloudflare Workers Builds (build `npm run build`, deploy `npx wrangler deploy`); Kyle may need to do this: https://dash.cloudflare.com/?to=/:account/workers-and-pages/create
+
+What the template already has, for reference (and for a lab made before it existed):
+
+- **The principles,** synced daily by `.github/workflows/principles.yml` (from [kyle-pace/principles](https://github.com/kyle-pace/principles/tree/main/template)), with `output-dir: dist/client`.
+- **Pages under `src/pages/<slug>/`** and `build.assets: '<slug>/_astro'`. Don't use Astro's `base` option: it breaks with the Cloudflare adapter. `site: 'https://kylepace.dev'`.
+- **The path claimed** in `wrangler.jsonc`:
+  ```jsonc
+  "routes": [
+    { "pattern": "kylepace.dev/<slug>", "zone_name": "kylepace.dev" },
+    { "pattern": "kylepace.dev/<slug>/*", "zone_name": "kylepace.dev" }
+  ]
+  ```
+- **`LabLayout` from kp-design**, pinned to a commit (see the `bump-kp-design` skill): a slim top bar with a back link and an About link, no site header. Analytics goes to the shared kylepace.dev Amplitude project through it.
+- **The check command** (the `page-check` skill) and an empty `.agents/allowed-hosts.txt`.
+- A lab that shouldn't appear in search sends `X-Robots-Tag: noindex` from its own `public/_headers`.
 
 ## In this repo
 
