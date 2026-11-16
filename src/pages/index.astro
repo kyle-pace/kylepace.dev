@@ -42,18 +42,45 @@ const shelf = byRecent(
 );
 
 const recent = entries.slice(0, 5);
+
+// Who's behind the site, for search engines. The same person as kylepace.net's home page
+// (same @id), so a search for Kyle Pace connects both sites.
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': 'https://kylepace.net/#kyle',
+      name: 'Kyle Pace',
+      url: 'https://kylepace.net/',
+      jobTitle: 'Director of Product',
+      worksFor: { '@type': 'Organization', name: 'Local Public', url: 'https://www.localpublic.tv' },
+      address: { '@type': 'PostalAddress', addressLocality: 'Seattle', addressRegion: 'WA', addressCountry: 'US' },
+      sameAs: ['https://kylepace.dev/', 'https://www.linkedin.com/in/kylepacepm/', 'https://github.com/kyle-pace', 'https://mastodon.social/@kylepace'],
+    },
+    {
+      '@type': 'WebSite',
+      name: 'kylepace.dev',
+      url: 'https://kylepace.dev/',
+      description: 'Free apps and experiments Kyle Pace builds after hours.',
+      author: { '@id': 'https://kylepace.net/#kyle' },
+    },
+  ],
+};
 ---
 
 <DevLayout
-  title="Kyle Pace"
-  description="Apps, experiments and how I build them. Small, free things Kyle Pace designs and builds after hours."
+  title="Kyle Pace: apps and experiments"
+  description="Apps, experiments and how I build them. Small, free things Kyle Pace, a Director of Product in Seattle, designs and builds after hours."
   imageAlt="kylepace.dev: things Kyle Pace is building, in public. Apps, experiments and how he builds them."
 >
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   <header class="intro">
     <p class="path" aria-hidden="true"><span class="caret">~/</span>kylepace.dev</p>
     <h1>Things I’m building, in public.<span class="cursor" aria-hidden="true"></span></h1>
     <p class="lede prose">
-      Free apps and playful experiments, plus how I build them.
+      I’m Kyle Pace, Director of Product at <a href="https://www.localpublic.tv">Local Public</a> in Seattle.
+      After hours I build free apps and playful experiments, and this is where they live, along with how I build them.
       My portfolio, writing and case studies are on <a href="https://kylepace.net/">kylepace.net</a>.
     </p>
   </header>
