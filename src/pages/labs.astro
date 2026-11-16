@@ -59,7 +59,7 @@ const shotFor = (slug: string) => shots[`../assets/projects/${slug}.png`]?.defau
               <StatusBadge status={p.status} />
             </p>
             <h2>
-              <a href={`/${p.slug}/`}>{p.title}</a>
+              <a href={p.url ?? `/${p.slug}/`}>{p.title}</a>
             </h2>
             <p>{p.summary}</p>
             {(latestEntryFor(p.slug) || nextFor(p.slug).length > 0) && (

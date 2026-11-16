@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { labsByRecent } from '../lib/log';
+import { projectHref } from '../data/projects';
 
 /*
   The project list as JSON, built as a static file at kylepace.dev/projects.json.
@@ -8,14 +9,14 @@ import { labsByRecent } from '../lib/log';
   the same order as /labs/: the one worked on most recently first.
 */
 export const GET: APIRoute = () => {
-  const body = labsByRecent().map(({ slug, title, summary, status, accent, started }) => ({
+  const body = labsByRecent().map(({ slug, url, title, summary, status, accent, started }) => ({
     slug,
     title,
     summary,
     status,
     accent,
     started,
-    href: `https://kylepace.dev/${slug}/`,
+    href: projectHref({ slug, url }),
   }));
   return new Response(JSON.stringify(body, null, 2), {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },

@@ -25,7 +25,15 @@ export interface Project {
    * scripts/screenshot-projects.py) for anyone who can't see it.
    */
   imageAlt?: string;
+  /**
+   * Where it lives, when it has outgrown kylepace.dev/<slug>/ for its own domain (Findish,
+   * findish.now). The slug stays as its id for the ship log and activity.
+   */
+  url?: string;
 }
+
+/** A project's address: its own domain if it has one, else kylepace.dev/<slug>/. */
+export const projectHref = (p: Pick<Project, 'slug' | 'url'>) => p.url ?? `https://kylepace.dev/${p.slug}/`;
 
 export const projects: Project[] = [
   {
@@ -69,7 +77,8 @@ export const projects: Project[] = [
   },
   {
     slug: 'recipe-search',
-    title: 'Recipe search',
+    url: 'https://findish.now/',
+    title: 'Findish',
     blurb: 'One search box for the recipe sites I trust.',
     summary:
       'One search box across The Woks of Life, Hot Thai Kitchen, Smitten Kitchen and the YouTube channels of the cooks I learn from, from a small index of my own. Search by dish, by what you have or by creator; every result opens on the creator’s site.',

@@ -1,0 +1,6 @@
+# Recipe search moved to its own domain as Findish on 2026-11-16. 308 (not 301) so
+# POSTs to /mcp and /api/with from older Grocery Deals and Henwood builds and from
+# connected AI assistants keep their method and body.
+/recipe-search https://findish.now/ 308
+/recipe-search/ https://findish.now/ 308
+/recipe-search/* https://findish.now/:splat 308

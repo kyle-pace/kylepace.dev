@@ -27,6 +27,11 @@ export interface LogEntry {
 
 export const log: LogEntry[] = [
   {
+    date: '2026-11-16',
+    about: 'recipe-search',
+    text: 'Recipe search has a real name and its own home: it’s now Findish, at findish.now. Old links still work.',
+  },
+  {
     date: '2026-11-15',
     about: 'world-transit',
     text: 'New lab: World transit, every transit route on Earth with an open schedule on one globe, with live vehicles in over 750 cities.',

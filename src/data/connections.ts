@@ -1,4 +1,4 @@
-import { projects } from './projects';
+import { projects, projectHref } from './projects';
 
 /*
   The repos whose approved outside hosts are listed on /connections/. Every
@@ -15,12 +15,12 @@ const others = [
     url: 'https://kylepace.net/',
     listUrl: 'https://kylepace.net/allowed-hosts.txt',
   },
-  // Private repo, so recipe search publishes its own list.
+  // Findish publishes its own list too.
   {
-    name: 'Recipe search',
+    name: 'Findish',
     repo: 'kyle-pace/recipe-search',
-    url: 'https://kylepace.dev/recipe-search/',
-    listUrl: 'https://kylepace.dev/recipe-search/allowed-hosts.txt',
+    url: 'https://findish.now/',
+    listUrl: 'https://findish.now/allowed-hosts.txt',
   },
 ];
 
@@ -28,5 +28,5 @@ export const connectionSources = [
   ...others,
   ...projects
     .filter((p) => !others.some((o) => o.repo === p.repo))
-    .map((p) => ({ name: p.title, repo: p.repo, url: `https://kylepace.dev/${p.slug}/` })),
+    .map((p) => ({ name: p.title, repo: p.repo, url: projectHref(p) })),
 ];

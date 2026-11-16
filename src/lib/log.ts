@@ -17,7 +17,7 @@ export interface Subject {
 
 export function subjectFor(about: string): Subject {
   const lab = projects.find((p) => p.slug === about);
-  if (lab) return { label: lab.slug, title: lab.title, href: `/${lab.slug}/`, accent: lab.accent };
+  if (lab) return { label: lab.slug, title: lab.title, href: lab.url ?? `/${lab.slug}/`, accent: lab.accent };
   const app = apps.find((a) => a.id === about);
   if (app) return { label: app.id, title: app.name, href: `/apps/#${app.id}`, accent: app.accent };
   return { label: 'kylepace.dev', title: 'kylepace.dev', href: '/' };

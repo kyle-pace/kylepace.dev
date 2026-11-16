@@ -10,7 +10,7 @@ const places = [
   { path: 'apps/', note: 'free apps, all about food' },
   { path: 'labs/', note: 'every experiment' },
   { path: 'how-i-build/', note: 'workflow and principles' },
-  ...projects.map((p) => ({ path: `${p.slug}/`, note: p.blurb ?? p.title })),
+  ...projects.filter((p) => !p.url).map((p) => ({ path: `${p.slug}/`, note: p.blurb ?? p.title })),
   { path: 'connections/', note: 'what these sites load' },
 ];
 ---
