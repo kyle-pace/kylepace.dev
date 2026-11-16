@@ -7,7 +7,9 @@
     once status is live and there's a url. store: 'testflight' shows our own TestFlight
     badge (Apple has no official one) linking to the public TestFlight url; the badge names
     the devices (name) and a line under it says what TestFlight is.
-  - icon: a square image in public/apps/ (leave it out to show the app's initial).
+  - icon: a square image in public/apps/ (leave it out to show the app's initial). A drawing
+    sits on the app's accent tile; set iconFill when it's the app's real App Store icon, so it
+    fills the tile edge to edge as it does on a Home Screen.
   - imageAlt: describes the home page screenshot of the app's site (src/assets/apps/<id>.png,
     made by scripts/screenshot-projects.py) for anyone who can't see it.
   - kind: the small label over the app's name on the home page shelf. Leave it out to show
@@ -23,6 +25,8 @@ export interface App {
   tagline: string;
   summary: string;
   icon?: string;
+  /** The icon is the app's finished square app icon: show it edge to edge. */
+  iconFill?: boolean;
   /** Describes the screenshot in src/assets/apps/<id>.png. */
   imageAlt?: string;
   /** An accent name from kp-design's tokens.css. */
@@ -40,7 +44,8 @@ export const apps: App[] = [
     tagline: 'Seattle grocery sales, sorted. Updated as each new flyer comes out.',
     summary:
       'The latest deals from Seattle’s Asian markets, seafood shops and co-ops in one place, with the standouts first. Search forgives typos and knows that scallions are green onions.',
-    icon: '/apps/seattle-grocery-deals.svg',
+    icon: '/apps/seattle-grocery-deals.png',
+    iconFill: true,
     imageAlt:
       'The This week page on a deep blue background: a search box, store filters, a “Fresh off the press” note from a crow, and persimmons on sale at 99 Ranch.',
     accent: 'evening',
