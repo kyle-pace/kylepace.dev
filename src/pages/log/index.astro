@@ -59,7 +59,7 @@ const year = (d: string) => d.slice(0, 4);
           <h3 id={`day-${day.date}`}>
             <time datetime={day.date}>
               {longDate(day.date)}
-              {(i === 0 || year(days[i - 1].date) !== year(day.date)) && <span class="year">{year(day.date)}</span>}
+              {(i === 0 || year(days[i - 1].date) !== year(day.date)) && <span class="year"><span class="visually-hidden">, </span>{year(day.date)}</span>}
             </time>
           </h3>
           <ul class="entries">
