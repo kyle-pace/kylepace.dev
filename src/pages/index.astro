@@ -19,7 +19,7 @@ const shelf = byRecent(
   [
     ...apps.map((a) => ({
       about: a.id,
-      kind: 'app',
+      kind: a.kind ?? 'app',
       title: a.name,
       href: `/apps/#${a.id}`,
       blurb: a.tagline,

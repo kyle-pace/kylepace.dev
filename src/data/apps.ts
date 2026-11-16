@@ -10,6 +10,8 @@
   - icon: a square image in public/apps/ (leave it out to show the app's initial).
   - imageAlt: describes the home page screenshot of the app's site (src/assets/apps/<id>.png,
     made by scripts/screenshot-projects.py) for anyone who can't see it.
+  - kind: the small label over the app's name on the home page shelf. Leave it out to show
+    "app"; set it when the app is more than that (Seattle Grocery Deals is also a full website).
   - caseStudy: the full kylepace.net address of its case study. Add it once the case study
     is published there; until then nothing shows.
 */
@@ -25,6 +27,8 @@ export interface App {
   imageAlt?: string;
   /** An accent name from kp-design's tokens.css. */
   accent: string;
+  /** Shelf label on the home page; defaults to 'app'. */
+  kind?: string;
   platforms: { name: string; status: AppStatus; url?: string; label?: string; store?: 'app-store' | 'testflight' }[];
   caseStudy?: string;
 }
@@ -40,6 +44,7 @@ export const apps: App[] = [
     imageAlt:
       'The This week page on a deep blue background: a search box, store filters, a “Fresh off the press” note from a crow, and persimmons on sale at 99 Ranch.',
     accent: 'evening',
+    kind: 'app + website',
     platforms: [
       { name: 'Web', status: 'live', url: 'https://seattlegrocery.deals', label: 'seattlegrocery.deals' },
       {
