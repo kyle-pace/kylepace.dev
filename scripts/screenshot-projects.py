@@ -35,8 +35,9 @@ SELECTORS = {
 
 # A state worth showing, for projects that open empty.
 PATHS = {
-    "world-transit": "?at=-122.33,47.6,10.5",
+    "world-transit": "?at=-25,42,2.2",  # the whole globe: North America, Europe and Africa
     "live-earth": "?sat=east&view=earth",
+    "world-cuisine": "?lng=30",  # Europe, Africa and Asia, not open ocean
     "recipe-search": "?with=ginger,tofu&site=woks",
 }
 

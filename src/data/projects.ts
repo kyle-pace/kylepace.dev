@@ -52,7 +52,7 @@ export const projects: Project[] = [
     started: 'November 2026',
     // The repo kept its first name when the experiment was renamed World cuisine.
     repo: 'kyle-pace/cuisine-explorer',
-    imageAlt: 'A globe turned to East Asia and the Pacific, beside a search box and a list of nearby cuisines.',
+    imageAlt: 'A globe turned to Europe, Africa and the Middle East, countries colored by continent, beside a search box and a list of nearby cuisines.',
   },
   {
     slug: 'world-transit',
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     started: 'November 2026',
     repo: 'kyle-pace/world-transit',
     imageAlt:
-      'Seattle on a dark map, crossed by colored bus, light rail and ferry lines with live vehicle dots, beside a green sign reading World transit with search and a legend.',
+      'A dark globe over the North Atlantic, with Europe thick with colored transit lines and more along the US East Coast, beside a green sign reading World transit with search and a legend.',
   },
   {
     slug: 'recipe-search',
