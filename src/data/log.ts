@@ -29,6 +29,14 @@ export const log: LogEntry[] = [
   {
     date: '2026-11-16',
     about: 'recipe-search',
+    text: 'Findish can now narrow results by course, finds sides from the same cuisine under any main dish, and shows what’s new each week.',
+    notes: [
+      'Sites label courses about 185 different ways, and almost half of recipes have no label at all, so the index folds the labels into nine plain courses and only reads a dish’s name when it says so plainly (“soup”, “cookies”). Anything unclear stays unlabeled instead of guessed, because a wrong course would hide a recipe. It also got a warmer look: tomato red and basil green on cream, with a plate for the d in its name.',
+    ],
+  },
+  {
+    date: '2026-11-16',
+    about: 'recipe-search',
     text: 'Recipe search has a real name and its own home: it’s now Findish, at findish.now. Old links still work.',
   },
   {
