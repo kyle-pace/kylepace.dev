@@ -12,5 +12,6 @@ export interface NextItem {
 
 export const next: NextItem[] = [
   { about: 'world-cuisine', text: 'A game for learning the world’s cuisines.' },
+  { about: 'cooking-reference', text: 'More ratios and spice blends: pie dough, quick pickles, five-spice, za’atar.' },
   { about: 'recipe-search', text: 'More recipe sites, as I finish vetting them.' },
 ];

@@ -27,6 +27,14 @@ export interface LogEntry {
 
 export const log: LogEntry[] = [
   {
+    date: '2026-11-19',
+    about: 'cooking-reference',
+    text: 'New lab: Cooking reference. See what an ingredient goes with across thousands of recipes, scale a vinaigrette to any amount, and make your own garam masala.',
+    notes: [
+      'The pairings started as a private test page, counted from the recipes Findish searches. Ratios and spice blends are the start of a learning-to-cook side to my food projects: the proportions and blends that let you cook without a recipe. More of both are coming.',
+    ],
+  },
+  {
     date: '2026-11-16',
     about: 'recipe-search',
     text: 'Findish can now narrow results by course, finds sides from the same cuisine under any main dish, and shows what’s new each week.',

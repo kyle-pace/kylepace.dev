@@ -37,6 +37,19 @@ export const projectHref = (p: Pick<Project, 'slug' | 'url'>) => p.url ?? `https
 
 export const projects: Project[] = [
   {
+    slug: 'cooking-reference',
+    title: 'Cooking reference',
+    blurb: 'What goes with what, plus ratios and spice blends.',
+    summary:
+      'Cook without a recipe. Pick an ingredient to see what it’s cooked with across thousands of recipes, work out a vinaigrette for any amount, or toast and grind your own garam masala.',
+    status: 'in-progress',
+    accent: 'pink',
+    started: 'November 2026',
+    repo: 'kyle-pace/cooking-reference',
+    imageAlt:
+      'A ruled list of what goes with pork, from soy sauce and Shaoxing wine down, each with a pink bar showing how strong the pairing is.',
+  },
+  {
     slug: 'skill-tree',
     title: 'Career skill tree',
     blurb: 'My career drawn as an RPG skill tree.',
