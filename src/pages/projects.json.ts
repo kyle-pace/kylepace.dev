@@ -4,7 +4,7 @@ import { projectHref } from '../data/projects';
 
 /*
   The project list as JSON, built as a static file at kylepace.dev/projects.json.
-  kylepace.net reads it when it builds, so its home page lists the same experiments
+  kylepace.net's home page reads it on each visit, so it lists the same experiments
   as the hub without a second copy to keep in sync. Only public fields go out. The list is in
   the same order as /labs/: the one worked on most recently first.
 */
