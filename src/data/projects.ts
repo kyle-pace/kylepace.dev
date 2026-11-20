@@ -39,9 +39,9 @@ export const projects: Project[] = [
   {
     slug: 'cooking-reference',
     title: 'Cooking reference',
-    blurb: 'What goes with what, plus ratios and spice blends.',
+    blurb: 'What goes with what, plus ratios, blends and sauces.',
     summary:
-      'Cook without a recipe. Pick an ingredient to see what it’s cooked with across thousands of recipes, work out a vinaigrette for any amount, or toast and grind your own garam masala.',
+      'Cook without a recipe. Pick an ingredient to see what it’s cooked with across thousands of recipes, scale 33 classic ratios from bread dough to brine, or make 40 spice blends, pastes and sauces from around the world.',
     status: 'in-progress',
     accent: 'pink',
     started: 'November 2026',
