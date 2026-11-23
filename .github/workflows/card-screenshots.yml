@@ -1,0 +1,80 @@
+# Keeps the screenshots on the home page and /labs/ cards matching what each lab looks like now.
+# Every day, scripts/screenshot-projects.py --changed retakes the card of any lab worked on since
+# its card was taken (from src/data/activity.json, which the Lab activity workflow keeps up), and
+# of any app whose card is a month old. It keeps the old image when a new one is blank or looks the
+# same, and re-renders share cards that show a changed card. If anything changed, it's built,
+# committed and pushed, and the push redeploys the site through Cloudflare Workers Builds.
+#
+# Runs at 18:23 UTC (10:23 AM in Seattle) so Live Earth's card catches the Americas in daylight.
+# Run it by hand from the Actions tab to retake particular cards, or all of them.
+name: Card screenshots
+
+on:
+  schedule:
+    - cron: '23 18 * * *'
+  workflow_dispatch:
+    inputs:
+      names:
+        description: "Labs or apps to retake, by slug, separated by spaces ('all' for every one; empty for the out-of-date ones)"
+        type: string
+        default: ''
+      branch:
+        description: "Branch to push to (main publishes; another name makes a preview branch to look at first)"
+        type: string
+        default: main
+
+concurrency:
+  group: card-screenshots
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install
+        run: |
+          npm ci
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Take the cards that are out of date
+        env:
+          NAMES: ${{ inputs.names }}
+        run: |
+          if [ "$NAMES" = "all" ]; then
+            python scripts/screenshot-projects.py
+          elif [ -n "$NAMES" ]; then
+            python scripts/screenshot-projects.py $NAMES
+          else
+            python scripts/screenshot-projects.py --changed
+          fi
+      - name: Build with the new cards
+        run: npm run build
+      - name: Commit if anything changed
+        env:
+          BRANCH: ${{ inputs.branch || 'main' }}
+        run: |
+          git add src/assets src/data/screenshots.json public/og-*.png
+          if git diff --cached --quiet; then
+            echo "No change."
+            exit 0
+          fi
+          changed=$(git diff --cached --name-only -- src/assets | xargs -rn1 basename | sed 's/\.png$//' | paste -sd, - | sed 's/,/, /g')
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Refresh card screenshots${changed:+: $changed}"
+          if [ "$BRANCH" = "main" ]; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          else
+            git push --force origin "HEAD:refs/heads/$BRANCH"
+          fi
