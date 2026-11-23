@@ -65,6 +65,13 @@ PATHS = {
     "cooking-reference": "#pork",  # what goes with pork
 }
 
+# Projects whose picture is only worth showing in daylight: the UTC hours to take them in.
+# Live Earth shows the Americas from GOES East, lit roughly 13:00 to 22:00 UTC. Outside
+# those hours its card waits for the next run instead of showing the night side.
+DAYLIGHT_UTC = {
+    "live-earth": range(13, 22),
+}
+
 # Projects that load their main picture after the page is up: wait until this is true.
 READY = {
     "live-earth": "document.querySelector('[data-status]')?.hidden && !document.querySelector('.is-loading')",
@@ -190,7 +197,7 @@ def share_cards_showing(changed):
     """Share cards that show a changed card image, as design/og-<name>.html -> public/og-<name>.png."""
     return [
         html for html in sorted((ROOT / "design").glob("og-*.html"))
-        if any(f"/{image_path(n).parent.name}/{n}.png" in html.read_text() for n in changed)
+        if any(str(image_path(n).relative_to(ROOT)) in html.read_text() for n in changed)
     ]
 
 
@@ -222,6 +229,9 @@ async def main():
             args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
         )
         for name in names:
+            if name in DAYLIGHT_UTC and now.hour not in DAYLIGHT_UTC[name]:
+                print(f"{name}: waiting for daylight")
+                continue
             dest = image_path(name)
             new = dest.with_suffix(".new.png")
             try:

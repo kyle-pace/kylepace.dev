@@ -27,6 +27,7 @@ The workflow only knows what each page looks like from the settings below. Chang
 - **A card shows the wrong part of the page.** Add a CSS selector for the interesting part (the tree, the globe, the map) to `SELECTORS`, or put the project in `TOP_OF_PAGE` if its whole first screen is the app.
 - **A card opens empty.** Add a query string or `#hash` that shows a good state to `PATHS`.
 - **A card is caught loading.** Add a "ready" test to `READY`.
+- **A card only looks right at some hours** (Live Earth needs daylight over the Americas). Give its UTC hours in `DAYLIGHT_UTC`; outside them the card waits for the next run.
 
 Then update `imageAlt` in `src/data/projects.ts` or `src/data/apps.ts` so it describes what the new image shows.
 
