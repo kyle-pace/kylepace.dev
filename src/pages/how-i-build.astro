@@ -20,33 +20,127 @@ const REPO_URL = 'https://github.com/kyle-pace/principles';
       <h1>A product manager who ships software.</h1>
       <p class="lede">
         I’m Director of Product at <a href="https://www.localpublic.tv/">Local Public TV</a>. On nights and weekends I
-        build apps and sites with AI coding agents. I don’t write the code by hand; I run each project the way I’d run
-        a product team.
+        build apps and sites with AI coding agents, including Henwood, Seattle Grocery Deals and the experiments on this
+        site. I don’t write the code by hand. This page is how I make that work, and the principles every project
+        follows.
       </p>
     </header>
 
+    <section class="row" aria-labelledby="who">
+      <h2 id="who">Not quite a developer, not just a PM</h2>
+      <div class="body">
+        <p>
+          I came to product by way of UX design and project management, not computer science. But I really am building
+          apps now, and that’s an odd place to be.
+        </p>
+        <p>
+          The way I make sense of it: coding agents moved the hard part. Typing code used to be the scarce skill. Now
+          it’s deciding what to build, writing a clear brief, setting constraints, judging what comes back and saying
+          “no, not like that.” That’s work I already do every day.
+        </p>
+      </div>
+    </section>
+
     <section class="row" aria-labelledby="how">
-      <h2 id="how">How it works</h2>
+      <h2 id="how">How a project runs</h2>
       <ol class="steps">
-        <li><strong>Brief the outcome.</strong> Who it’s for, what it should do, what it shouldn’t.</li>
-        <li><strong>Set the rules once.</strong> One set of principles syncs into every project, so any agent starts from the same standards.</li>
-        <li><strong>Review everything.</strong> I read every result and try it before it ships. Less manager, more editor.</li>
-        <li><strong>Ship small.</strong> Automated checks catch what I miss, and changes go out in pieces I can actually check.</li>
+        <li>
+          <strong>Decide what it’s for.</strong> Every project starts with a short brief: who it’s for, what it should
+          do and what it shouldn’t.
+        </li>
+        <li>
+          <strong>Give it its own repo.</strong> One project, one repo, one deploy. Small pieces are easier to reason
+          about, and easier to throw away.
+        </li>
+        <li>
+          <strong>Set the rules once.</strong> The principles below sync into every project, so whichever agent I use
+          starts from the same standards.
+        </li>
+        <li>
+          <strong>Review everything.</strong> Every session starts fresh, and an agent sounds just as sure of itself
+          when it’s wrong. So I review every result, ask it to explain choices I don’t follow, and try things myself
+          before they ship. Less manager, more editor.
+        </li>
+        <li>
+          <strong>Let checks catch what I miss.</strong> Every build runs an accessibility check and fails if a page
+          loads anything from a server I haven’t approved.
+        </li>
+        <li>
+          <strong>Ship small.</strong> Changes go out in small pieces, so I can actually check them.
+        </li>
       </ol>
     </section>
 
     <section class="row" aria-labelledby="principles">
       <h2 id="principles">The principles</h2>
       <div class="body">
-        <ul class="principles">
-          <li id="accessibility"><strong>Accessibility first.</strong> WCAG AA, keyboard friendly, light and dark, from the first commit.</li>
-          <li id="privacy"><strong>Privacy right behind.</strong> The least data that answers a real question. No ad pixels, no analytics cookies, no selling data.</li>
-          <li id="screens"><strong>Every screen size.</strong> Phone, tablet and desktop from day one.</li>
-          <li id="self-host"><strong>Self-host everything.</strong> No CDNs. Each outside service is approved one at a time (<a href="/connections/">here’s the list</a>).</li>
-          <li id="simple"><strong>Simple and fast.</strong> Static by default, small pages, plain language.</li>
-        </ul>
+        <dl class="principles">
+          <div id="accessibility">
+            <dt>Accessibility first</dt>
+            <dd>
+              Designed in from the first commit, not audited in at the end. At least WCAG 2.2 AA, everything works
+              with a keyboard, contrast holds up in light and dark, and layouts survive 200% text zoom and reduced
+              motion.
+            </dd>
+          </div>
+          <div id="privacy">
+            <dt>Privacy right behind</dt>
+            <dd>
+              Collect the least data that answers a real product question. No ad pixels, no fingerprinting, no analytics
+              cookies, nothing personal in analytics, and no analytics at all if your browser sends Global Privacy
+              Control or Do Not Track.
+            </dd>
+          </div>
+          <div id="screens">
+            <dt>Every screen size from day one</dt>
+            <dd>
+              Phone, tablet and big screens are designed together, not stretched or squeezed in later. Apps support
+              iPhone and iPad from the start.
+            </dd>
+          </div>
+          <div id="self-host">
+            <dt>Self-host everything</dt>
+            <dd>
+              Libraries and fonts ship with the project, never from a CDN. Every outside service gets approved one at a
+              time, per project, and an automated check fails the build if something sneaks in.{' '}
+              <a href="/connections/">Here’s the full list.</a>
+            </dd>
+          </div>
+          <div id="correct">
+            <dt>Correct and reliable</dt>
+            <dd>
+              Anything that reads outside data is tested against real samples, one bad record never takes down the rest,
+              and a failing job fails loudly instead of publishing empty data.
+            </dd>
+          </div>
+          <div id="fast">
+            <dt>Fast on a normal phone</dt>
+            <dd>
+              Pages have budgets: little JavaScript, small images, and the main content up within a couple of seconds on
+              a mid-range phone.
+            </dd>
+          </div>
+          <div id="look">
+            <dt>Its own look</dt>
+            <dd>
+              Each project gets a design taken from its own subject, not the generic defaults AI tools reach for. One
+              bold idea, everything else quiet. Type is Atkinson Hyperlegible everywhere.
+            </dd>
+          </div>
+        </dl>
         <p class="more">
           <a href={REPO_URL}>The full rules the agents follow, on GitHub <span aria-hidden="true">→</span></a>
+        </p>
+      </div>
+    </section>
+
+    <section class="row" aria-labelledby="learning">
+      <h2 id="learning">What I’m still learning</h2>
+      <div class="body">
+        <p>
+          The gap isn’t syntax. It’s judging the output, because when I direct agents, I’m the only reviewer. So I keep
+          working on understanding code well enough to judge it, and on data, which matters most for my day job right
+          now.
         </p>
       </div>
     </section>
@@ -91,6 +185,10 @@ const REPO_URL = 'https://github.com/kyle-pace/principles';
     max-width: var(--measure);
   }
 
+  .body > p + p {
+    margin-top: var(--space-4);
+  }
+
   /* Steps: a numbered list, the number large and in the accent color. */
   .steps {
     list-style: none;
@@ -120,13 +218,23 @@ const REPO_URL = 'https://github.com/kyle-pace/principles';
     color: var(--accent-ink);
   }
 
+  /* Each principle: a bold name, then a short paragraph, with a rule between them. */
   .principles {
     margin: 0;
-    padding-left: 1.25rem;
   }
 
-  .principles li + li {
-    margin-top: var(--space-3);
+  .principles > div + div {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .principles dt {
+    font-weight: 700;
+  }
+
+  .principles dd {
+    margin: var(--space-1) 0 0;
   }
 
   .more {
