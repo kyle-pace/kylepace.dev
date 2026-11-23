@@ -10,6 +10,8 @@
 name: Card screenshots
 
 on:
+  push:
+    branches: [card-screenshots-workflow]  # TEMPORARY: preview run on this branch only
   schedule:
     - cron: '23 18 * * *'
   workflow_dispatch:
@@ -61,7 +63,7 @@ jobs:
         run: npm run build
       - name: Commit if anything changed
         env:
-          BRANCH: ${{ inputs.branch || 'main' }}
+          BRANCH: ${{ inputs.branch || (github.event_name == 'push' && github.ref_name) || 'main' }}
         run: |
           git add src/assets src/data/screenshots.json public/og-*.png
           if git diff --cached --quiet; then
