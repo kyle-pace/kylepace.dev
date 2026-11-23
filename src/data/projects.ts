@@ -100,7 +100,7 @@ export const projects: Project[] = [
     started: 'November 2026',
     repo: 'kyle-pace/recipe-search',
     imageAlt:
-      'A search box holding “from The Woks of Life”, “ginger” and “tofu” as tags, above rows of dish photos and recipe names.',
+      'The finDish logo over a search box holding “from The Woks of Life”, “ginger” and “tofu” as tags, above rows of dish photos and recipe names.',
   },
   {
     slug: 'live-earth',
