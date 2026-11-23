@@ -14,7 +14,7 @@ const projects = await getConnections(connectionSources);
 const total = projects.reduce((n, p) => n + (p.approvals?.length ?? 0), 0);
 const formatDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { dateStyle: 'long', timeZone: 'UTC' });
-const principle = 'https://kylepace.dev/how-i-build/#self-host-everything-approve-outside-hosts-one-at-a-time';
+const principle = 'https://kylepace.dev/how-i-build/#self-host';
 ---
 
 <DevLayout

@@ -1,19 +1,11 @@
 ---
-// How Kyle builds with AI coding agents, plus the development principles every project
-// follows. The principles come from github.com/kyle-pace/principles at build time
-// (src/lib/principles.ts), so this page always matches what the agents read.
+// How Kyle builds with AI coding agents. A short, human-facing summary of the
+// principles; the full rules the agents follow live in github.com/kyle-pace/principles.
 import DevLayout from 'kp-design/layouts/DevLayout.astro';
-import { getPrinciples, REPO_URL } from '../lib/principles';
 
 export const prerender = true;
 
-const { html: principles } = await getPrinciples();
-
-// Each ### section of the principles becomes its own block, with a rule between them.
-const principleSections = principles
-  .split(/(?=<h3 )/)
-  .map((chunk) => chunk.trim())
-  .filter(Boolean);
+const REPO_URL = 'https://github.com/kyle-pace/principles';
 ---
 
 <DevLayout
@@ -28,92 +20,40 @@ const principleSections = principles
       <h1>A product manager who ships software.</h1>
       <p class="lede">
         I’m Director of Product at <a href="https://www.localpublic.tv/">Local Public TV</a>. On nights and weekends I
-        build apps and sites with AI coding agents, including Henwood, Seattle Grocery Deals and the experiments on this
-        site. I don’t write the code by hand. This page is how I make that work, and the principles every project
-        follows.
+        build apps and sites with AI coding agents. I don’t write the code by hand; I run each project the way I’d run
+        a product team.
       </p>
     </header>
 
-    <section class="row" aria-labelledby="who">
-      <h2 id="who">Not quite a developer, not just a PM</h2>
-      <div class="body">
-    <p>
-      I came to product by way of UX design and project management. I’m not a developer by training. But I really am building apps now, and that’s an odd place to be.
-    </p>
-    <p>
-      The way I make sense of it: I run my projects the way I’d run a product team. Coding agents moved the hard part.
-      Typing code used to be the scarce skill. Now it’s deciding what to build, writing a clear brief, setting
-      constraints, judging what comes back and saying “no, not like that.” That’s work I already do every day.
-    </p>
-      </div>
-    </section>
-
     <section class="row" aria-labelledby="how">
-      <h2 id="how">How a project runs</h2>
-    <ol class="steps">
-      <li>
-        <strong>Decide what it’s for.</strong> Every project starts with a short brief: who it’s for, what it should do
-        and what it shouldn’t. Plans and decisions live in Confluence, so they outlast any one conversation with an agent.
-      </li>
-      <li>
-        <strong>Give it its own repo.</strong> One project, one repo, one deploy. Small pieces are easier to reason
-        about, and easier to throw away.
-      </li>
-      <li>
-        <strong>Set the rules once.</strong> The principles below live in <a href={REPO_URL}>a GitHub repo</a>{' '}
-        and sync into every project as an <code>AGENTS.md</code> file, the shared
-        format most coding agents read. Whichever agent I use, it starts from the same standards.
-      </li>
-      <li>
-        <strong>Brief outcomes, not code.</strong> I describe what I want and the constraints around it. The agent does
-        the building.
-      </li>
-      <li>
-        <strong>Review everything.</strong> AI doesn’t build a track record with me. Every session starts fresh, and it
-        sounds just as sure of itself when it’s wrong. So I don’t delegate the way I would to a teammate. I review every
-        result, ask it to explain choices I don’t follow, and try things myself before they ship. I’m less of a manager
-        and more of an editor.
-      </li>
-      <li>
-        <strong>Let checks catch what I miss.</strong> Every build has to pass. An automated check fails it if a page
-        loads anything from a server I haven’t approved (<a href="/connections/">here’s the full list</a>), and the agents run an accessibility check on every change.
-      </li>
-      <li>
-        <strong>Ship small.</strong> Pushing to main deploys to Cloudflare. Changes go out in small pieces, so I can
-        actually check them.
-      </li>
-    </ol>
-    </section>
-
-    <section class="row" aria-labelledby="learning">
-      <h2 id="learning">What I’m still learning</h2>
-      <div class="body">
-    <p>
-      The gap isn’t syntax. It’s judging the output, because when I direct agents, I’m the only reviewer. So I keep
-      working on understanding code well enough to judge it, and on data, which matters most for my day job right now.
-    </p>
-      </div>
+      <h2 id="how">How it works</h2>
+      <ol class="steps">
+        <li><strong>Brief the outcome.</strong> Who it’s for, what it should do, what it shouldn’t.</li>
+        <li><strong>Set the rules once.</strong> One set of principles syncs into every project, so any agent starts from the same standards.</li>
+        <li><strong>Review everything.</strong> I read every result and try it before it ships. Less manager, more editor.</li>
+        <li><strong>Ship small.</strong> Automated checks catch what I miss, and changes go out in pieces I can actually check.</li>
+      </ol>
     </section>
 
     <section class="row" aria-labelledby="principles">
       <h2 id="principles">The principles</h2>
       <div class="body">
-    <p>
-      These are written for the agents, which is why they talk about me in the third person. They’re pulled from <a href={REPO_URL}>github.com/kyle-pace/principles</a>{' '}
-      each time this site builds, so this page always matches
-      what the agents see.
-    </p>
-      </div>
-      <div class="principles">
-        {principleSections.map((section) => <section class="principle" set:html={section} />)}
+        <ul class="principles">
+          <li id="accessibility"><strong>Accessibility first.</strong> WCAG AA, keyboard friendly, light and dark, from the first commit.</li>
+          <li id="privacy"><strong>Privacy right behind.</strong> The least data that answers a real question. No ad pixels, no analytics cookies, no selling data.</li>
+          <li id="screens"><strong>Every screen size.</strong> Phone, tablet and desktop from day one.</li>
+          <li id="self-host"><strong>Self-host everything.</strong> No CDNs. Each outside service is approved one at a time (<a href="/connections/">here’s the list</a>).</li>
+          <li id="simple"><strong>Simple and fast.</strong> Static by default, small pages, plain language.</li>
+        </ul>
+        <p class="more">
+          <a href={REPO_URL}>The full rules the agents follow, on GitHub <span aria-hidden="true">→</span></a>
+        </p>
       </div>
     </section>
   </article>
 </DevLayout>
 
 <style>
-  /* The page lines up with the header. Text stays in one readable column (--measure);
-     wide screens use the extra room for a heading column beside it. */
   .top {
     max-width: 52rem;
   }
@@ -151,14 +91,6 @@ const principleSections = principles
     max-width: var(--measure);
   }
 
-  .body > * + * {
-    margin-top: var(--space-4);
-  }
-
-  .body p:first-child {
-    margin-top: 0;
-  }
-
   /* Steps: a numbered list, the number large and in the accent color. */
   .steps {
     list-style: none;
@@ -166,7 +98,7 @@ const principleSections = principles
     margin: 0;
     padding: 0;
     display: grid;
-    gap: var(--space-6) var(--space-12);
+    gap: var(--space-4);
   }
 
   .steps li {
@@ -189,44 +121,19 @@ const principleSections = principles
   }
 
   .principles {
-    margin-top: var(--space-6);
-    padding: var(--space-6) var(--space-8);
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-  }
-
-  /* Long addresses in the principles (a bare link) wrap instead of pushing the page sideways on phones. */
-  .principle {
-    overflow-wrap: anywhere;
-  }
-
-  /* Each principle is its own block, with a rule between them. */
-  .principle + .principle {
-    margin-top: var(--space-8);
-    padding-top: var(--space-8);
-    border-top: 1px solid var(--line);
-  }
-
-  .principle :global(h3) {
-    margin-top: 0;
-  }
-
-  .principle :global(ul) {
+    margin: 0;
     padding-left: 1.25rem;
   }
 
-  .principle :global(li + li) {
-    margin-top: var(--space-2);
+  .principles li + li {
+    margin-top: var(--space-3);
   }
 
-  @media (max-width: 40rem) {
-    .principles {
-      padding: var(--space-4);
-    }
+  .more {
+    margin-top: var(--space-6);
   }
 
-  /* Wide screens: headings in a left column that stays in view while you read. */
+  /* Wide screens: headings in a left column beside the text. */
   @media (min-width: 64rem) {
     .row {
       display: grid;
@@ -236,15 +143,7 @@ const principleSections = principles
     }
 
     .row h2 {
-      position: sticky;
-      top: var(--space-8);
       font-size: var(--step-1);
-    }
-
-    /* The principles sit in the text column, like everything else: one column to read. */
-    .principles {
-      grid-column: 2;
-      max-width: 46rem;
     }
   }
 </style>
