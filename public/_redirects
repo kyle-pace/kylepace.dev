@@ -4,3 +4,12 @@
 /recipe-search https://findish.now/ 308
 /recipe-search/ https://findish.now/ 308
 /recipe-search/* https://findish.now/:splat 308
+
+# World cuisine became finDish's Explore section on 2026-11-26. Its own Worker still holds
+# the /world-cuisine routes and does this forwarding itself (kyle-pace/world-cuisines);
+# these lines are the fallback if those routes are ever removed.
+/world-cuisine https://findish.now/explore/ 301
+/world-cuisine/ https://findish.now/explore/ 301
+/world-cuisine/about/ https://findish.now/explore/ 301
+/world-cuisine/how-its-built/ https://findish.now/explore/ 301
+/world-cuisine/* https://findish.now/explore/:splat 301

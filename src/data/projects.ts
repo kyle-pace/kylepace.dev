@@ -27,7 +27,8 @@ export interface Project {
   imageAlt?: string;
   /**
    * Where it lives, when it has outgrown kylepace.dev/<slug>/ for its own domain (Findish,
-   * findish.now). The slug stays as its id for the ship log and activity.
+   * findish.now) or moved into another project (World cuisine, findish.now/explore/). The
+   * slug stays as its id for the ship log and activity.
    */
   url?: string;
 }
@@ -64,10 +65,12 @@ export const projects: Project[] = [
   },
   {
     slug: 'world-cuisine',
+    // Since 2026-11-26 it is finDish's Explore section; kylepace.dev/world-cuisine/ forwards there.
+    url: 'https://findish.now/explore/',
     title: 'World cuisine',
     blurb: 'The world’s cuisines and dishes on one globe.',
     summary:
-      'Wikipedia’s 600-plus cuisines and their dishes on one globe. Search an ingredient to see where in the world it’s cooked with, follow a dish to where it’s from, and find recipe sites and cookbooks to start cooking.',
+      'Wikipedia’s 600-plus cuisines and their dishes on one globe. Search an ingredient to see where in the world it’s cooked with, follow a dish to where it’s from, and find recipe sites and cookbooks to start cooking. It now lives inside finDish, as its Explore section.',
     status: 'in-progress',
     accent: 'tangerine',
     started: 'November 2026',
