@@ -27,6 +27,15 @@ export interface LogEntry {
 
 export const log: LogEntry[] = [
   {
+    date: '2026-11-26',
+    about: 'recipe-search',
+    text: 'finDish has an Explore section for when you don’t know what to search for: World cuisine’s globe of 670 cuisines, plus shelves of recipes picked for the week.',
+    notes: [
+      'World cuisine and finDish were two halves of one idea: one knows what a cuisine is and what goes in its dishes, the other knows where the recipes are. Now a page like Korean recipes has both, the recipes first and then what Korean cooking is, its dishes, its key ingredients and a few cookbooks. Old World cuisine links forward to their new home.',
+    ],
+    href: 'https://findish.now/explore/',
+  },
+  {
     date: '2026-11-19',
     about: 'cooking-reference',
     text: 'New lab: Cooking reference. See what an ingredient goes with across thousands of recipes, scale a vinaigrette to any amount, and make your own garam masala.',
