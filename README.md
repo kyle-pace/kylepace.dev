@@ -19,7 +19,7 @@ npm run preview   # builds, then runs it the way Cloudflare will
 | --- | --- |
 | The list of experiments | `src/data/projects.ts` |
 | The list of apps | `src/data/apps.ts` |
-| Screenshots on the home page shelf and /labs/ | `src/assets/projects/<slug>.png` and `src/assets/apps/<id>.png`, made by `scripts/screenshot-projects.py`, which the daily Card screenshots workflow runs for any lab worked on since its card was taken |
+| Screenshots on the home page shelf and /labs/ | `src/assets/projects/<slug>.png` and `src/assets/apps/<id>.png`, made by `scripts/screenshot-projects.py`, which the Card screenshots workflow runs every four hours for any lab worked on since its card was taken |
 | The ship log (home page, `/log/`, `/log/feed.xml`) | `src/data/log.ts`, kept by hand, newest first (the home page shows five) |
 | What I'm working on next (`/log/` and each card on `/labs/`) | `src/data/next.ts`, kept by hand; delete an item when it ships and log it |
 | The order of the shelf and `/labs/` (most recently worked on first) | `src/lib/log.ts`, from each lab's newest log entry and `src/data/activity.json` |

@@ -1,17 +1,22 @@
 # Keeps the screenshots on the home page and /labs/ cards matching what each lab looks like now.
-# Every day, scripts/screenshot-projects.py --changed retakes the card of any lab worked on since
+# Each run, scripts/screenshot-projects.py --changed retakes the card of any lab worked on since
 # its card was taken (from src/data/activity.json, which the Lab activity workflow keeps up), and
 # of any app whose card is a month old. It keeps the old image when a new one is blank or looks the
 # same, and re-renders share cards that show a changed card. If anything changed, it's built,
 # committed and pushed, and the push redeploys the site through Cloudflare Workers Builds.
 #
-# Runs at 18:23 UTC (10:23 AM in Seattle) so Live Earth's card catches the Americas in daylight.
+# Runs every four hours. GitHub often starts scheduled runs hours late (the 18:23 UTC run was
+# landing around 02:00 UTC, night over the Americas), so one run a day kept missing Live Earth's
+# daylight hours. Runs with nothing out of date change nothing.
+#
+# A card that fails keeps its old image and turns the run red, but only after the other cards
+# from the same run are built, committed and pushed, so one broken page doesn't hold back the rest.
 # Run it by hand from the Actions tab to retake particular cards, or all of them.
 name: Card screenshots
 
 on:
   schedule:
-    - cron: '23 18 * * *'
+    - cron: '23 */4 * * *'
   workflow_dispatch:
     inputs:
       names:
@@ -47,9 +52,12 @@ jobs:
           pip install playwright pillow
           python -m playwright install --with-deps chromium
       - name: Take the cards that are out of date
+        id: shots
         env:
           NAMES: ${{ inputs.names }}
+        # A failed card is reported in the last step, after the good ones are saved.
         run: |
+          set +e
           if [ "$NAMES" = "all" ]; then
             python scripts/screenshot-projects.py
           elif [ -n "$NAMES" ]; then
@@ -57,6 +65,7 @@ jobs:
           else
             python scripts/screenshot-projects.py --changed
           fi
+          echo "status=$?" >> "$GITHUB_OUTPUT"
       - name: Build with the new cards
         run: npm run build
       - name: Commit if anything changed
@@ -78,3 +87,8 @@ jobs:
           else
             git push --force origin "HEAD:refs/heads/$BRANCH"
           fi
+      - name: Fail if a card couldn't be taken
+        if: steps.shots.outputs.status != '0'
+        run: |
+          echo "::error::A card couldn't be taken and kept its old image. See the 'Take the cards' step for which one and why."
+          exit 1
