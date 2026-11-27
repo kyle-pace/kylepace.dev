@@ -47,7 +47,6 @@ APP_MAX_AGE = timedelta(days=30)
 # element below the page intro.
 SELECTORS = {
     "skill-tree": "#skill-tree",
-    "world-cuisine": ".frame",
     "world-transit": ".frame",
     "live-earth": "[data-viewer]",
 }
@@ -56,11 +55,22 @@ SELECTORS = {
 # is the app (Findish: the logo, the search box and the first results).
 TOP_OF_PAGE = {"recipe-search"}
 
+# Where to take the picture when it isn't the page the card links to. World cuisine's card
+# opens finDish's Explore page (findish.now/explore/), but its picture is the globe itself:
+# the app as finDish embeds it, turned to Europe, Africa and Asia rather than open ocean.
+SHOT_URLS = {
+    "world-cuisine": "https://findish.now/explore/app/?embed&lng=30",
+}
+
+# Projects that fill the window with fixed layers (a full-window globe under floating
+# controls): shot as the whole window, with nothing hidden, since hiding fixed elements
+# would hide the app itself.
+WHOLE_WINDOW = {"world-cuisine"}
+
 # A state worth showing, for projects that open empty.
 PATHS = {
     "world-transit": "?at=-25,42,2.2",  # the whole globe: North America, Europe and Africa
     "live-earth": "?sat=east&view=earth",  # the Americas; the workflow runs in their daytime
-    "world-cuisine": "?lng=30",  # Europe, Africa and Asia, not open ocean
     "recipe-search": "?with=ginger,tofu&site=woks",
     "cooking-reference": "#pork",  # what goes with pork
 }
@@ -75,6 +85,7 @@ DAYLIGHT_UTC = {
 # Projects that load their main picture after the page is up: wait until this is true.
 READY = {
     "live-earth": "document.querySelector('[data-status]')?.hidden && !document.querySelector('.is-loading')",
+    "world-cuisine": "!document.getElementById('loading')",  # "Setting the table…" is gone
 }
 
 FIRST_BIG = """() => {
@@ -132,6 +143,8 @@ def out_of_date(names, taken, activity, now):
 def url_for(name, projects):
     if name in APPS:
         return APPS[name]
+    if name in SHOT_URLS:
+        return SHOT_URLS[name]
     p = projects[name]
     base = p.get("url") or f"https://kylepace.dev/{name}/"
     return base + PATHS.get(name, "")
@@ -143,8 +156,10 @@ def image_path(name):
 
 async def shoot(browser, name, projects, dest):
     # Dark mode, reduced motion so nothing is caught mid-animation.
+    # A whole-window shot uses a window the card's shape (16:10), so nothing at its edges is cut.
+    height = 800 if name in WHOLE_WINDOW else 900
     page = await browser.new_page(
-        viewport={"width": 1280, "height": 900}, color_scheme="dark", reduced_motion="reduce"
+        viewport={"width": 1280, "height": height}, color_scheme="dark", reduced_motion="reduce"
     )
     try:
         response = await page.goto(url_for(name, projects), wait_until="networkidle", timeout=60_000)
@@ -153,6 +168,12 @@ async def shoot(browser, name, projects, dest):
         if name in APPS or name in TOP_OF_PAGE:
             await page.evaluate(HIDE_FIXED)
             await page.wait_for_timeout(3000)
+            await page.screenshot(path=str(dest), clip={"x": 0, "y": 0, "width": 1280, "height": 800})
+            return
+        if name in WHOLE_WINDOW:
+            if name in READY:
+                await page.wait_for_function(READY[name], timeout=90_000)
+            await page.wait_for_timeout(4000)  # let the globe draw
             await page.screenshot(path=str(dest), clip={"x": 0, "y": 0, "width": 1280, "height": 800})
             return
         selector = SELECTORS.get(name)
