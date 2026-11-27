@@ -15,8 +15,6 @@
 name: Card screenshots
 
 on:
-  push:
-    branches: [card-screenshots-world-cuisine]  # TEMPORARY: preview run on this branch only
   schedule:
     - cron: '23 */4 * * *'
   workflow_dispatch:
@@ -72,7 +70,7 @@ jobs:
         run: npm run build
       - name: Commit if anything changed
         env:
-          BRANCH: ${{ inputs.branch || (github.event_name == 'push' && github.ref_name) || 'main' }}
+          BRANCH: ${{ inputs.branch || 'main' }}
         run: |
           git add src/assets src/data/screenshots.json public/og-*.png
           if git diff --cached --quiet; then
